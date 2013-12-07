@@ -4,6 +4,11 @@
 # use font.add() to add default font
 .add.default.font = function()
 {
+    if(!"R2SWF" %in% loadedNamespaces())
+        stop("package R2SWF is not loaded");
+    
+    if("wqy" %in% font.families()) return(invisible(NULL));
+    
     lib.loc = if("showtext" %in% loadedNamespaces())
                   dirname(getNamespaceInfo("showtext", "path"))
               else NULL;
@@ -11,12 +16,7 @@
     wqy.r = system.file("fonts", "wqy-microhei.ttc",
                         package = "showtext", lib.loc = lib.loc);
     
-    if("R2SWF" %in% loadedNamespaces())
-    {
-        font.add("wqy", wqy.r);
-    } else {
-        stop("package R2SWF is not loaded");
-    }
+    font.add("wqy", wqy.r);
 
     invisible(NULL);
 }
