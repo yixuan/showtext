@@ -1,0 +1,20 @@
+PKG_CPPFLAGS = @R2SWF_CPPFLAGS@ -I./libming
+PKG_LIBS = -L./libming -lming @R2SWF_LIBS@
+
+
+.PHONY: all clean
+
+all: $(SHLIB)
+
+$(SHLIB): libming/libming.a
+
+libming/libming.a:
+	cd libming && $(MAKE) all CC="$(CC)" AR="$(AR)" CPPFLAGS="@R2SWF_CPPFLAGS@ $(R_XTRA_CPPFLAGS)" CFLAGS="$(ALL_CFLAGS)"
+
+clean:
+	$(RM) *.o
+	$(RM) *.dll
+	$(RM) *.so
+	$(RM) *.dylib
+	cd libming && $(MAKE) clean
+

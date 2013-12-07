@@ -1,0 +1,20 @@
+PKG_CPPFLAGS = -I./include
+PKG_LIBS = -L.${R_ARCH} -lfreetype -lpng -lz
+
+
+.PHONY: all deps clean
+
+all: deps $(SHLIB)
+
+deps: R2SWF-dep-current-win-biarch.tar.gz
+	tar xzf R2SWF-dep-current-win-biarch.tar.gz
+
+R2SWF-dep-current-win-biarch.tar.gz:
+	R --vanilla --slave -e "download.file('http://rlib.eu.pn/R2SWF-dep-current-win-biarch.tar.gz.fake', 'R2SWF-dep-current-win-biarch.tar.gz', mode = 'wb')"
+
+clean:
+	$(RM) *.o
+	$(RM) *.dll
+	$(RM) *.so
+	$(RM) *.dylib
+
