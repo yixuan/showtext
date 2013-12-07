@@ -13,8 +13,5 @@ typedef struct fontDesc {
     FT_Face face;
 } FontDesc;
 
-SEXP showtextLoadFont(SEXP fontPath);
-SEXP showtextCleanFont(SEXP extPtr);
-
 #endif /* FONTS_H_INCLUDED */
 

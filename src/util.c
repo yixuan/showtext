@@ -104,15 +104,15 @@ int utf8towcs(wchar_t *wc, const char *s, int n)
     return (int) res;
 }
 
-static SEXP GetVarFromPkgEnv(const char *varName)
+static SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
 {
     /* See grDevices/src/devPS getFontDB() */
-    SEXP showtextNS, pkgEnv, var;
-    PROTECT(showtextNS = R_FindNamespace(ScalarString(mkChar("showtext"))));
-    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), showtextNS));
+    SEXP pkgNS, pkgEnv, var;
+    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
+    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
     if(TYPEOF(pkgEnv) == PROMSXP) {
         PROTECT(pkgEnv);
-        pkgEnv = eval(pkgEnv, showtextNS);
+        pkgEnv = eval(pkgEnv, pkgNS);
         UNPROTECT(1);
     }  
     PROTECT(var = Rf_findVar(install(varName), pkgEnv));
@@ -121,14 +121,14 @@ static SEXP GetVarFromPkgEnv(const char *varName)
     return var;
 }
 
-SEXP GetPkgEnv()
+SEXP GetPkgEnv(const char *pkgName)
 {
-    SEXP showtextNS, pkgEnv;
-    PROTECT(showtextNS = R_FindNamespace(ScalarString(mkChar("showtext"))));
-    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), showtextNS));
+    SEXP pkgNS, pkgEnv;
+    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
+    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
     if(TYPEOF(pkgEnv) == PROMSXP) {
         PROTECT(pkgEnv);
-        pkgEnv = eval(pkgEnv, showtextNS);
+        pkgEnv = eval(pkgEnv, pkgNS);
         UNPROTECT(1);
     }  
     UNPROTECT(2);
@@ -146,9 +146,11 @@ FT_Face GetFTFace(const pGEcontext gc)
     SEXP extPtr;
     int i, listLen;
     
-    /* Font list is showtext:::.pkg.env$.font.list, defined in font.R */    
-    fontList = GetVarFromPkgEnv(".font.list");
+    /* Font list is R2SWF:::.pkg.env$.font.list,
+       defined in R2SWF/R/font.R */    
+    fontList = GetVarFromPkgEnv(".font.list", "R2SWF");
     
+    /* Search the given family name */
     fontNames = GET_NAMES(fontList);
     listLen = Rf_length(fontList);
     for(i = 0; i < listLen; i++)
@@ -158,6 +160,18 @@ FT_Face GetFTFace(const pGEcontext gc)
             break;
         }
     }
+    /* If not found, search "wqy" */
+    if(i == listLen)
+    {
+        for(i = 0; i < listLen; i++)
+        {
+            if(strcmp("wqy", CHAR(STRING_ELT(fontNames, i))) == 0)
+            {
+                break;
+            }
+        }
+    }
+    /* If still not found, use "sans" */
     if(i == listLen) i = 0;
     if(gcfontface < 1 || gcfontface > 5) gcfontface = 1;
     
@@ -172,7 +186,7 @@ FT_Outline_Funcs* GetFTOutlineFuncs()
     FT_Outline_Funcs *funs;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".outline.funs");
+    extPtr = GetVarFromPkgEnv(".outline.funs", "showtext");
     funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
 
     return funs;
@@ -182,7 +196,7 @@ int GetNseg()
 {
     SEXP nseg;
     
-    nseg = GetVarFromPkgEnv(".nseg");
+    nseg = GetVarFromPkgEnv(".nseg", "showtext");
 
     return INTEGER(nseg)[0];
 }
@@ -192,7 +206,7 @@ pDevDesc GetDevDesc()
     pDevDesc dd_save;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".dd.save");
+    extPtr = GetVarFromPkgEnv(".dd.save", "showtext");
     dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
 
     return dd_save;
@@ -203,7 +217,7 @@ pGEDevDesc GetGEDevDesc()
     pGEDevDesc gdd_save;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".gdd.save");
+    extPtr = GetVarFromPkgEnv(".gdd.save", "showtext");
     gdd_save = (pGEDevDesc) R_ExternalPtrAddr(extPtr);
 
     return gdd_save;

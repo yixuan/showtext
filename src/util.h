@@ -17,7 +17,7 @@
 size_t utf8toucs(wchar_t *wc, const char *s);
 int utf8towcs(wchar_t *wc, const char *s, int n);
 
-SEXP GetPkgEnv();
+SEXP GetPkgEnv(const char *pkgName);
 pDevDesc GetDevDesc();
 pGEDevDesc GetGEDevDesc();
 FT_Face GetFTFace(const pGEcontext gc);

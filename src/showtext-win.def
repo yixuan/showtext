@@ -2,8 +2,6 @@ LIBRARY showtext.dll
 EXPORTS
  showtextLoadOutlineFuns
  showtextCleanOutlineFuns
- showtextLoadFont
- showtextCleanFont
  showtextReturnNullPointer
  showtextLoadDevDesc
  showtextCleanDevDesc
