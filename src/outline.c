@@ -13,7 +13,8 @@ void transformPoint(Point *before, Point *after,
 }
 
 int outlineMoveTo(const FT_Vector* to, void* user)
-{Rprintf("move\n");
+{
+    /* Rprintf("move\n"); */
     OutlineData *data = (OutlineData *) user;
     double ratio_EM = data->ratio_EM;
     
@@ -37,7 +38,8 @@ int outlineMoveTo(const FT_Vector* to, void* user)
 }
 
 int outlineLineTo(const FT_Vector* to, void* user)
-{Rprintf("line\n");
+{
+    /* Rprintf("line\n"); */
     OutlineData *data = (OutlineData *) user;
     double ratio_EM = data->ratio_EM;
 
@@ -60,7 +62,8 @@ int outlineLineTo(const FT_Vector* to, void* user)
 }
 
 int outlineConicTo(const FT_Vector* control, const FT_Vector* to, void* user)
-{Rprintf("conic\n");
+{
+    /* Rprintf("conic\n"); */
     OutlineData *data = (OutlineData *) user;
     double ratio_EM = data->ratio_EM;
     double lambda = 0.0, one_lambda = 1.0;
@@ -102,6 +105,7 @@ int outlineConicTo(const FT_Vector* control, const FT_Vector* to, void* user)
 int outlineCubicTo(const FT_Vector* control1, const FT_Vector* control2,
                    const FT_Vector* to, void* user)
 {
+    /* Rprintf("cubic\n") */
     OutlineData *data = (OutlineData *) user;
     double ratio_EM = data->ratio_EM;
     double lambda = 0.0, one_lambda = 1.0;

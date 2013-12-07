@@ -35,7 +35,6 @@ SEXP showtextBegin()
     SEXP extPtr;
     pGEDevDesc gdd;
     pDevDesc dd;
-    Rprintf("%d\n", currDev);
     
     if(currDev == 0)
         Rf_error("no active graphics device");
@@ -45,7 +44,7 @@ SEXP showtextBegin()
     
     /* Save the current gdd */
     extPtr = R_MakeExternalPtr(gdd, R_NilValue, R_NilValue);
-    Rf_setVar(install(".gdd.save"), extPtr, GetPkgEnv());
+    Rf_setVar(install(".gdd.save"), extPtr, GetPkgEnv("showtext"));
     /* Save the current dd */
     *(GetDevDesc()) = *dd;
     
@@ -56,6 +55,7 @@ SEXP showtextBegin()
     dd->textUTF8 = showtextTextUTF8;
     dd->strWidth = showtextStrWidthUTF8;
     dd->strWidthUTF8 = showtextStrWidthUTF8;
+    dd->wantSymbolUTF8 = TRUE;
 
     return R_NilValue;
 }
