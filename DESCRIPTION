@@ -1,24 +1,22 @@
 Package: showtext
 Type: Package
-Title: Render text for R graphics devices using (almost) any fonts
+Title: Enable (any) R Graphics Device to Use System Fonts
 Version: 0.1
 Date: 2013-12-07
 Author: Yixuan Qiu and authors/contributors of the
     WenQuanYi Micro Hei font. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
 Description: This package can override text rendering functions of many
-    R graphics devices (such as png(), pdf(), etc.), so that characters
-    will be converted into lines and polygons and thus device independent.
-    This will be helpful in situations when the device doesn't
-    (well) support drawing Unicode characters (Chinese characters in
-    pdf device, for example).
+    R graphics devices (such as png(), pdf(), etc.), so that text in R
+    graphcs can be displayed or printed using almost any system fonts.
+    This is done by analyzing the glyphs contained in the font file and
+    then rendering the text into lines and polygons, which are all device
+    independent. This package will be helpful if you want to use non-standard
+    fonts in your graphics device (for example, drawing Chinese characters in
+    pdf device).
 Depends:
     R2SWF (>= 0.7)
 SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
-Collate:
-    'font.R'
-    'showtext.R'
-    'zzz.R'
