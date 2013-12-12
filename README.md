@@ -1,7 +1,7 @@
 ### What's this package all about?
 `showtext` is an R package to draw text strings in R graphs.
 
--- Wait, R already has `text()` function to do that...
+*Wait, R already has `text()` function to do that...*
 
 Yes, but drawing text is a very complicated task, and it always depends on
 the specific **Graphics Device**.
@@ -36,6 +36,8 @@ it has, which font it uses, etc.
 However, the text with declared font may be displayed differently in
 different OS. The two images below are the screenshots of the same PDF
 file created by R but viewed under Windows and Linux respectively.
+
+[![](http://i.imgur.com/x1zM34F.png)](http://i.imgur.com/x1zM34F.png)
 
 This means that the appearance of graph created by `pdf()` is
 system dependent. If you unfortunately don't have the declared font
