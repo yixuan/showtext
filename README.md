@@ -58,7 +58,7 @@ Before I show the usage of `showtext` I shall reference a nice package
 written by
 [Winston Chang](https://github.com/wch),
 the [extrafont](https://github.com/wch/extrafont) package.
-It is essentially trying to the same thing: make R aware of the system
+It is essentially trying to do the same thing: make R aware of the system
 fonts, and then embed them in the PDF file.
 
 This package is almost perfect except that it requires some kind of
@@ -79,14 +79,16 @@ Only the steps marked with (\*) are newly added. Below is an example:
 
 ```r
 library(showtext)
-font.add("fang", "simfang.ttf")
+font.add("fang", "simfang.ttf") ## add font
 pdf("showtext-ex1.pdf")
-showtext.begin()
+showtext.begin()                ## Turn on showtext
 plot(1, type = "n")
 text(1, 1, intToUtf8(c(82, 35821, 35328)), cex = 10, family = "fang")
-showtext.end()
+showtext.end()                  ## Turn off showtext
 dev.off()
 ```
+
+[![](http://i.imgur.com/WZOTt8h.png)](http://i.imgur.com/WZOTt8h.png)
 
 The use of `intToUtf8()` is for convenience if you can't view or input
 Chinese characters. You can instead use
@@ -100,7 +102,33 @@ else. You can see the next section to learn details about how to load
 a font with `showtext`.
 
 ### Loading font
-TODO
+Loading font is actually done by package `R2SWF`.
+(Originally `R2SWF` was used to create Flash animations from R, but later I
+added font loading functions to support the SWF graphics device. Maybe in
+the future this module will be seperated into a new package.)
+
+The easiest way to load font into R is by calling `font.add(family, regular)`,
+where `family` is the name that you give to that font (so that later you can
+call `par(family = ...)` to use this font in plotting), and `regular` is the
+path to the font file (). Usually the font file will be located in some "standard"
+directories in the system (for example on Windows it is typically C:/Windows/Fonts).
+You can use `font.paths()` to check the current search path or add a new one,
+and use `font.files()` to list available font files in the search path.
+
+[![](http://i.imgur.com/xqUZQkS.png)](http://i.imgur.com/xqUZQkS.png)
+
+At present `font.add()` supports TrueType fonts (*.ttf/*.ttc), but adding new
+font type is trivial as long as FreeType supports it.
+
+Note that `showtext` includes an open source CJK font WenQuanYi Micro Hei.
+If you just want to show CJK text in your graph, you don't need to add any
+extra font at all.
+
+### Known issues
+The image created by bitmap graphics devices (`png()`, `jpeg()`, ...)
+looks ugly because they don't support anti-alias feature well. To produce
+high-quality output, try to use the
+[Cairo](http://cran.r-project.org/web/packages/Cairo/index.html) package.
 
 ### The internals of `showtext`
 TODO
