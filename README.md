@@ -81,14 +81,14 @@ Only the steps marked with (\*) are newly added. Below is an example:
 library(showtext)
 font.add("fang", "simfang.ttf") ## add font
 pdf("showtext-ex1.pdf")
-showtext.begin()                ## Turn on showtext
 plot(1, type = "n")
+showtext.begin()                ## turn on showtext
 text(1, 1, intToUtf8(c(82, 35821, 35328)), cex = 10, family = "fang")
-showtext.end()                  ## Turn off showtext
+showtext.end()                  ## turn off showtext
 dev.off()
 ```
 
-[![](http://i.imgur.com/WZOTt8h.png)](http://i.imgur.com/WZOTt8h.png)
+[![](http://i.imgur.com/u5uvjy5.png)](http://i.imgur.com/u5uvjy5.png)
 
 The use of `intToUtf8()` is for convenience if you can't view or input
 Chinese characters. You can instead use
@@ -110,17 +110,18 @@ the future this module will be seperated into a new package.)
 The easiest way to load font into R is by calling `font.add(family, regular)`,
 where `family` is the name that you give to that font (so that later you can
 call `par(family = ...)` to use this font in plotting), and `regular` is the
-path to the font file (). Usually the font file will be located in some "standard"
+path to the font file. Usually the font file will be located in some "standard"
 directories in the system (for example on Windows it is typically C:/Windows/Fonts).
 You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
 [![](http://i.imgur.com/xqUZQkS.png)](http://i.imgur.com/xqUZQkS.png)
 
-At present `font.add()` supports TrueType fonts (*.ttf/*.ttc), but adding new
+At present `font.add()` supports TrueType fonts (\*.ttf/\*.ttc), but adding new
 font type is trivial as long as FreeType supports it.
 
-Note that `showtext` includes an open source CJK font WenQuanYi Micro Hei.
+Note that `showtext` includes an open source CJK font
+[WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
 If you just want to show CJK text in your graph, you don't need to add any
 extra font at all.
 
