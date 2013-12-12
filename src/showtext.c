@@ -49,6 +49,7 @@ SEXP showtextBegin()
     *(GetDevDesc()) = *dd;
     
     /* Replace the text functions */
+    dd->canHAdj = FALSE;
     dd->metricInfo = showtextMetricInfo;
     dd->hasTextUTF8 = TRUE;
     dd->text = showtextTextUTF8;
