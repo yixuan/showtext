@@ -58,7 +58,6 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
     return width;
 }
 
-/* TODO: respect hadj */
 void showtextTextUTF8(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
@@ -76,14 +75,17 @@ void showtextTextUTF8(double x, double y, const char *str, double rot, double ha
     FT_Outline outline;
     FT_Error err;
     int i;
+    
+    double strWidth = showtextStrWidthUTF8(str, gc, dd);
+    double l = hadj * strWidth;
 
     data.ratio_EM = fontSize / face->units_per_EM;
     data.deltax = 0.0;
     data.nseg = GetNseg();
-    data.trans.x = x;
-    data.trans.y = y;
-    data.trans.theta = rot;
     data.trans.sign = dd->bottom > dd->top ? -1: 1;
+    data.trans.theta = rot;
+    data.trans.x = x - l * cos(rot * DEG2RAD);
+    data.trans.y = y - data.trans.sign * l * sin(rot * DEG2RAD);    
     data.curr_dev_trans.x = 0;
     data.curr_dev_trans.y = 0;
     data.outline_x = ArrayNew(100);
