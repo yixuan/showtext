@@ -146,9 +146,9 @@ FT_Face GetFTFace(const pGEcontext gc)
     SEXP extPtr;
     int i, listLen;
     
-    /* Font list is R2SWF:::.pkg.env$.font.list,
-       defined in R2SWF/R/font.R */    
-    fontList = GetVarFromPkgEnv(".font.list", "R2SWF");
+    /* Font list is sysfonts:::.pkg.env$.font.list,
+       defined in sysfonts/R/font.R */    
+    fontList = GetVarFromPkgEnv(".font.list", "sysfonts");
     
     /* Search the given family name */
     fontNames = GET_NAMES(fontList);

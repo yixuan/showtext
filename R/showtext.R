@@ -23,11 +23,11 @@
 #' 
 #' @details This package uses FreeType to load font files and render
 #'          text characters. The font loading part is done by function
-#'          \code{\link[R2SWF]{font.add}()} in the \pkg{R2SWF}
+#'          \code{\link[sysfonts]{font.add}()} in the \pkg{sysfonts}
 #'          package. Users could read the help page of
-#'          \code{\link[R2SWF]{font.paths}()},
-#'          \code{\link[R2SWF]{font.files}()} and
-#'          \code{\link[R2SWF]{font.add}()} to learn how to load
+#'          \code{\link[sysfonts]{font.paths}()},
+#'          \code{\link[sysfonts]{font.files}()} and
+#'          \code{\link[sysfonts]{font.add}()} to learn how to load
 #'          a font file into R. \pkg{showtext} package
 #'          has a built-in font file of the WenQuanYi Micro Hei
 #'          family, and it will be loaded automatically, so users can
