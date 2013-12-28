@@ -4,8 +4,8 @@
 # use font.add() to add default font
 .add.default.font = function()
 {
-    if(!"R2SWF" %in% loadedNamespaces())
-        stop("package R2SWF is not loaded");
+    if(!"sysfonts" %in% loadedNamespaces())
+        stop("package sysfonts is not loaded");
     
     if("wqy" %in% font.families()) return(invisible(NULL));
     
