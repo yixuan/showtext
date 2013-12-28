@@ -1,4 +1,4 @@
-PKG_CPPFLAGS = -I./include
+PKG_CPPFLAGS = -I./include -I./include/freetype
 PKG_LIBS = -L.${R_ARCH} -lfreetype -lpng -lz
 
 
@@ -6,11 +6,11 @@ PKG_LIBS = -L.${R_ARCH} -lfreetype -lpng -lz
 
 all: deps $(SHLIB)
 
-deps: R2SWF-dep-current-win-biarch.tar.gz
-	tar xzf R2SWF-dep-current-win-biarch.tar.gz
+deps: sysfonts-dep-win-biarch.tar.gz
+	tar xzf sysfonts-dep-win-biarch.tar.gz
 
-R2SWF-dep-current-win-biarch.tar.gz:
-	R --vanilla --slave -e "download.file('http://rlib.eu.pn/R2SWF-dep-current-win-biarch.tar.gz.fake', 'R2SWF-dep-current-win-biarch.tar.gz', mode = 'wb')"
+sysfonts-dep-win-biarch.tar.gz:
+	${R_HOME}/bin/R --vanilla --slave -e "download.file('http://statr.me/files/sysfonts-dep-win-biarch.tar.gz', 'sysfonts-dep-win-biarch.tar.gz', mode = 'wb')"
 
 clean:
 	$(RM) *.o
