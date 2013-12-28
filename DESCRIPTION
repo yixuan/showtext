@@ -1,8 +1,8 @@
 Package: showtext
 Type: Package
 Title: Enable (any) R Graphics Device to Show Text Using System Fonts
-Version: 0.1
-Date: 2013-12-07
+Version: 0.2
+Date: 2013-12-27
 Author: Yixuan Qiu and authors/contributors of the
     WenQuanYi Micro Hei font. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
@@ -15,7 +15,7 @@ Description: This package can override text rendering functions of many
     fonts in your graphics device (for example, drawing Chinese characters in
     pdf device).
 Depends:
-    R2SWF (>= 0.7)
+    sysfonts (>= 0.1)
 SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
