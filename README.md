@@ -102,10 +102,7 @@ else. You can see the next section to learn details about how to load
 a font with `showtext`.
 
 ### Loading font
-Loading font is actually done by package `R2SWF`.
-(Originally `R2SWF` was used to create Flash animations from R, but later I
-added font loading functions to support the SWF graphics device. Maybe in
-the future this module will be seperated into a new package.)
+Loading font is actually done by package `sysfonts`.
 
 The easiest way to load font into R is by calling `font.add(family, regular)`,
 where `family` is the name that you give to that font (so that later you can
