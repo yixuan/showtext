@@ -88,6 +88,7 @@ showtext.begin()                ## turn on showtext
 text(1, 1, intToUtf8(c(82, 35821, 35328)), cex = 10, family = "fang")
 showtext.end()                  ## turn off showtext
 dev.off()
+```
 
 <div align="center">
   <img src="http://i.imgur.com/u5uvjy5.png" />
@@ -115,9 +116,39 @@ directories in the system (for example on Windows it is typically C:/Windows/Fon
 You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
+Usually there are many free fonts that can be downloaded from the web and then used by
+`showtext`, as the following example shows:
+
+```r
+library(showtext)
+
+wd = setwd(tempdir())
+download.file("http://fontpro.com/download-family.php?file=35701",
+              "merienda-r.ttf", mode="wb")
+download.file("http://fontpro.com/download-family.php?file=35700",
+              "merienda-b.ttf", mode="wb")
+font.add("merienda",
+         regular = "merienda-r.ttf",
+         bold = "merienda-b.ttf")
+setwd(wd)
+
+pdf("showtext-ex2.pdf", 7, 4)
+plot(1, type = "n", xlab = "", ylab = "")
+showtext.begin()
+par(family = "merienda")
+text(1, 1.2, "R can use this font!", cex = 2)
+text(1, 0.8, "And in Bold font face!", font = 2, cex = 2)
+showtext.end()
+dev.off()
+```
+
 <div align="center">
-  <img src="http://i.imgur.com/xqUZQkS.png" />
+  <img src="http://i.imgur.com/EUIGQ6L.png" />
 </div>
+
+In this case we add two font faces(regular and bold) with the family name
+"merienda", and use `font = 2` to select the bold font face (`font = 1` is
+selected by default, which is the regular font face).
 
 At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
 OpenType fonts(\*.otf), but adding new
