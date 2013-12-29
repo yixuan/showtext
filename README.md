@@ -1,7 +1,7 @@
 ### What's this package all about?
 `showtext` is an R package to draw text strings in R graphs.
 
-*Wait, R already has `text()` function to do that...*
+> *Wait, R already has `text()` function to do that...*
 
 Yes, but drawing text is a very complicated task, and it always depends on
 the specific **Graphics Device**.
@@ -37,7 +37,9 @@ However, the text with declared font may be displayed differently in
 different OS. The two images below are the screenshots of the same PDF
 file created by R but viewed under Windows and Linux respectively.
 
+<div align="center">
 [![](http://i.imgur.com/x1zM34F.png)](http://i.imgur.com/x1zM34F.png)
+</div>
 
 This means that the appearance of graph created by `pdf()` is
 system dependent. If you unfortunately don't have the declared font
@@ -88,7 +90,9 @@ showtext.end()                  ## turn off showtext
 dev.off()
 ```
 
+<div align="center">
 [![](http://i.imgur.com/u5uvjy5.png)](http://i.imgur.com/u5uvjy5.png)
+</div>
 
 The use of `intToUtf8()` is for convenience if you can't view or input
 Chinese characters. You can instead use
@@ -112,9 +116,12 @@ directories in the system (for example on Windows it is typically C:/Windows/Fon
 You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
+<div align="center">
 [![](http://i.imgur.com/xqUZQkS.png)](http://i.imgur.com/xqUZQkS.png)
+</div>
 
-At present `font.add()` supports TrueType fonts (\*.ttf/\*.ttc), but adding new
+At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
+OpenType fonts(\*.otf), but adding new
 font type is trivial as long as FreeType supports it.
 
 Note that `showtext` includes an open source CJK font
