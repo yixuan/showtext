@@ -2,7 +2,7 @@ Package: showtext
 Type: Package
 Title: Enable (any) R Graphics Device to Show Text Using System Fonts
 Version: 0.2
-Date: 2013-12-27
+Date: 2013-12-29
 Author: Yixuan Qiu and authors/contributors of the
     WenQuanYi Micro Hei font. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>

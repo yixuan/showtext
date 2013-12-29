@@ -10,7 +10,7 @@
 #' pdf device dealing with Chinese characters). The usage of this
 #' function is pretty simple: just open your graphics device, and
 #' "claim" that you want to use \pkg{showtext} by calling this function.
-#' See the examples section for details.
+#' See the "Examples" section for details.
 #' 
 #' 
 #' @param nseg parameter to control the smoothness of the outlines
@@ -58,23 +58,30 @@
 #' 
 #' @author Yixuan Qiu <\url{http://yixuan.cos.name/}>
 #' 
+#' @seealso \code{\link{showtext.end}()}
+#' 
 #' @examples
 #' ###  Enable pdf() to draw Chinese characters nicely  ###
 #' old = setwd(tempdir());
+#' 
 #' ## First, open the device
 #' pdf();
-#' ## For now we are using the original device functions to draw
-#' ## axis labels
+#' 
+#' ## For now we are using the original device functions to draw axis labels
 #' plot(1, type = "n");
+#' 
 #' ## Then turn showtext on and draw some characters
 #' showtext.begin();
 #' text(1, 1.2, intToUtf8(c(21315, 31179, 19975, 36733)), cex = 5);
+#' 
 #' ## Use another font
 #' if("simkai.ttf" %in% font.files()) font.add("kaishu", "simkai.ttf");
 #' text(1, 0.8, intToUtf8(c(19968, 32479, 27743, 28246)),
 #'      cex = 5, family = "kaishu");
+#'      
 #' ## Turn showtext off
 #' showtext.end();
+#' 
 #' ## Also turn off the device
 #' dev.off();
 #' setwd(old);
@@ -100,6 +107,8 @@ showtext.begin = function(nseg = 10L)
 #' @export
 #' 
 #' @author Yixuan Qiu <\url{http://yixuan.cos.name/}>
+#' 
+#' @seealso \code{\link{showtext.begin}()}
 showtext.end = function()
 {
     if(dev.cur() == 1) stop("no active graphics device");

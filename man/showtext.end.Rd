@@ -15,4 +15,7 @@ error will be issued. See the example in
 \author{
 Yixuan Qiu <\url{http://yixuan.cos.name/}>
 }
+\seealso{
+\code{\link{showtext.begin}()}
+}
 

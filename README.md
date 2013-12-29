@@ -168,7 +168,7 @@ high-quality output, try to use the
 ### The internals of `showtext`
 Every graphics device in R implements some functions to draw specific graphical
 elements, e.g., `line()` to draw lines, `path()` and `polygon()` to draw polygons,
-`text()` or `textUTF8()` to show text, etc. What `showtext` does is to "hijack"
+`text()` or `textUTF8()` to show text, etc. What `showtext` does is to override
 their own text rendering functions and replace them by hooks provided in `showtext`
 that will further call the device's `path()`, `polygon()` or `line()` to draw the
 character glyphs.
