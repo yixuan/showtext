@@ -166,4 +166,13 @@ high-quality output, try to use the
 [Cairo](http://cran.r-project.org/web/packages/Cairo/index.html) package.
 
 ### The internals of `showtext`
-TODO
+Every graphics device in R implements some functions to draw specific graphical
+elements, e.g., `line()` to draw lines, `path()` and `polygon()` to draw polygons,
+`text()` or `textUTF8()` to show text, etc. What `showtext` does is to "hijack"
+their own text rendering functions and replace them by hooks provided in `showtext`
+that will further call the device's `path()`, `polygon()` or `line()` to draw the
+character glyphs.
+
+This action is done only when you call `showtext.begin()` and won't modify the
+graphics device if you call `showtext.end()` to restore the original device functions back.
+
