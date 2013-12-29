@@ -38,7 +38,7 @@ different OS. The two images below are the screenshots of the same PDF
 file created by R but viewed under Windows and Linux respectively.
 
 <div align="center">
-[![](http://i.imgur.com/x1zM34F.png)](http://i.imgur.com/x1zM34F.png)
+  <img src="http://i.imgur.com/x1zM34F.png" />
 </div>
 
 This means that the appearance of graph created by `pdf()` is
@@ -88,10 +88,9 @@ showtext.begin()                ## turn on showtext
 text(1, 1, intToUtf8(c(82, 35821, 35328)), cex = 10, family = "fang")
 showtext.end()                  ## turn off showtext
 dev.off()
-```
 
 <div align="center">
-[![](http://i.imgur.com/u5uvjy5.png)](http://i.imgur.com/u5uvjy5.png)
+  <img src="http://i.imgur.com/u5uvjy5.png" />
 </div>
 
 The use of `intToUtf8()` is for convenience if you can't view or input
@@ -117,7 +116,7 @@ You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
 <div align="center">
-[![](http://i.imgur.com/xqUZQkS.png)](http://i.imgur.com/xqUZQkS.png)
+  <img src="http://i.imgur.com/xqUZQkS.png" />
 </div>
 
 At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
