@@ -4,7 +4,7 @@ Title: Enable (any) R Graphics Device to Show Text Using System Fonts
 Version: 0.2
 Date: 2013-12-29
 Author: Yixuan Qiu and authors/contributors of the
-    WenQuanYi Micro Hei font. See file AUTHORS for details.
+    included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
 Description: This package can override text rendering functions of many
     R graphics devices (such as png(), pdf(), etc.), so that text in R
@@ -20,3 +20,4 @@ SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
+Copyright: see file COPYRIGHTS
