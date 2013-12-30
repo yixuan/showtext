@@ -1,5 +1,14 @@
+The three files in the src/ subdirectory,
+  tidy.h
+  utf8.h
+  utf8.c  
+were originally written by
+  Dave Raggett <dsr@w3.org>
+and modified by Yixuan Qiu.
+
 The WenQuanYi Micro Hei font included in the fonts/ subdirectory
 is maintained by Qianqian Fang, and contributed by many other users.
 See fonts/AUTHORS.txt for a detailed contributed list.
 
 Other part of this package is written by Yixuan Qiu.
+

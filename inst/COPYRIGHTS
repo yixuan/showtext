@@ -1,4 +1,18 @@
-showtext includes the WenQuanYi Micro Hei font file, with copyrights:
+The three files in the src/ subdirectory,
+  tidy.h
+  utf8.h
+  utf8.c
+are derived and modified from
+HTML Tidy Library Project (http://tidy.sourceforge.net/).
+
+    Copyright (c) 1998-2008 World Wide Web Consortium
+    (Massachusetts Institute of Technology, European Research 
+    Consortium for Informatics and Mathematics, Keio University).
+    All Rights Reserved.
+
+
+showtext also includes the WenQuanYi Micro Hei font file, with copyrights:
+
     Digitized data copyright © 2007, Google Corporation.
     
     Copyright © 2008-2009, WenQuanYi Project Board of
