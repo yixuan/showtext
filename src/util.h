@@ -14,8 +14,7 @@
 #include FT_OUTLINE_H
 
 
-size_t utf8toucs(wchar_t *wc, const char *s);
-int utf8towcs(wchar_t *wc, const char *s, int n);
+int utf8toucs4(unsigned int *ucs4, const char *utf8, int n);
 
 SEXP GetPkgEnv(const char *pkgName);
 pDevDesc GetDevDesc();

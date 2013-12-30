@@ -33,8 +33,9 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
     int maxLen = strlen(str);
-    wchar_t *unicode = (wchar_t *) calloc(maxLen + 1, sizeof(wchar_t));
-    int len = utf8towcs(unicode, str, maxLen);
+    unsigned int *unicode =
+        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, maxLen);
     
     FT_Face face = GetFTFace(gc);
     FT_Error err;
@@ -62,8 +63,9 @@ void showtextTextUTF8(double x, double y, const char *str, double rot, double ha
 {
     /* Convert UTF-8 string to Unicode array */
     int maxLen = strlen(str);
-    wchar_t *unicode = (wchar_t *) calloc(maxLen + 1, sizeof(wchar_t));
-    int len = utf8towcs(unicode, str, maxLen);
+    unsigned int *unicode =
+        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, maxLen);
     
     FT_Outline_Funcs *funs = GetFTOutlineFuncs();
     FT_Face face = GetFTFace(gc);
@@ -173,3 +175,4 @@ void showtextTextUTF8(double x, double y, const char *str, double rot, double ha
     ArrayDestroy(data.outline_x);
     ArrayDestroy(data.outline_y);
 }
+

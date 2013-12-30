@@ -1,108 +1,48 @@
 #include "fonts.h"
+#include "utf8.h"
 #include "util.h"
 
-size_t utf8toucs(wchar_t *wc, const char *s)
+int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
 {
-    unsigned int byte;
-    wchar_t local, *w;
-    byte = *((unsigned char *)s);
-    w = wc ? wc: &local;
-
-    if (byte == 0)
+    int len = 0;
+    int step = 0;
+    int err;
+    unsigned int *p1;
+    const char * p2;
+    for(p1 = ucs4, p2 = utf8; ; p1++, p2 += step)
     {
-        *w = (wchar_t) 0;
-        return 0;
-    }
-    else if (byte < 0xC0)
-    {
-        *w = (wchar_t) byte;
-        return 1;
-    }
-    else if (byte < 0xE0)
-    {
-        if(strlen(s) < 2) return (size_t)-2;
-        if ((s[1] & 0xC0) == 0x80)
+        /* if we meet '\0' */
+        if(!p2[0]) break;
+        err = TY_(DecodeUTF8BytesToChar)(p1, p2[0], p2 + 1, &step);
+        if(err)
         {
-            *w = (wchar_t) (((byte & 0x1F) << 6) | (s[1] & 0x3F));
-            return 2;
+            Rf_warning("UTF-8 decoding error for '%s'", utf8);
+            *p1 = 0xFFFD; /* replacement char */
         }
-        else return (size_t)-1;
+        len++;
+        if(len >= n) break;
     }
-    else if (byte < 0xF0)
-    {
-        if(strlen(s) < 3) return (size_t)-2;
-        if (((s[1] & 0xC0) == 0x80) && ((s[2] & 0xC0) == 0x80))
-        {
-            *w = (wchar_t) (((byte & 0x0F) << 12)
-                            | (unsigned int) ((s[1] & 0x3F) << 6)
-                            | (s[2] & 0x3F));
-            byte = (unsigned int) *w;
-            /* Surrogates range */
-            if(byte >= 0xD800 && byte <= 0xDFFF) return (size_t)-1;
-            if(byte == 0xFFFE || byte == 0xFFFF) return (size_t)-1;
-            return 3;
-        }
-        else return (size_t)-1;
-    }
-    if(sizeof(wchar_t) < 4) return (size_t)-2;
-    /* So now handle 4,5.6 byte sequences with no testing */
-    if (byte < 0xf8)
-    {
-        if(strlen(s) < 4) return (size_t)-2;
-        *w = (wchar_t) (((byte & 0x0F) << 18)
-                        | (unsigned int) ((s[1] & 0x3F) << 12)
-                        | (unsigned int) ((s[2] & 0x3F) << 6)
-                        | (s[3] & 0x3F));
-        return 4;
-    }
-    else if (byte < 0xFC)
-    {
-        if(strlen(s) < 5) return (size_t)-2;
-        *w = (wchar_t) (((byte & 0x0F) << 24)
-                        | (unsigned int) ((s[1] & 0x3F) << 12)
-                        | (unsigned int) ((s[2] & 0x3F) << 12)
-                        | (unsigned int) ((s[3] & 0x3F) << 6)
-                        | (s[4] & 0x3F));
-        return 5;
-    }
-    else
-    {
-        if(strlen(s) < 6) return (size_t)-2;
-        *w = (wchar_t) (((byte & 0x0F) << 30)
-                        | (unsigned int) ((s[1] & 0x3F) << 24)
-                        | (unsigned int) ((s[2] & 0x3F) << 18)
-                        | (unsigned int) ((s[3] & 0x3F) << 12)
-                        | (unsigned int) ((s[4] & 0x3F) << 6)
-                        | (s[5] & 0x3F));
-        return 6;
-    }
+    return len;
 }
 
-int utf8towcs(wchar_t *wc, const char *s, int n)
+/* a small example */
+/*
+SEXP utf8toint(SEXP str)
 {
-    ssize_t m, res = 0;
-    const char *t;
-    wchar_t *p;
-    wchar_t local;
-
-    if(wc)
-        for(p = wc, t = s; ; p++, t += m)
-        {
-            m  = (ssize_t) utf8toucs(p, t);
-            if (m < 0) Rf_error("invalid input '%s' in 'utf8towcs'", s);
-            if (m == 0) break;
-            res ++;
-            if (res >= n) break;
-        }
-    else
-        for(t = s; ; res++, t += m)
-        {
-            m  = (ssize_t) utf8toucs(&local, t);
-            if (m < 0) Rf_error("invalid input '%s' in 'utf8towcs'", s);
-            if (m == 0) break;
-        }
-    return (int) res;
+    const char *s = CHAR(STRING_ELT(str, 0));
+    int maxlen = strlen(s);
+    unsigned int *buf = calloc(maxlen + 1, sizeof(int));
+    int len = utf8toucs4(buf, s, maxlen);
+    SEXP res;
+    int i;
+    PROTECT(res = allocVector(INTSXP, len));
+    for(i = 0; i < len; i++)
+        INTEGER(res)[i] = buf[i];
+    UNPROTECT(1);
+    free(buf);
+    return res;
 }
+*/
 
 static SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
 {
