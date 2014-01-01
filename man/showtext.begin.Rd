@@ -61,11 +61,15 @@ to restore the original device functions. See examples
 below for the usage of these functions.
 }
 \examples{
-###  Enable pdf() to draw Chinese characters nicely  ###
+\dontrun{
 old = setwd(tempdir());
 
+###  Enable pdf() to draw Chinese characters nicely  ###
+###  Requires the simkai.ttf font file, usually      ###
+###  installed in Windows                            ###
+
 ## First, open the device
-pdf();
+pdf("showtext-ex1.pdf");
 
 ## For now we are using the original device functions to draw axis labels
 plot(1, type = "n");
@@ -84,7 +88,29 @@ showtext.end();
 
 ## Also turn off the device
 dev.off();
+
+
+###  Download font file from web  ###
+
+download.file("http://fontpro.com/download-family.php?file=36289",
+              "newrocker.ttf", mode="wb");
+download.file("http://fontpro.com/download-family.php?file=35128",
+              "cutetumblr.ttf", mode ="wb");
+
+font.add("newrocker", "newrocker.ttf");
+font.add("cutetumblr", "cutetumblr.ttf");
+
+pdf("showtext-ex2.pdf", 8, 5);
+plot(1, type = "n");
+showtext.begin();
+text(1, 1.2, "Let me tell you a story", cex = 4, family = "newrocker");
+text(1, 0.8, "Long long ago...", cex = 4, family = "cutetumblr");
+showtext.end();
+dev.off();
+
 setwd(old);
+
+}
 }
 \author{
 Yixuan Qiu <\url{http://yixuan.cos.name/}>
