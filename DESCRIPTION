@@ -8,7 +8,7 @@ Author: Yixuan Qiu and authors/contributors of the
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
 Description: This package can override text rendering functions of many
     R graphics devices (such as png(), pdf(), etc.), so that text in R
-    graphcs can be displayed or printed using almost any system fonts.
+    graphs can be displayed or printed using almost any system fonts.
     This is done by analyzing the glyphs contained in the font file and
     then rendering the text into lines and polygons, which are all device
     independent. This package will be helpful if you want to use non-standard
