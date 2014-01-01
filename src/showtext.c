@@ -64,7 +64,6 @@ SEXP showtextBegin()
 SEXP showtextEnd()
 {
     int currDev = curDevice();
-    SEXP extPtr;
     pGEDevDesc gdd;
     pDevDesc dd;
     
