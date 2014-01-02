@@ -2,12 +2,12 @@ Package: showtext
 Type: Package
 Title: Enable (any) R Graphics Device to Show Text Using System Fonts
 Version: 0.2
-Date: 2013-12-29
+Date: 2014-01-01
 Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
 Description: This package can override text rendering functions of many
-    R graphics devices (such as png(), pdf(), etc.), so that text in R
+    R graphics devices (such as svg(), pdf(), etc.), so that text in R
     graphs can be displayed or printed using almost any system fonts.
     This is done by analyzing the glyphs contained in the font file and
     then rendering the text into lines and polygons, which are all device
