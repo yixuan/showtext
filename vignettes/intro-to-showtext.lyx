@@ -29,9 +29,18 @@ knitr
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -55,6 +64,10 @@ knitr
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 2.5cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -85,7 +98,360 @@ Existing methods to use fonts
 \end_layout
 
 \begin_layout Subsection
-Default graphics devices in R
+Built-in graphics devices in R
+\end_layout
+
+\begin_layout Standard
+It's possible to let R's built-in graphics devices, e.g., PNG and PDF, to
+ use installed fonts in the system.
+ However, the implementation is quite configuration dependent.
+ If support for cairographics has been compiled in R, then it's quite straightfo
+rward to use system fonts in the plots, for which one only needs to specify
+ the family name of font as is displayed in the system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(capabilities("cairo")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    png("builtin-1.png", 672, 384, type = "cairo", res = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(1, type = "n")
+\end_layout
+
+\begin_layout Plain Layout
+
+    text(1, 1, "Consolas", family = "Consolas", cex = 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    cairo_pdf("builtin-2.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(1, type = "n")
+\end_layout
+
+\begin_layout Plain Layout
+
+    text(1, 1, "DejaVu Serif", family = "DejaVu Serif", font = 3, cex =
+ 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename builtin-1.png
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename builtin-2.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Specify family name when cairographics is compiled in R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+However, when cairographics is not available, it will require more effort
+ to achieve this target.
+ For PNG graphs, the user needs to first register a font family name in
+ R which is mapped to a font that is installed in the system, and then specify
+ the font family name in plotting functions.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:mapping"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename mapping.pdf
+	lyxscale 30
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagram to show the font mapping in R
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:mapping"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Below is an example to show this procedure on Windows.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    windowsFonts(comic = "Comic Sans MS")
+\end_layout
+
+\begin_layout Plain Layout
+
+    png("builtin-3.png", 672, 384, res = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot(1, type = "n")
+\end_layout
+
+\begin_layout Plain Layout
+
+    text(1, 1, "Comic Sans MS", family = "comic", cex = 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename builtin-3.png
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Use system fonts for PNG on Windows without cairographics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Notice that we use function 
+\family typewriter
+windowsFonts()
+\family default
+ to register font and create name mapping.
+ In other operating systems, there are corresponding functions such as 
+\family typewriter
+X11Fonts()
+\family default
+ and 
+\family typewriter
+quartzFonts()
+\family default
+ to do the similar job.
+\end_layout
+
+\begin_layout Standard
+When it comes to PDF graphs, things get even more complicated.
+ The first step is similar: one should call 
+\family typewriter
+pdfFonts()
+\family default
+ to register new family names in R, and then use them in the plot.
+ However, the problem is that 
+\family typewriter
+pdfFonts()
+\family default
+ requires the metric files (
+\family typewriter
+.afm
+\family default
+) for the font, which are not so common for end users.
+ As a contrary, TrueType fonts (
+\family typewriter
+.ttf
+\family default
+) and OpenType fonts (mostly 
+\family typewriter
+.otf
+\family default
+) are the major ones that users are most likely to have.
+ Unfortunately, these font formats are not directly supported by 
+\family typewriter
+pdfFonts()
+\family default
+.
+ Additionally, to make the plot have consistent appearance across different
+ PDF views, it is usually suggested to embed the font within the file by
+ calling function 
+\family typewriter
+embedFonts()
+\family default
+, which further invokes an external software Ghostscript.
+ For the details, interested readers are referred to the R News article
+ xxx.
+\end_layout
+
+\begin_layout Standard
+Due to this complexity, when creating PDF graphs most users only select
+ the built-in PDF font families, which in R can be queried by the command
+ 
+\family typewriter
+names(pdfFonts())
+\family default
+.
 \end_layout
 
 \begin_layout Subsection
