@@ -105,9 +105,29 @@ Built-in graphics devices in R
 It's possible to let R's built-in graphics devices, e.g., PNG and PDF, to
  use installed fonts in the system.
  However, the implementation is quite configuration dependent.
- If support for cairographics has been compiled in R, then it's quite straightfo
-rward to use system fonts in the plots, for which one only needs to specify
- the family name of font as is displayed in the system.
+ If support for Cairo graphics
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://cairographics.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ has been compiled in R, then it's quite straightforward to use system fonts
+ in the plots, for which one only needs to specify the family name of font
+ as is displayed in the system.
 \end_layout
 
 \begin_layout Standard
@@ -439,7 +459,27 @@ pdfFonts()
 \family typewriter
 embedFonts()
 \family default
-, which further invokes an external software Ghostscript.
+, which further invokes an external software Ghostscript
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.ghostscript.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
  For the details, interested readers are referred to the R News article
  xxx.
 \end_layout
