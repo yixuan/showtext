@@ -141,6 +141,26 @@ status open
 
 \begin_layout Plain Layout
 
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+bg = ggplot(NULL, aes(x = 1, y = 1)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.title = element_blank(), axis.ticks = element_blank(),
+\end_layout
+
+\begin_layout Plain Layout
+
+          axis.text = element_blank())
+\end_layout
+
+\begin_layout Plain Layout
+
 if(capabilities("cairo")) {
 \end_layout
 
@@ -151,12 +171,13 @@ if(capabilities("cairo")) {
 
 \begin_layout Plain Layout
 
-    plot(1, type = "n")
+    txt1 = annotate("text", 1, 1, label = "Consolas", family = "Consolas",
+ size = 25)
 \end_layout
 
 \begin_layout Plain Layout
 
-    text(1, 1, "Consolas", family = "Consolas", cex = 3)
+    print(bg + txt1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -175,13 +196,18 @@ if(capabilities("cairo")) {
 
 \begin_layout Plain Layout
 
-    plot(1, type = "n")
+    txt2 = annotate("text", 1, 1, label = "DejaVu Serif Italic",
 \end_layout
 
 \begin_layout Plain Layout
 
-    text(1, 1, "DejaVu Serif", family = "DejaVu Serif", font = 3, cex =
- 3)
+                    family = "DejaVu Serif", fontface = "italic", size =
+ 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt2)
 \end_layout
 
 \begin_layout Plain Layout
@@ -278,7 +304,7 @@ status open
 \begin_inset Graphics
 	filename mapping.pdf
 	lyxscale 30
-	width 70text%
+	width 80text%
 
 \end_inset
 
@@ -343,12 +369,13 @@ if(.Platform$OS.type == "windows") {
 
 \begin_layout Plain Layout
 
-    plot(1, type = "n")
+    txt3 = annotate("text", 1, 1, label = "Comic Sans MS", family = "comic",
+ size = 25)
 \end_layout
 
 \begin_layout Plain Layout
 
-    text(1, 1, "Comic Sans MS", family = "comic", cex = 3)
+    print(bg + txt3)
 \end_layout
 
 \begin_layout Plain Layout
@@ -495,11 +522,11 @@ names(pdfFonts())
 \end_layout
 
 \begin_layout Subsection
-Package Cairo
+The Cairo package
 \end_layout
 
 \begin_layout Subsection
-Package extrafont
+The extrafont package
 \end_layout
 
 \begin_layout Section
