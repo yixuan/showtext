@@ -881,17 +881,13 @@ The extrafont package
 extrafont
 \series default
  
-\series bold
-
 \begin_inset CommandInset citation
 LatexCommand citep
 key "extrafont"
 
 \end_inset
 
- 
-\series default
-is an R pakcage mainly used to simplify the usage of system fonts in PDF
+ is an R pakcage mainly used to simplify the usage of system fonts in PDF
  and PostScript graphics.
  It is able to extract metric files (
 \family typewriter
@@ -1187,6 +1183,108 @@ http://cran.r-project.org/web/packages/extrafont/README.html
 
 \begin_layout Section
 Usage of showtext
+\end_layout
+
+\begin_layout Standard
+The previous section describes a number of ways to use system fonts in R
+ graphics.
+ While they could be helpful in many situations when dealing with fonts
+ in R, there is still room for seeking more elegant ways to achieve that
+ target, among which the 
+\series bold
+showtext
+\series default
+ package is one trying to meet such goal.
+ There are a number of highlighted features of 
+\series bold
+showtext
+\series default
+:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Easy for installation
+\series default
+.
+ 
+\series bold
+showtext
+\series default
+ only requires the lightweight FreeType library
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.freetype.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ when being installed, and doesn't rely on any external software.
+ This would be helpful when other solutions are not possible, e.g., when R
+ is not configured with Cairo support, or the Cairo library is not installed
+ in the system.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Support for various font formats
+\series default
+.
+ A certain type of font is supported as long as the backend FreeType library
+ can read it, usually including TrueType fonts, OpenType fonts, Type 1 fonts,
+ etc.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Support for various R graphics devices
+\series default
+.
+ Technically 
+\series bold
+showtext
+\series default
+ can work on almost any graphics device, whatever in PNG, PDF, SVG or JPEG
+ formats, although some of them can achieve higher quality than the others.
+\end_layout
+
+\begin_layout Enumerate
+It provides 
+\series bold
+an easy and uniform interface
+\series default
+ across different operating systems.
+ The usage is consistent in Windows, Linux, Mac OS and other Unix-alike
+ platforms.
+\end_layout
+
+\begin_layout Enumerate
+It also features functions to 
+\series bold
+automatically search and download
+\series default
+ many beautiful, accessible and open source fonts on the web, and users
+ can use these fonts without installing them to the system, thus maintaining
+ the fonts for 
+\series bold
+showtext
+\series default
+ independently against those in the OS.
 \end_layout
 
 \begin_layout Subsection
