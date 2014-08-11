@@ -1034,7 +1034,7 @@ library(extrafont)
 
 \begin_layout Plain Layout
 
-pdf("Cairo-3-unembedded.pdf", 7, 4)
+pdf("extrafont-1-unembedded.pdf", 7, 4)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1069,7 +1069,7 @@ dev.off()
 
 \begin_layout Plain Layout
 
-embed_fonts("Cairo-3-unembedded.pdf", outfile = "Cairo-3.pdf")
+embed_fonts("extrafont-1-unembedded.pdf", outfile = "extrafont-1.pdf")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1092,7 +1092,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Cairo-3.pdf
+	filename extrafont-1.pdf
 	width 49text%
 
 \end_inset
