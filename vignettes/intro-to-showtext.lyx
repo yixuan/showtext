@@ -5,6 +5,9 @@
 \textclass article
 \use_default_options true
 \begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
 knitr
 \end_modules
 \maintain_unincluded_children false
@@ -35,8 +38,8 @@ knitr
 \pdf_bookmarksopen false
 \pdf_bookmarksopenlevel 1
 \pdf_breaklinks false
-\pdf_pdfborder false
-\pdf_colorlinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
 \pdf_backref false
 \pdf_pdfusetitle true
 \papersize default
@@ -51,8 +54,8 @@ knitr
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
+\cite_engine natbib
+\cite_engine_type authoryear
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -521,7 +524,14 @@ http://www.ghostscript.com/
 
 .
  For the details, interested readers are referred to the R News article
- xxx.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nonstdfonts"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -567,8 +577,15 @@ The
 \series bold
 Cairo
 \series default
- package provides a number of high-quality graphics devices that are driven
- by a unified backend based on Cairo graphics.
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "cairo"
+
+\end_inset
+
+ provides a number of high-quality graphics devices that are driven by a
+ unified backend based on Cairo graphics.
  When the Cairo library is configured with FreeType and Fontcofig support,
  one can make use of the 
 \family typewriter
@@ -813,6 +830,18 @@ Limitations
 
 \begin_layout Section
 Design of showtext
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "ref"
+options "bibtotoc,jss"
+
+\end_inset
+
+
 \end_layout
 
 \end_body
