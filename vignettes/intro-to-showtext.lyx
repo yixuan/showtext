@@ -148,6 +148,14 @@ http://cairographics.org/
  has been compiled in R, then it's quite straightforward to use system fonts
  in the plots, for which one only needs to specify the family name of font
  as is displayed in the system.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:builtin_with_cairo"
+
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
@@ -283,6 +291,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:builtin_with_cairo"
+
+\end_inset
+
 Specify family name when Cairo graphics is compiled in R.
  
 \emph on
@@ -374,6 +388,14 @@ name "fig:mapping"
 
 \begin_layout Standard
 Below is an example to show this procedure on Windows.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:builtin_png_windows"
+
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
@@ -453,6 +475,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:builtin_png_windows"
+
+\end_inset
+
 Use system fonts for PNG on Windows without Cairo graphics
 \end_layout
 
@@ -614,6 +642,14 @@ Cairo
 \series default
 .
  Below is an example to show this.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cairo_package"
+
+\end_inset
+
+, left)
 \end_layout
 
 \begin_layout Standard
@@ -699,6 +735,14 @@ png(type = "cairo")
 cairo_pdf()
 \family default
 .
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cairo_package"
+
+\end_inset
+
+, right)
 \end_layout
 
 \begin_layout Standard
@@ -794,6 +838,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cairo_package"
+
+\end_inset
+
 Specify fonts in the 
 \series bold
 Cairo
@@ -958,6 +1008,14 @@ fonttable()
 embed_fonts()
 \family default
 .
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:extrafont_package"
+
+\end_inset
+
+)
 \end_layout
 
 \begin_layout Standard
@@ -1046,6 +1104,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:extrafont_package"
+
+\end_inset
+
 Use 
 \series bold
 extrafont
@@ -1098,7 +1162,7 @@ More details about
 \series bold
 extrafont
 \series default
- can be found in the README file 
+ can be found in the README file
 \begin_inset Foot
 status open
 
