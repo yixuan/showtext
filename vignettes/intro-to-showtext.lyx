@@ -146,7 +146,7 @@ library(ggplot2)
 
 \begin_layout Plain Layout
 
-bg = ggplot(NULL, aes(x = 1, y = 1)) +
+bg = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
 \end_layout
 
 \begin_layout Plain Layout
@@ -171,8 +171,12 @@ if(capabilities("cairo")) {
 
 \begin_layout Plain Layout
 
-    txt1 = annotate("text", 1, 1, label = "Consolas", family = "Consolas",
- size = 25)
+    txt1 = annotate("text", 1, 1, label = "DejaVu Sans Mono",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "DejaVu Sans Mono", size = 15)
 \end_layout
 
 \begin_layout Plain Layout
@@ -259,7 +263,16 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Specify family name when cairographics is compiled in R
+Specify family name when Cairo graphics is compiled in R.
+ 
+\emph on
+Left
+\emph default
+: PNG graph; 
+\emph on
+right
+\emph default
+: PDF graph
 \end_layout
 
 \end_inset
@@ -277,7 +290,7 @@ Specify family name when cairographics is compiled in R
 \end_layout
 
 \begin_layout Standard
-However, when cairographics is not available, it will require more effort
+However, when Cairo graphics is not available, it will require more effort
  to achieve this target.
  For PNG graphs, the user needs to first register a font family name in
  R which is mapped to a font that is installed in the system, and then specify
@@ -420,7 +433,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Use system fonts for PNG on Windows without cairographics
+Use system fonts for PNG on Windows without Cairo graphics
 \end_layout
 
 \end_inset
@@ -523,6 +536,231 @@ names(pdfFonts())
 
 \begin_layout Subsection
 The Cairo package
+\end_layout
+
+\begin_layout Standard
+The 
+\series bold
+Cairo
+\series default
+ package provides a number of high-quality graphics devices that are driven
+ by a unified backend based on Cairo graphics.
+ When the Cairo library is configured with FreeType and Fontcofig support,
+ one can make use of the 
+\family typewriter
+CairoFonts()
+\family default
+ function to specify the fonts that will be used by all the devices in 
+\series bold
+Cairo
+\series default
+.
+ Below is an example to show this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Cairo)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CairoFonts(regular = "Liberation Sans:style=Regular",
+\end_layout
+
+\begin_layout Plain Layout
+
+           italic = "Liberation Serif:style=Italic")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CairoPDF("Cairo-1.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt4 = annotate("text", 1, 1.1, label = "Liberation", size = 20)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt5 = annotate("text", 1, 0.9, label = "Liberation", fontface = "italic",
+ size = 20)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(bg + txt4 + txt5)
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On systems in which FreeType and Fontcofig are not configured with Cairo
+ (e.g., Windows), the method to specify fonts with 
+\series bold
+Cairo
+\series default
+ package is similar to that of 
+\family typewriter
+png(type = "cairo")
+\family default
+ and 
+\family typewriter
+cairo_pdf()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    CairoPDF("Cairo-2.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt6 = annotate("text", 1, 1.1, label = "On Windows",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "Constantia", size = 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt7 = annotate("text", 1, 0.9, label = "Lucida Console",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "Lucida Console", size = 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt6 + txt7)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Cairo-1.pdf
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Cairo-2.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Specify fonts in the 
+\series bold
+Cairo
+\series default
+ package.
+ 
+\emph on
+Left
+\emph default
+: with FreeType and Fontcofig support; 
+\emph on
+right
+\emph default
+: without (e.g.
+ on Windows)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
