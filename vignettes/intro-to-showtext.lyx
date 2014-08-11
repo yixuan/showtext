@@ -808,6 +808,148 @@ right
 The extrafont package
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+## Run once
+\end_layout
+
+\begin_layout Plain Layout
+
+library(extrafont)
+\end_layout
+
+\begin_layout Plain Layout
+
+font_import()
+\end_layout
+
+\begin_layout Plain Layout
+
+loadfonts()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(extrafont)
+\end_layout
+
+\begin_layout Plain Layout
+
+pdf("Cairo-3-unembedded.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt8 = annotate("text", 1, 1.1, label = "Ubuntu Light",
+\end_layout
+
+\begin_layout Plain Layout
+
+                family = "Ubuntu Light", size = 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt9 = annotate("text", 1, 0.9, label = "Ubuntu Condensed",
+\end_layout
+
+\begin_layout Plain Layout
+
+                family = "Ubuntu Condensed", size = 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(bg + txt8 + txt9)
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+embed_fonts("Cairo-3-unembedded.pdf", outfile = "Cairo-3.pdf")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Cairo-3.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Use 
+\series bold
+extrafont
+\series default
+ package to select fonts in PDF device
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Usage of showtext
 \end_layout
