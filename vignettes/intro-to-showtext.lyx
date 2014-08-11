@@ -112,6 +112,16 @@ Built-in graphics devices in R
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:built-in"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 It's possible to let R's built-in graphics devices, e.g., PNG and PDF, to
  use installed fonts in the system.
  However, the implementation is quite configuration dependent.
@@ -586,8 +596,8 @@ Cairo
 \series default
  package 
 \begin_inset CommandInset citation
-LatexCommand citep
-key "cairo"
+LatexCommand citet
+key "Cairo"
 
 \end_inset
 
@@ -816,6 +826,83 @@ The extrafont package
 \end_layout
 
 \begin_layout Standard
+
+\series bold
+extrafont
+\series default
+ 
+\series bold
+
+\begin_inset CommandInset citation
+LatexCommand citep
+key "extrafont"
+
+\end_inset
+
+ 
+\series default
+is an R pakcage mainly used to simplify the usage of system fonts in PDF
+ and PostScript graphics.
+ It is able to extract metric files (
+\family typewriter
+.afm
+\family default
+) from TrueType fonts (
+\family typewriter
+.ttf
+\family default
+) so that R PDF device can utilize that information to place text in graphics.
+ This procedure is in effect accomplished by the 
+\series bold
+Rttf2pt1
+\series default
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Rttf2pt1"
+
+\end_inset
+
+ which 
+\series bold
+extrafont
+\series default
+ depends on.
+ Also, for the same reason described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:built-in"
+
+\end_inset
+
+, 
+\series bold
+extrafont
+\series default
+ provides the function 
+\family typewriter
+embed_fonts()
+\family default
+ to call Ghostscript to embed fonts in PDF files.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+extrafont
+\series default
+ requires a first-time configuration, during which it will scan TrueType
+ fonts installed in the system and generate metric files from them, along
+ with other necessary configuration files.
+ After that, one needs to further call 
+\family typewriter
+loadfonts()
+\family default
+ to register these fonts in R.
+ These two steps only need to be done once.
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -852,6 +939,25 @@ loadfonts()
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+After this set-up, the user could query the available font families for
+ PDF device by calling functions 
+\family typewriter
+fonts()
+\family default
+ or 
+\family typewriter
+fonttable()
+\family default
+, and use them in any plotting functions involving font selection.
+ Also recall that the final step is to embed the fonts by calling function
+ 
+\family typewriter
+embed_fonts()
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -955,6 +1061,64 @@ extrafont
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The embedding procedure requires the Ghostscript program to be installed
+ in the system and findable to R.
+ On Windows, the command below is an example to tell R where it is.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv(R_GSCMD = "C:/Program Files/gs/gs9.05/bin/gswin32c.exe")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+More details about 
+\series bold
+extrafont
+\series default
+ can be found in the README file 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://cran.r-project.org/web/packages/extrafont/README.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of this package.
 \end_layout
 
 \begin_layout Section
