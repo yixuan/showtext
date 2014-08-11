@@ -89,7 +89,14 @@ knitr
 \begin_body
 
 \begin_layout Title
+
+\family sans
+\series bold
 showtext: Using System Fonts in R Graphics
+\end_layout
+
+\begin_layout Author
+Yixuan Qiu
 \end_layout
 
 \begin_layout Section
