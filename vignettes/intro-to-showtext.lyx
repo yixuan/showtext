@@ -1287,12 +1287,72 @@ showtext
  independently against those in the OS.
 \end_layout
 
+\begin_layout Enumerate
+
+\series bold
+Intergration with knitr package
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+Roughly speaking, 
+\series bold
+showtext
+\series default
+ has usage similar to that of 
+\series bold
+Cairo
+\series default
+ and 
+\series bold
+extrafont
+\series default
+ packages: in the first step one needs to import or register fonts from
+ the system, and then use them in the plotting functions.
+ This will be described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:register_fonts"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:showtext_functions"
+
+\end_inset
+
+ respectively.
+\end_layout
+
 \begin_layout Subsection
 Registering fonts
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:register_fonts"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 showtext functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:showtext_functions"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
