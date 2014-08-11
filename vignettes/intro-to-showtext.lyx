@@ -487,15 +487,15 @@ pdfFonts()
 \family typewriter
 .otf
 \family default
-) are the major ones that users are most likely to have.
- Unfortunately, these font formats are not directly supported by 
+) are what users most likely to have, but unfortunately, these font formats
+ are not directly supported by 
 \family typewriter
 pdfFonts()
 \family default
 .
  Additionally, to make the plot have consistent appearance across different
- PDF views, it is usually suggested to embed the font within the file by
- calling function 
+ PDF viewers, it is usually suggested to embed the font within the file
+ by calling function 
 \family typewriter
 embedFonts()
 \family default
