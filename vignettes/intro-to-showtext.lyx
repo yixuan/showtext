@@ -2215,8 +2215,202 @@ ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
 Integration with knitr
 \end_layout
 
+\begin_layout Standard
+
+\series bold
+knitr
+\series default
+ is an R package and engine to generate dynamic document with R.
+ It's similar to the built-in Sweave engine inside R, but brings in many
+ extensions and enhancement.
+ Starting from version 1.6.10 (a development version), 
+\series bold
+knitr
+\series default
+ begins to have support for 
+\series bold
+showtext
+\series default
+ through the option 
+\family typewriter
+fig.showtext
+\family default
+.
+ Code chunk with this option being 
+\family typewriter
+TRUE
+\family default
+ will automatically invoke the 
+\family typewriter
+showtext.begin()
+\family default
+ function, so users can write graphics code block just like usual ones,
+ given that the font families used in the code have already been registered
+ in some code chunk.
+ Here is a minimal example of an Rmd file that uses 
+\series bold
+showtext
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box ovalbox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+We first do some setup work...
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+```{r setup}
+\end_layout
+
+\begin_layout Verbatim
+
+library(knitr)
+\end_layout
+
+\begin_layout Verbatim
+
+library(showtext)
+\end_layout
+
+\begin_layout Verbatim
+
+opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
+\end_layout
+
+\begin_layout Verbatim
+
+```
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+Then register a font from Google Fonts.
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+```{r fonts, message=FALSE}
+\end_layout
+
+\begin_layout Verbatim
+
+font.add.google("Lobster", "lobster")
+\end_layout
+
+\begin_layout Verbatim
+
+```
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+Finally we create some fancy plot.
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\begin_layout Verbatim
+
+```{r fancy, fig.showtext=TRUE, fig.align='center'}
+\end_layout
+
+\begin_layout Verbatim
+
+plot(1, pch = 16, cex = 3)
+\end_layout
+
+\begin_layout Verbatim
+
+text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
+ 3)
+\end_layout
+
+\begin_layout Verbatim
+
+```
+\end_layout
+
+\begin_layout Verbatim
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that in the setup code chunk, we set the graphics device to 
+\family typewriter
+CairoPNG()
+\family default
+, instead of the default 
+\family typewriter
+png()
+\family default
+.
+ This is the suggested practice, since 
+\series bold
+Cairo
+\series default
+ supports anti-alias feature for bitmap devices, and thus being able to
+ produce high quality graphs.
+ More in-depth reasons are explained in the next section.
+\end_layout
+
 \begin_layout Subsection
-Limitations
+Limitations and cautions
 \end_layout
 
 \begin_layout Section
