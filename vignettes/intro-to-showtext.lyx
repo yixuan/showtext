@@ -115,7 +115,8 @@ library(knitr)
 
 \begin_layout Plain Layout
 
-knitr::opts_chunk$set(fig.width=7, fig.height=4, fig.align='center', out.width='0.8
+knitr::opts_chunk$set(warning=FALSE, fig.width=7, fig.height=4, fig.align='center',
+ out.width='0.8
 \backslash
 
 \backslash
@@ -1686,7 +1687,7 @@ head(font.families.google(), 10)
 
 \begin_layout Plain Layout
 
-font.add.google("Lato")
+font.add.google("Lato", "lato")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1767,7 +1768,7 @@ key "R"
 
 \end_inset
 
- and the other using 
+, and the other using 
 \series bold
 ggplot2
 \series default
@@ -1848,7 +1849,7 @@ title("There are 10 types of people in the world",
 
 \begin_layout Plain Layout
 
-      family = "Lato", font.main = 4)
+      family = "lato", font.main = 4)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1937,12 +1938,267 @@ title("There are 10 types of people in the world",
 
 \begin_layout Plain Layout
 
-      family = "Lato", font.main = 4)
+      family = "lato", font.main = 4)
 \end_layout
 
 \begin_layout Plain Layout
 
 par(op)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(png)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(grid)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Cairo)
+\end_layout
+
+\begin_layout Plain Layout
+
+pic = "http://china-r.org/img/China-R-Logo-trans.png"
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "pic.png")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file(pic, dest, mode = "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+img = readPNG(dest)
+\end_layout
+
+\begin_layout Plain Layout
+
+g = rasterGrob(img, interpolate = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+unicode = c(27426, 36814, 20851, 27880, 20013, 22269,
+\end_layout
+
+\begin_layout Plain Layout
+
+            82, 35821, 35328, 20250, 35758)
+\end_layout
+
+\begin_layout Plain Layout
+
+plt = ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotation_custom(g, xmin = 73, xmax = 135, ymin = 17, ymax = 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotate("text", -Inf, -Inf, label = "http://china-r.org", size = 8,
+\end_layout
+
+\begin_layout Plain Layout
+
+             family = "lato", fontface = "italic", hjust = -0.1, vjust =
+ -1) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_fixed() + ggtitle(intToUtf8(unicode)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme_grey(base_size = 20) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.title = element_blank(), plot.title = element_text(family =
+ "wqy"))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CairoPNG("showtext-2.png", 840, 480)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.begin()
+\end_layout
+
+\begin_layout Plain Layout
+
+print(plt)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.end()
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE, fig.cap='Use 
+\backslash
+
+\backslash
+textbf{showtext} in CairoPNG device', fig.pos='h'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(png)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(grid)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Cairo)
+\end_layout
+
+\begin_layout Plain Layout
+
+pic = "http://china-r.org/img/China-R-Logo-trans.png"
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "pic.png")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file(pic, dest, mode = "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+img = readPNG(dest)
+\end_layout
+
+\begin_layout Plain Layout
+
+g = rasterGrob(img, interpolate = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+unicode = c(27426, 36814, 20851, 27880, 20013, 22269,
+\end_layout
+
+\begin_layout Plain Layout
+
+            82, 35821, 35328, 20250, 35758)
+\end_layout
+
+\begin_layout Plain Layout
+
+ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotation_custom(g, xmin = 73, xmax = 135, ymin = 17, ymax = 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotate("text", -Inf, -Inf, label = "http://china-r.org", size = 8,
+\end_layout
+
+\begin_layout Plain Layout
+
+             family = "lato", fontface = "italic", hjust = -0.1, vjust =
+ -1) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_fixed() + ggtitle(intToUtf8(unicode)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme_grey(base_size = 20) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.title = element_blank(), plot.title = element_text(family =
+ "wqy"))
 \end_layout
 
 \begin_layout Plain Layout
