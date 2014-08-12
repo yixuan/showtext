@@ -1341,6 +1341,321 @@ name "sub:register_fonts"
 
 \end_layout
 
+\begin_layout Standard
+The actual work of registering fonts is done by the 
+\series bold
+sysfonts
+\series default
+ package, which is depended upon by 
+\series bold
+showtext
+\series default
+.
+ 
+\series bold
+sysfonts
+\series default
+ provides the function 
+\family typewriter
+font.add()
+\family default
+ to register font families for 
+\series bold
+showtext
+\series default
+, which has six arguments in total and the first two are mandatory.
+ The first parameter, 
+\family typewriter
+family
+\family default
+, is the family name that user wants to use in the plotting functions.
+ The second one, 
+\family typewriter
+regular
+\family default
+, should give the path to the font file for a regular font face.
+ Other parameters, such as 
+\family typewriter
+bold
+\family default
+ and 
+\family typewriter
+italic
+\family default
+, are similar to 
+\family typewriter
+regular
+\family default
+, but pointing to the files with corresponding font faces.
+ If any of the extra font face parameter is set to 
+\family typewriter
+NULL
+\family default
+, then the font file for regular font face will be used.
+\end_layout
+
+\begin_layout Standard
+Below is an example to download and register the XKCD font for 
+\series bold
+showtext
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(showtext)
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "xkcd.ttf")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file("http://simonsoftware.se/other/xkcd.ttf", dest, mode = "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add("myxkcd", regular = dest)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If successful, 
+\begin_inset Quotes eld
+\end_inset
+
+myxkcd
+\begin_inset Quotes erd
+\end_inset
+
+ should appear in the result returned by 
+\family typewriter
+font.families()
+\family default
+.
+ This function lists all font families that are available in 
+\series bold
+showtext
+\series default
+, among which 
+\begin_inset Quotes eld
+\end_inset
+
+sans
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+serif
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+mono
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+wqy
+\begin_inset Quotes erd
+\end_inset
+
+ are default ones that will be loaded automatically with the package.
+\end_layout
+
+\begin_layout Standard
+For most operating systems, fonts are usually installed in some standard
+ locations, and to add fonts located in these directories, the user can
+ provide the filename rather than the whole absolute path to save some typing.
+ For example on Windows, sysfonts knows about the standard font directory,
+ so we can use the following code to register the Consolas families to 
+\series bold
+showtext
+\series default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add("consolas", regular = "consola.ttf", bold = "consolab.ttf",
+\end_layout
+
+\begin_layout Plain Layout
+
+         italic = "consolai.ttf", bolditalic = "consolaz.ttf")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.families()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Users can view or set such search paths through function 
+\family typewriter
+font.paths()
+\family default
+ (an analog is the 
+\family typewriter
+.libPaths()
+\family default
+ function), and list available font files in those paths by calling 
+\family typewriter
+font.files()
+\family default
+.
+ While it may take some effort to figure out the filename of a font with
+ a given family name (and perhaps also font face), the naming convention
+ of font files is usually intuitive and fixed.
+ Also, some font file viewers can help mapping the font name to its real
+ file name in the system.
+\end_layout
+
+\begin_layout Standard
+To make it even easier, 
+\series bold
+sysfonts
+\series default
+ also makes use of the Google Fonts project
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.google.com/fonts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to further simplify the process of downloading and registering fonts available
+ on the web.
+ Google Fonts hosts more than 600 open source fonts, and is still enriching
+ its collection.
+ Function 
+\family typewriter
+font.families.google()
+\family default
+ lists the presently accessible fonts in the repository, and 
+\family typewriter
+font.add.google()
+\family default
+ could search for a specific font family and download font files for all
+ possible faces, and then add them to showtext with a user defined family
+ name in R.
+ These two functions require the 
+\series bold
+RCurl
+\series default
+ and 
+\series bold
+jsonlite
+\series default
+ packages.
+ The following code demonstrates this process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+head(font.families.google(), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add.google("Lato")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.families()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the Lato font has multiple font faces (regular, bold, italic,
+ etc.) in Google Fonts repository, and 
+\family typewriter
+font.add.google()
+\family default
+ will be aware of this and register all of them in R.
+\end_layout
+
 \begin_layout Subsection
 showtext functions
 \end_layout
