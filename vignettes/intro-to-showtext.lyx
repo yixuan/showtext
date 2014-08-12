@@ -1605,10 +1605,24 @@ font.add.google()
 \series bold
 RCurl
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RCurl"
+
+\end_inset
+
  and 
 \series bold
 jsonlite
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jsonlite"
+
+\end_inset
+
  packages.
  The following code demonstrates this process.
 \end_layout
