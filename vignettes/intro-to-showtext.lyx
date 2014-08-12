@@ -99,6 +99,39 @@ showtext: Using System Fonts in R Graphics
 Yixuan Qiu
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<setup, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+knitr::opts_chunk$set(fig.width=7, fig.height=4, fig.align='center', out.width='0.8
+\backslash
+
+\backslash
+textwidth')
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Introduction
 \end_layout
@@ -1517,7 +1550,12 @@ status open
 
 \begin_layout Plain Layout
 
-font.add("consolas", regular = "consola.ttf", bold = "consolab.ttf",
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    font.add("consolas", regular = "consola.ttf", bold = "consolab.ttf",
 \end_layout
 
 \begin_layout Plain Layout
@@ -1527,7 +1565,12 @@ font.add("consolas", regular = "consola.ttf", bold = "consolab.ttf",
 
 \begin_layout Plain Layout
 
-font.families()
+    font.families()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \begin_layout Plain Layout
@@ -1633,7 +1676,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<>>=
+<<message=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1678,6 +1721,220 @@ showtext functions
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:showtext_functions"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After registering the fonts, using them in plotting functions will be straightfo
+rward.
+ However, there is an extra step in 
+\series bold
+showtext
+\series default
+ compared with 
+\series bold
+Cairo
+\series default
+ or 
+\series bold
+extrafont
+\series default
+: user needs to enclose plotting functions where fonts are used by a pair
+ of 
+\series bold
+showtext
+\series default
+ functions, 
+\family typewriter
+showtext.begin()
+\family default
+ and 
+\family typewriter
+showtext.end()
+\family default
+.
+ Below are two examples, one using 
+\series bold
+base
+\series default
+ graphics and the other using 
+\series bold
+ggplot2
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+pdf("showtext-1.pdf", 7, 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.begin()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+p = runif(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+op = par(family = "myxkcd", mar = c(0.1, 0.1, 3.1, 1.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+pie(c(1 - p, p), cex = 1.2, labels = c("Those who understand
+\backslash
+nbinary",
+\end_layout
+
+\begin_layout Plain Layout
+
+                                       "Those who don't"),
+\end_layout
+
+\begin_layout Plain Layout
+
+    col = c("#F8766D", "#00BFC4"), border = NA, radius = 0.9)
+\end_layout
+
+\begin_layout Plain Layout
+
+box()
+\end_layout
+
+\begin_layout Plain Layout
+
+title("There are 10 types of people in the world",
+\end_layout
+
+\begin_layout Plain Layout
+
+      family = "Lato", font.main = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+par(op)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.end()
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use 
+\backslash
+
+\backslash
+textbf{showtext} in PDF device', fig.pos='h'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+p = runif(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+op = par(family = "myxkcd", mar = c(0.1, 0.1, 3.1, 1.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+pie(c(1 - p, p), cex = 1.2, labels = c("Those who understand
+\backslash
+nbinary",
+\end_layout
+
+\begin_layout Plain Layout
+
+                                       "Those who don't"),
+\end_layout
+
+\begin_layout Plain Layout
+
+    col = c("#F8766D", "#00BFC4"), border = NA, radius = 0.9)
+\end_layout
+
+\begin_layout Plain Layout
+
+box()
+\end_layout
+
+\begin_layout Plain Layout
+
+title("There are 10 types of people in the world",
+\end_layout
+
+\begin_layout Plain Layout
+
+      family = "Lato", font.main = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+par(op)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
 
 \end_inset
 
