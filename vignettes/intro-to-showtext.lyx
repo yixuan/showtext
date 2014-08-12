@@ -3,6 +3,9 @@
 \begin_document
 \begin_header
 \textclass article
+\begin_preamble
+\usepackage{framed}
+\end_preamble
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -2220,6 +2223,13 @@ Integration with knitr
 \series bold
 knitr
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "knitrbook,knitrchap,knitrpkg"
+
+\end_inset
+
  is an R package and engine to generate dynamic document with R.
  It's similar to the built-in Sweave engine inside R, but brings in many
  extensions and enhancement.
@@ -2262,26 +2272,20 @@ status open
 
 
 \backslash
-noindent
+begin{framed}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minipage}[t]{1
+\backslash
+columnwidth}
 \end_layout
 
 \end_inset
 
-
-\begin_inset Box ovalbox
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Verbatim
 
 \end_layout
 
@@ -2381,8 +2385,22 @@ text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
 ```
 \end_layout
 
-\begin_layout Verbatim
+\begin_layout Standard
+\begin_inset ERT
+status open
 
+\begin_layout Plain Layout
+
+
+\backslash
+end{minipage}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{framed}
 \end_layout
 
 \end_inset
