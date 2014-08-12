@@ -1760,10 +1760,24 @@ showtext.end()
 \series bold
 base
 \series default
- graphics and the other using 
+ graphics 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "R"
+
+\end_inset
+
+ and the other using 
 \series bold
 ggplot2
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ggplot2"
+
+\end_inset
+
 .
 \end_layout
 
