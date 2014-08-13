@@ -2615,6 +2615,75 @@ Design of showtext
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename outline-1.pdf
+	lyxscale 60
+	width 33text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename outline-2.pdf
+	lyxscale 60
+	width 33text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename outline-3.pdf
+	lyxscale 60
+	width 33text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Schematic of the glyph polygon calculated by 
+\series bold
+showtext
+\series default
+.
+ 
+\emph on
+Left
+\emph default
+: glyph displayed on the screen; 
+\emph on
+middle
+\emph default
+: control points contained in font file describing the glyph; 
+\emph on
+right
+\emph default
+: calculated polygon to approximate the glyph.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintAll"
