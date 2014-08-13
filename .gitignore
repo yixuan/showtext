@@ -1,3 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+*.o
+*.a
+*.dll
+*.so
+config.log
+config.status
