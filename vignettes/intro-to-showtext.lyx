@@ -1445,7 +1445,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<>>=
+<<cache=TRUE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1549,7 +1549,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<>>=
+<<cache=TRUE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1680,7 +1680,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<message=FALSE>>=
+<<cache=TRUE, message=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1890,7 +1890,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use 
+<<cache=TRUE, fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use 
 \backslash
 
 \backslash
@@ -2105,7 +2105,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE, fig.cap='Use 
+<<cache=TRUE, dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE, fig.cap='Use
+ 
 \backslash
 
 \backslash
@@ -2248,8 +2249,19 @@ http://wenq.org/en
 showtext
 \series default
 .
- WenQuanYi Micro Hei contains a large number of CJK (Chinese, Japanese and
- Korean) characters, so combined with 
+ WenQuanYi Micro Hei contains a large number of CJK (
+\series bold
+C
+\series default
+hinese, 
+\series bold
+J
+\series default
+apanese and 
+\series bold
+K
+\series default
+orean) characters, so combined with 
 \series bold
 showtext
 \series default
@@ -2470,7 +2482,132 @@ Cairo
 \end_layout
 
 \begin_layout Subsection
-Limitations and cautions
+Limitations and solutions
+\end_layout
+
+\begin_layout Standard
+The goal of developing 
+\series bold
+showtext
+\series default
+ is to provide an elegant way to allow R using system fonts in graphics.
+ While it should be useful in most situations, there are still some limitations
+ that can be hard to overcome.
+ This section lists a number of cons of 
+\series bold
+showtext
+\series default
+, as well as some hints of how to use 
+\series bold
+showtext
+\series default
+ in the best way.
+\end_layout
+
+\begin_layout Standard
+First, 
+\series bold
+showtext
+\series default
+ looks for fonts according to their filenames rather than the usual 
+\begin_inset Quotes eld
+\end_inset
+
+font names
+\begin_inset Quotes erd
+\end_inset
+
+ in the system.
+ This design is intentional since font name can be ambiguous in some situations,
+ and even worse, the same font can have multiple names given by different
+ font management software.
+ In contrast, font file is the entity that actually contains the glyphs
+ of a specific font, hence it helps to avoid such confusion.
+ However, this setting may cause some problems for the users since they
+ need to know the filename of a specific font, which might be a bit troubling
+ for the first time (but quite convenient afterwards).
+ One possible solution is to use the fonts in Google Fonts through function
+ 
+\family typewriter
+font.add.google()
+\family default
+, which maintains a standard and stable interface to access fonts.
+\end_layout
+
+\begin_layout Standard
+Second, 
+\series bold
+showtext
+\series default
+ can produce poor-quality graphs on certain bitmap graphics devices, such
+ as 
+\family typewriter
+png()
+\family default
+, 
+\family typewriter
+jpeg()
+\family default
+ and 
+\family typewriter
+tiff()
+\family default
+.
+ This is because 
+\series bold
+showtext
+\series default
+ is in effect transforming character glyphs into polygons (described in
+ more detail in the next section), and those devices don't support anti-alias
+ feature, resulting in unsmooth edges of the characters.
+ If bitmap is needed, it's strongly recommended to use the devices provided
+ by the 
+\series bold
+Cairo
+\series default
+ package, such as 
+\family typewriter
+CairoPNG()
+\family default
+, 
+\family typewriter
+CairoJPEG()
+\family default
+, etc., which support such features and hence are able to produce high quality
+ output.
+ 
+\series bold
+showtext
+\series default
+ works well on vector graphics devices, including 
+\family typewriter
+pdf()
+\family default
+, 
+\family typewriter
+svg()
+\family default
+ and 
+\family typewriter
+postscript()
+\family default
+, since most readers and views of these formats will take care of the graphics
+ rendering.
+\end_layout
+
+\begin_layout Standard
+Finally, the graphics device that uses 
+\series bold
+showtext
+\series default
+ is required to implement the C-level function 
+\family typewriter
+path()
+\family default
+.
+ This is more technical and will be partly explained in the next section.
+ This shouldn't be a problem since most graphics devices in common use are
+ eligible for that.
 \end_layout
 
 \begin_layout Section
