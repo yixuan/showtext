@@ -2615,6 +2615,71 @@ Design of showtext
 \end_layout
 
 \begin_layout Standard
+This section introduces the design and internals of the 
+\series bold
+showtext
+\series default
+ package.
+ To describe the mechanism behind that, it would be helpful to first have
+ a brief introduction to the graphics device in R.
+ A graphics device is like an engine that defines a number of basic operations
+ in creating an image, like how to draw a straight line, how to create a
+ rectangle, how to render text, etc.
+ Plotting functions in R just need to combine these basic operations to
+ accomplish more sophisticated tasks.
+\end_layout
+
+\begin_layout Standard
+Each of these operations is defined by a function, which can be named as
+ a 
+\emph on
+device procedure
+\emph default
+.
+ Below lists some device procedures that are related to text rendering:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+metricInfo()
+\family default
+: compute the metric information (height, width, depth, etc.) of a given
+ character
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+strWidth()
+\family default
+ and 
+\family typewriter
+strWidthUTF8()
+\family default
+: return the width of a given string
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+text()
+\family default
+ and 
+\family typewriter
+textUTF8()
+\family default
+: draw the text at a give location
+\end_layout
+
+\begin_layout Standard
+In general, every graphics device needs to implement its own device procedures
+ including the above ones, meaning that different devices will have different
+ interfaces to select fonts for use, and that's why there is hardly a universal
+ text rendering approach.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
