@@ -2680,6 +2680,26 @@ In general, every graphics device needs to implement its own device procedures
 \end_layout
 
 \begin_layout Standard
+Nevertheless, when text is drawn on the canvas of graphics device, it is
+ in nature some shape on the 2D plane, whose outline usually consists of
+ straight lines, quadratic curves and cubic curves.
+ In practice, the outline of a character glyph can be well approximated
+ by a 
+\emph on
+polypath
+\emph default
+, which consists of one or more subpaths, each one being a polygon.
+ This procedure is shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:glyph_polypath"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -2691,7 +2711,7 @@ status open
 \begin_inset Graphics
 	filename outline-1.pdf
 	lyxscale 60
-	width 33text%
+	width 25text%
 
 \end_inset
 
@@ -2699,7 +2719,7 @@ status open
 \begin_inset Graphics
 	filename outline-2.pdf
 	lyxscale 60
-	width 33text%
+	width 25text%
 
 \end_inset
 
@@ -2707,7 +2727,7 @@ status open
 \begin_inset Graphics
 	filename outline-3.pdf
 	lyxscale 60
-	width 33text%
+	width 25text%
 
 \end_inset
 
@@ -2718,7 +2738,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Schematic of the glyph polygon calculated by 
+Schematic of the glyph polypath calculated by 
 \series bold
 showtext
 \series default
@@ -2735,8 +2755,10 @@ middle
 \emph on
 right
 \emph default
-: calculated polygon to approximate the glyph.
-\end_layout
+: calculated polypath to approximate the glyph.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:glyph_polypath"
 
 \end_inset
 
@@ -2746,6 +2768,41 @@ right
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The left panel shows the glyph of character 
+\begin_inset Quotes eld
+\end_inset
+
+a
+\begin_inset Quotes erd
+\end_inset
+
+ in Liberation Sans Italic font, and the middle one gives the control points
+ defined in the font file that characterizes this glyph, among which the
+ blue dots will be connected with straight lines or quadratic curves to
+ form the outline.
+ The right panel is the polypath to approximate the glyph outline.
+ If we place a sufficient number of points in the polypath, the approximation
+ will be near perfect.
+\end_layout
+
+\begin_layout Standard
+Using this technique, we can represent the text to be drawn as a series
+ of color-filled polypaths.
+ Since most graphics devices in R are capable to draw such polypaths (through
+ the device procedure 
+\family typewriter
+path()
+\family default
+), we could now use a unified backend to analyze the font and compute the
+ coordinates of vertices, and then let device to do the remaining work.
 \end_layout
 
 \begin_layout Standard
