@@ -2486,6 +2486,16 @@ Limitations and solutions
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:limitation"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The goal of developing 
 \series bold
 showtext
@@ -2557,8 +2567,8 @@ tiff()
 \series bold
 showtext
 \series default
- is in effect transforming character glyphs into polygons (described in
- more detail in the next section), and those devices don't support anti-alias
+ is in effect transforming character glyphs into paths (described in more
+ detail in the next section), and those devices don't support anti-alias
  feature, resulting in unsmooth edges of the characters.
  If bitmap is needed, it's strongly recommended to use the devices provided
  by the 
@@ -2605,7 +2615,7 @@ showtext
 path()
 \family default
 .
- This is more technical and will be partly explained in the next section.
+ This is more technical and will be explained in the next section.
  This shouldn't be a problem since most graphics devices in common use are
  eligible for that.
 \end_layout
@@ -2875,11 +2885,46 @@ showtext
 path()
 \family default
  device function to draw the text.
- When it's done, 
+ Due to this reason, the graphics device that uses 
+\series bold
+showtext
+\series default
+ is required to implement the 
+\family typewriter
+path()
+\family default
+ procedure (it is legal for a graphics device to lack this feature), and
+ this explains one of the limitations discussed in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:limitation"
+
+\end_inset
+
+.
+ But once again, it's known that most of the commonly used graphics devices
+ in R, such as 
+\family typewriter
+pdf()
+\family default
+, 
+\family typewriter
+png()
+\family default
+, and those in the 
+\series bold
+Cairo
+\series default
+ package, are capable for that.
+\end_layout
+
+\begin_layout Standard
+When text drawing is no longer needed, or the user wants to switch back
+ to the original text rendering method of the device, the call of 
 \family typewriter
 showtext.end()
 \family default
- will restore the original procedures and everything is recovered.
+ will restore all device procedures back.
 \end_layout
 
 \begin_layout Standard
