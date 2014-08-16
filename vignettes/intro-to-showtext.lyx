@@ -2344,7 +2344,6 @@ columnwidth}
 \end_layout
 
 \begin_layout Verbatim
-
 We first do some setup work...
 \end_layout
 
@@ -2353,27 +2352,22 @@ We first do some setup work...
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r setup}
 \end_layout
 
 \begin_layout Verbatim
-
 library(knitr)
 \end_layout
 
 \begin_layout Verbatim
-
 library(showtext)
 \end_layout
 
 \begin_layout Verbatim
-
 opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
@@ -2382,7 +2376,6 @@ opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
-
 Then register a font from Google Fonts.
 \end_layout
 
@@ -2391,17 +2384,14 @@ Then register a font from Google Fonts.
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r fonts, message=FALSE}
 \end_layout
 
 \begin_layout Verbatim
-
 font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
@@ -2410,7 +2400,6 @@ font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
-
 Finally we create some fancy plot.
 \end_layout
 
@@ -2419,23 +2408,19 @@ Finally we create some fancy plot.
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r fancy, fig.showtext=TRUE, fig.align='center'}
 \end_layout
 
 \begin_layout Verbatim
-
 plot(1, pch = 16, cex = 3)
 \end_layout
 
 \begin_layout Verbatim
-
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
  3)
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
@@ -2925,6 +2910,98 @@ When text drawing is no longer needed, or the user wants to switch back
 showtext.end()
 \family default
  will restore all device procedures back.
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout Standard
+This article introduces the 
+\series bold
+showtext
+\series default
+ package to use system fonts in R graphics, with both highlighted features
+ and its limitations.
+ We've also discussed a number of alternative ways in R and extension packages
+ to achieve the same goal.
+ While there is hardly a universally best way to use fonts in R, it may
+ be helpful to list some situations in which a certain approach is the most
+ appropriate one.
+\end_layout
+
+\begin_layout Itemize
+The generic devices in R without Cairo support have the least dependencies
+ on external libraries and softwares.
+ More effort needs to be taken in this situation compared with others, but
+ when R is compiled with a minimal environment, it may be the only possible
+ solution.
+\end_layout
+
+\begin_layout Itemize
+When Cairo graphics is compiled in R, devices such as 
+\family typewriter
+png(type = "cairo")
+\family default
+ and 
+\family typewriter
+cairo_pdf()
+\family default
+ allow users to select fonts by their family names.
+ This should be the easiest way to use fonts in R graphs without extension
+ packages.
+\end_layout
+
+\begin_layout Itemize
+The 
+\series bold
+Cairo
+\series default
+ package has similar functionality as the previous one, and additionally
+ provides a global font selector, which is quite useful if the user wants
+ to choose a different default font for all devices.
+\end_layout
+
+\begin_layout Itemize
+The 
+\series bold
+extrafont
+\series default
+ package provides a complete solution for 
+\family typewriter
+pdf()
+\family default
+ and 
+\family typewriter
+postscript()
+\family default
+ devices with TrueType fonts, and also the support for Windows bitmap output.
+ It uses the same interface as the first case, but provides a much easier
+ way to import system fonts into R.
+ Users only need to do some one-time configuration, and then the plotting
+ commands can simply be written in the usual way.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+showtext
+\series default
+ supports various font formats and most graphics devices.
+ It also offers some convenient features like using web fonts on Google
+ Fonts, and the integration with 
+\series bold
+knitr
+\series default
+.
+ Some suggestions are given in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:limitation"
+
+\end_inset
+
+ in order to use it in the best way.
 \end_layout
 
 \begin_layout Standard
