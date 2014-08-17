@@ -1760,11 +1760,11 @@ showtext.begin()
 showtext.end()
 \family default
 .
- Below are two examples, one using 
+ Below are two examples, one using base 
 \series bold
-base
+graphics
 \series default
- graphics 
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "R"
@@ -1890,7 +1890,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE, fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use 
+<<xkcd, cache=TRUE, fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use
+ 
 \backslash
 
 \backslash
@@ -1957,6 +1958,57 @@ par(op)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:xkcd}
+\end_layout
+
+\end_inset
+
+ uses the XKCD font we added in the previous section.
+ More interesting graphs of this style can be found in the 
+\series bold
+xkcd
+\series default
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "xkcd"
+
+\end_inset
+
+.
+ The next plot is a demonstration of using 
+\series bold
+showtext
+\series default
+ with 
+\series bold
+ggplot2
+\series default
+ (Figure 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:chinar}
+\end_layout
+
+\end_inset
+
+):
 \end_layout
 
 \begin_layout Standard
@@ -2105,8 +2157,8 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE, dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE, fig.cap='Use
- 
+<<chinar, cache=TRUE, dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE,
+ fig.cap='Use 
 \backslash
 
 \backslash
