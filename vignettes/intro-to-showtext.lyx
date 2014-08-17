@@ -140,6 +140,108 @@ textwidth')
 Introduction
 \end_layout
 
+\begin_layout Standard
+Using fonts in R graphics is neither a new topic nor a difficult task, if
+ only standard font families such as 
+\begin_inset Quotes eld
+\end_inset
+
+sans
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+serif
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+mono
+\begin_inset Quotes erd
+\end_inset
+
+ are needed.
+ However, problem occurs when one wants to select fonts that are installed
+ in the system but not among the standard families inside R, especially
+ for the PDF graphics device.
+ With the evolution of R graphics device as well as related extension packages,
+ there are more and more solutions emerging to solve the font problem.
+ The R News article 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nonstdfonts"
+
+\end_inset
+
+ systematically describes the working mechanism of PostScript and PDF devices
+ to handle nonstandard fonts, and more recently, the blog post by Winston
+ Chang
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://blog.revolutionanalytics.com/2012/09/how-to-use-your-favorite-fonts-in-r-ch
+arts.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ provides an tutorial of the 
+\series bold
+extrafont
+\series default
+ package which makes it easy to use TrueType fonts in PostScript, PDF and
+ Windows bitmap devices.
+\end_layout
+
+\begin_layout Standard
+With the same target, this article introduces the 
+\series bold
+showtext
+\series default
+ package that provides an alternative way to select fonts in R graphs.
+ It has good support for various font formats and most graphics devices
+ in R, and meanwhile provides some extra features such as loading web fonts
+ and integration with 
+\series bold
+knitr
+\series default
+.
+ All efforts devoted to the 
+\series bold
+showtext
+\series default
+ package are trying to find an easy and elegant way to incorporate different
+ fonts in R graphs.
+\end_layout
+
+\begin_layout Standard
+In the remaining part, this paper will first review some existing methods
+ to use fonts in R, and then gives an introduction to the 
+\series bold
+showtext
+\series default
+ package, including its usage, demonstration, limitation and some suggestions.
+ The internals of this package are also discussed for readers who are interested
+ in the design and development of this package.
+\end_layout
+
 \begin_layout Section
 Existing methods to use fonts
 \end_layout
@@ -2396,6 +2498,7 @@ columnwidth}
 \end_layout
 
 \begin_layout Verbatim
+
 We first do some setup work...
 \end_layout
 
@@ -2404,22 +2507,27 @@ We first do some setup work...
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r setup}
 \end_layout
 
 \begin_layout Verbatim
+
 library(knitr)
 \end_layout
 
 \begin_layout Verbatim
+
 library(showtext)
 \end_layout
 
 \begin_layout Verbatim
+
 opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
@@ -2428,6 +2536,7 @@ opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
+
 Then register a font from Google Fonts.
 \end_layout
 
@@ -2436,14 +2545,17 @@ Then register a font from Google Fonts.
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r fonts, message=FALSE}
 \end_layout
 
 \begin_layout Verbatim
+
 font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
@@ -2452,6 +2564,7 @@ font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
+
 Finally we create some fancy plot.
 \end_layout
 
@@ -2460,19 +2573,23 @@ Finally we create some fancy plot.
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r fancy, fig.showtext=TRUE, fig.align='center'}
 \end_layout
 
 \begin_layout Verbatim
+
 plot(1, pch = 16, cex = 3)
 \end_layout
 
 \begin_layout Verbatim
+
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
  3)
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
