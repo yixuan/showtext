@@ -202,12 +202,19 @@ arts.html
 
 \end_inset
 
- provides an tutorial of the 
+ serves as an tutorial for the 
 \series bold
 extrafont
 \series default
- package which makes it easy to use TrueType fonts in PostScript, PDF and
- Windows bitmap devices.
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "extrafont"
+
+\end_inset
+
+ which makes it easy to use TrueType fonts in PostScript, PDF and Windows
+ bitmap devices.
 \end_layout
 
 \begin_layout Standard
@@ -222,6 +229,13 @@ showtext
 \series bold
 knitr
 \series default
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "knitrbook,knitrchap,knitrpkg"
+
+\end_inset
+
 .
  All efforts devoted to the 
 \series bold
@@ -232,7 +246,7 @@ showtext
 \end_layout
 
 \begin_layout Standard
-In the remaining part, this paper will first review some existing methods
+In the remaining part, this article will first review some existing methods
  to use fonts in R, and then gives an introduction to the 
 \series bold
 showtext
@@ -284,9 +298,17 @@ http://cairographics.org/
 
 \end_inset
 
- has been compiled in R, then it's quite straightforward to use system fonts
- in the plots, for which one only needs to specify the family name of font
- as is displayed in the system.
+ has been compiled in R so that 
+\family typewriter
+png(type = "cairo")
+\family default
+ and 
+\family typewriter
+cairo_pdf()
+\family default
+ are available, then it's quite straightforward to use system fonts in the
+ plots, for which one only needs to specify the family name of font as is
+ displayed in the system.
  (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -313,6 +335,11 @@ library(ggplot2)
 
 \begin_layout Plain Layout
 
+# background for various plots later
+\end_layout
+
+\begin_layout Plain Layout
+
 bg = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
 \end_layout
 
@@ -324,6 +351,10 @@ bg = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
 \begin_layout Plain Layout
 
           axis.text = element_blank())
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -634,7 +665,7 @@ Use system fonts for PNG on Windows without Cairo graphics
 \end_layout
 
 \begin_layout Standard
-Notice that we use function 
+Notice that we use the function 
 \family typewriter
 windowsFonts()
 \family default
@@ -657,7 +688,7 @@ When it comes to PDF graphs, things get even more complicated.
 pdfFonts()
 \family default
  to register new family names in R, and then use them in the plot.
- However, the problem is that 
+ However, the obstacle here is that 
 \family typewriter
 pdfFonts()
 \family default
@@ -665,7 +696,7 @@ pdfFonts()
 \family typewriter
 .afm
 \family default
-) for the font, which are not so common for end users.
+) for the font, which may be unavailable for end users.
  As a contrary, TrueType fonts (
 \family typewriter
 .ttf
@@ -674,15 +705,15 @@ pdfFonts()
 \family typewriter
 .otf
 \family default
-) are what users most likely to have, but unfortunately, these font formats
- are not directly supported by 
+) are most commonly used, but unfortunately, these font formats are not
+ directly supported by 
 \family typewriter
 pdfFonts()
 \family default
 .
  Additionally, to make the plot have consistent appearance across different
  PDF viewers, it is usually suggested to embed the font within the file
- by calling function 
+ by calling the function 
 \family typewriter
 embedFonts()
 \family default
@@ -763,7 +794,7 @@ Cairo
 \series default
  package 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "Cairo"
 
 \end_inset
@@ -1084,7 +1115,8 @@ extrafont
 loadfonts()
 \family default
  to register these fonts in R.
- These two steps only need to be done once.
+ These two steps only need to be done once, and even unnecessary in a new
+ R session.
 \end_layout
 
 \begin_layout Standard
@@ -1384,8 +1416,8 @@ Support for various font formats
 \series default
 .
  A certain type of font is supported as long as the backend FreeType library
- can read it, usually including TrueType fonts, OpenType fonts, Type 1 fonts,
- etc.
+ can read it, usually including but not limited to TrueType fonts, OpenType
+ fonts, Type 1 fonts, etc.
 \end_layout
 
 \begin_layout Enumerate
@@ -1534,7 +1566,27 @@ NULL
 \end_layout
 
 \begin_layout Standard
-Below is an example to download and register the XKCD font for 
+Below is an example to download and register the xkcd
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://xkcd.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ font for 
 \series bold
 showtext
 \series default
@@ -1637,8 +1689,12 @@ wqy
 For most operating systems, fonts are usually installed in some standard
  locations, and to add fonts located in these directories, the user can
  provide the filename rather than the whole absolute path to save some typing.
- For example on Windows, sysfonts knows about the standard font directory,
- so we can use the following code to register the Consolas families to 
+ For example on Windows, 
+\series bold
+sysfonts
+\series default
+ knows about the standard font directory, so we can use the following code
+ to register the Consolas families to 
 \series bold
 showtext
 \series default
@@ -1694,11 +1750,7 @@ Users can view or set such search paths through function
 \family typewriter
 font.paths()
 \family default
- (an analog is the 
-\family typewriter
-.libPaths()
-\family default
- function), and list available font files in those paths by calling 
+, and list available font files in those paths by calling 
 \family typewriter
 font.files()
 \family default
@@ -1748,8 +1800,11 @@ font.families.google()
 font.add.google()
 \family default
  could search for a specific font family and download font files for all
- possible faces, and then add them to showtext with a user defined family
- name in R.
+ possible faces, and then add them to 
+\series bold
+showtext
+\series default
+ with a user defined family name in R.
  These two functions require the 
 \series bold
 RCurl
@@ -2076,7 +2131,7 @@ ref{fig:xkcd}
 
 \end_inset
 
- uses the XKCD font we added in the previous section.
+ uses the xkcd font we added in the previous section.
  More interesting graphs of this style can be found in the 
 \series bold
 xkcd
@@ -2110,6 +2165,30 @@ ref{fig:chinar}
 
 \end_inset
 
+, credit goes to the answer in Stackoverflow
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ for inserting image in 
+\series bold
+ggplot2
+\series default
 ):
 \end_layout
 
@@ -2144,6 +2223,11 @@ library(Cairo)
 
 \begin_layout Plain Layout
 
+# download and read an image
+\end_layout
+
+\begin_layout Plain Layout
+
 pic = "http://china-r.org/img/China-R-Logo-trans.png"
 \end_layout
 
@@ -2165,6 +2249,11 @@ img = readPNG(dest)
 \begin_layout Plain Layout
 
 g = rasterGrob(img, interpolate = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+# text to be drawn in Unicode
 \end_layout
 
 \begin_layout Plain Layout
@@ -2462,9 +2551,9 @@ TRUE
 \family typewriter
 showtext.begin()
 \family default
- function, so users can write graphics code block just like usual ones,
- given that the font families used in the code have already been registered
- in some code chunk.
+ function, so users can write plotting code just like usual ones without
+ calling those functions, given that the font families used in the code
+ have already been registered in some code chunk.
  Here is a minimal example of an Rmd file that uses 
 \series bold
 showtext
@@ -2770,7 +2859,7 @@ path()
 \family default
 .
  This is more technical and will be explained in the next section.
- This shouldn't be a problem since most graphics devices in common use are
+ It shouldn't be a problem since most graphics devices in common use are
  eligible for that.
 \end_layout
 
@@ -2794,8 +2883,8 @@ showtext
 \end_layout
 
 \begin_layout Standard
-Each of these operations is defined by a function, which can be named as
- a 
+Each of these operations is defined by a C-level function, which can be
+ named as a 
 \emph on
 device procedure
 \emph default
