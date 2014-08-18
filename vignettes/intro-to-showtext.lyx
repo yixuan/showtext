@@ -222,7 +222,14 @@ With the same target, this article introduces the
 \series bold
 showtext
 \series default
- package that provides an alternative way to select fonts in R graphs.
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "showtext"
+
+\end_inset
+
+ that provides an alternative way to select fonts in R graphs.
  It has good support for various font formats and most graphics devices
  in R, and meanwhile provides some extra features such as loading web fonts
  and integration with 
@@ -1517,7 +1524,14 @@ The actual work of registering fonts is done by the
 \series bold
 sysfonts
 \series default
- package, which is depended upon by 
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "sysfonts"
+
+\end_inset
+
+, which is depended upon by 
 \series bold
 showtext
 \series default
@@ -2042,74 +2056,43 @@ dev.off()
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+placement h
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename xkcd.pdf
+	width 80text%
 
-<<xkcd, cache=TRUE, fig.showtext=TRUE, fig.height=3, echo=FALSE, fig.cap='Use
- 
-\backslash
+\end_inset
 
-\backslash
-textbf{showtext} in PDF device', fig.pos='h'>>=
+
 \end_layout
 
 \begin_layout Plain Layout
-
-set.seed(0)
-\end_layout
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:xkcd"
 
-p = runif(1)
+\end_inset
+
+Use 
+\series bold
+showtext
+\series default
+ in PDF device
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
-op = par(family = "myxkcd", mar = c(0.1, 0.1, 3.1, 1.1))
-\end_layout
 
-\begin_layout Plain Layout
-
-pie(c(1 - p, p), cex = 1.2, labels = c("Those who understand
-\backslash
-nbinary",
-\end_layout
-
-\begin_layout Plain Layout
-
-                                       "Those who don't"),
-\end_layout
-
-\begin_layout Plain Layout
-
-    col = c("#F8766D", "#00BFC4"), border = NA, radius = 0.9)
-\end_layout
-
-\begin_layout Plain Layout
-
-box()
-\end_layout
-
-\begin_layout Plain Layout
-
-title("There are 10 types of people in the world",
-\end_layout
-
-\begin_layout Plain Layout
-
-      family = "lato", font.main = 4)
-\end_layout
-
-\begin_layout Plain Layout
-
-par(op)
-\end_layout
-
-\begin_layout Plain Layout
-
-@
 \end_layout
 
 \end_inset
@@ -2119,15 +2102,9 @@ par(op)
 
 \begin_layout Standard
 Figure 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:xkcd}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:xkcd"
 
 \end_inset
 
@@ -2153,15 +2130,9 @@ showtext
 ggplot2
 \series default
  (Figure 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:chinar}
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:chinar"
 
 \end_inset
 
@@ -2343,114 +2314,44 @@ dev.off()
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset Float figure
+placement h
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename chinar.png
+	lyxscale 60
+	width 80text%
 
-<<chinar, cache=TRUE, dev='CairoPNG', fig.showtext=TRUE, dpi=120, echo=FALSE,
- fig.cap='Use 
-\backslash
+\end_inset
 
-\backslash
-textbf{showtext} in CairoPNG device', fig.pos='h'>>=
+
 \end_layout
 
 \begin_layout Plain Layout
-
-library(png)
-\end_layout
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:chinar"
 
-library(grid)
+\end_inset
+
+Use 
+\series bold
+showtext
+\series default
+ in CairoPNG device
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
-library(ggplot2)
-\end_layout
 
-\begin_layout Plain Layout
-
-library(Cairo)
-\end_layout
-
-\begin_layout Plain Layout
-
-pic = "http://china-r.org/img/China-R-Logo-trans.png"
-\end_layout
-
-\begin_layout Plain Layout
-
-dest = file.path(tempdir(), "pic.png")
-\end_layout
-
-\begin_layout Plain Layout
-
-download.file(pic, dest, mode = "wb")
-\end_layout
-
-\begin_layout Plain Layout
-
-img = readPNG(dest)
-\end_layout
-
-\begin_layout Plain Layout
-
-g = rasterGrob(img, interpolate = TRUE)
-\end_layout
-
-\begin_layout Plain Layout
-
-unicode = c(27426, 36814, 20851, 27880, 20013, 22269,
-\end_layout
-
-\begin_layout Plain Layout
-
-            82, 35821, 35328, 20250, 35758)
-\end_layout
-
-\begin_layout Plain Layout
-
-ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    annotation_custom(g, xmin = 73, xmax = 135, ymin = 17, ymax = 54) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    annotate("text", -Inf, -Inf, label = "http://china-r.org", size = 8,
-\end_layout
-
-\begin_layout Plain Layout
-
-             family = "lato", fontface = "italic", hjust = -0.1, vjust =
- -1) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    coord_fixed() + ggtitle(intToUtf8(unicode)) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    theme_grey(base_size = 20) +
-\end_layout
-
-\begin_layout Plain Layout
-
-    theme(axis.title = element_blank(), plot.title = element_text(family =
- "wqy"))
-\end_layout
-
-\begin_layout Plain Layout
-
-@
 \end_layout
 
 \end_inset
