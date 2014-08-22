@@ -100,12 +100,12 @@ FT_Face GetFTFace(const pGEcontext gc)
             break;
         }
     }
-    /* If not found, search "wqy" */
+    /* If not found, search "wqy-microhei" */
     if(i == listLen)
     {
         for(i = 0; i < listLen; i++)
         {
-            if(strcmp("wqy", CHAR(STRING_ELT(fontNames, i))) == 0)
+            if(strcmp("wqy-microhei", CHAR(STRING_ELT(fontNames, i))) == 0)
             {
                 break;
             }

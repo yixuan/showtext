@@ -7,7 +7,7 @@
     if(!"sysfonts" %in% loadedNamespaces())
         stop("package sysfonts is not loaded");
     
-    if("wqy" %in% font.families()) return(invisible(NULL));
+    if("wqy-microhei" %in% font.families()) return(invisible(NULL));
     
     lib.loc = if("showtext" %in% loadedNamespaces())
                   dirname(getNamespaceInfo("showtext", "path"))
@@ -16,7 +16,7 @@
     wqy.r = system.file("fonts", "wqy-microhei.ttc",
                         package = "showtext", lib.loc = lib.loc);
     
-    font.add("wqy", wqy.r);
+    font.add("wqy-microhei", wqy.r);
 
     invisible(NULL);
 }
