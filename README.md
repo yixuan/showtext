@@ -1,27 +1,23 @@
 ### What's this package all about?
-`showtext` is an R package to draw text strings in R graphs.
+`showtext` is an R package to draw text in R graphs using system fonts.
+It tries to do the following two things:
 
-> *Wait, R already has `text()` function to do that...*
+- Let R know about these system fonts
+- Use these fonts to draw text
 
-Yes, but drawing text is a very complicated task, and it always depends on
-the specific **Graphics Device**.
-(Graphics device is the engine to create images.
-For example, R provides PDF device, called by function `pdf()`,
-to create graphs in PDF format)
-Sometimes the graphics device doesn't support text drawing nicely,
-**especially** in using fonts.
-
+The motivation to develop this package is that using non-standard
+fonts in PDF device is neither straightforward nor easy.
 From my own experience, I find it always troublesome to create PDF
 graphs with Chinese characters. This is because most of the standard
 fonts used by `pdf()` don't contain Chinese character glyphs, and
 even worse users could hardly use the fonts that are already installed
-in their operating system. (It seems possible to do that, but quite
-difficult and indirect for most users, I believe.)
+in their operating systems.
 
-`showtext` tries to do the following two things:
-
-- Let R know about these system fonts
-- Use these fonts to draw text
+The [extrafont](https://github.com/wch/extrafont) package developed by
+[Winston Chang](https://github.com/wch) is one nice solution to this problem,
+which mainly focuses on using TrueType fonts(`.ttf`) in PDF graphics device.
+Now `showtext` is able to support more font formats and more graphics devices,
+and avoids using external software such as Ghostscript.
 
 ### Why `pdf()` doesn't work and how `showtext` works
 Let me explain a little bit about how `pdf()` works.
@@ -34,14 +30,7 @@ it only embeds information about the text, for example what characters
 it has, which font it uses, etc.
 
 However, the text with declared font may be displayed differently in
-different OS. The two images below are the screenshots of the same PDF
-file created by R but viewed under Windows and Linux respectively.
-
-<div align="center">
-  <img src="http://i.imgur.com/x1zM34F.png" />
-</div>
-
-This means that the appearance of graph created by `pdf()` is
+different OS, which means that the appearance of graph created by `pdf()` is
 system dependent. If you unfortunately don't have the declared font
 in your system, you may not be able to see the text correctly at all. 
 
@@ -56,18 +45,6 @@ that creates the graph. It provides convenience to both graph makers
 and graph viewers.
 
 ### The Usage
-Before I show the usage of `showtext` I shall reference a nice package
-written by
-[Winston Chang](https://github.com/wch),
-the [extrafont](https://github.com/wch/extrafont) package.
-It is essentially trying to do the same thing: make R aware of the system
-fonts, and then embed them in the PDF file.
-
-This package is almost perfect except that it requires some kind of
-configuration, either per R session or per PDF file. Also, it requires
-Ghostscript to be installed. For lazy users (like me, for example),
-it would be nicer if things are done automatically as much as possible.
-
 The `showtext` package is definitely designed for lazy users.
 To create a graph using a specified font, you only need to do:
 
@@ -80,35 +57,45 @@ To create a graph using a specified font, you only need to do:
 Only the steps marked with (\*) are newly added. Below is an example:
 
 ```r
+library(ggplot2)
+bg = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
+    theme(axis.title = element_blank(), axis.ticks = element_blank(),
+          axis.text = element_blank())
+txt1 = annotate("text", 1, 1.1, family = "heiti", size = 15,
+                label = intToUtf8(c(20320, 22909, 65292, 19990, 30028, 65281)))
+txt2 = annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
+                family = "constan", fontface = "italic", size = 12)
+
 library(showtext)
-font.add("fang", "simfang.ttf") ## add font
-pdf("showtext-ex1.pdf")
-plot(1, type = "n")
-showtext.begin()                ## turn on showtext
-text(1, 1, intToUtf8(c(82, 35821, 35328)), cex = 10, family = "fang")
-showtext.end()                  ## turn off showtext
+## add fonts, available on Windows
+font.add("heiti", "simhei.ttf")
+font.add("constan", "constan.ttf", italic = "constani.ttf")
+pdf("showtext-example.pdf", 7, 4)
+showtext.begin()
+print(bg + txt1 + txt2)
+showtext.end()
 dev.off()
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/u5uvjy5.png" />
+  <img src="http://i.imgur.com/Z3r9sg2.png" />
 </div>
 
 The use of `intToUtf8()` is for convenience if you can't view or input
 Chinese characters. You can instead use
 ```r
-text(1, 1, "R语言", cex = 10, family = "fang")
+label = "你好，世界！"
 ```
 
 This example should work fine on Windows. For other OS, you may not have
-the `simfang.ttf` font file, but there is no difficulty in using something
+the `simhei.ttf` font file, but there is no difficulty in using something
 else. You can see the next section to learn details about how to load
 a font with `showtext`.
 
 ### Loading font
 Loading font is actually done by package `sysfonts`.
 
-The easiest way to load font into R is by calling `font.add(family, regular)`,
+The easy way to load font into `showtext` is by calling `font.add(family, regular)`,
 where `family` is the name that you give to that font (so that later you can
 call `par(family = ...)` to use this font in plotting), and `regular` is the
 path to the font file. Usually the font file will be located in some "standard"
@@ -116,42 +103,30 @@ directories in the system (for example on Windows it is typically C:/Windows/Fon
 You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
-Usually there are many free fonts that can be downloaded from the web and then used by
-`showtext`, as the following example shows:
+Also, there are many free fonts available and accessible on the web, for instance
+the Google Fonts project ([https://www.google.com/fonts](https://www.google.com/fonts)).
+`sysfonts` provides an interface to automatically download and register those fonts
+through the function `font.add.google()`, as the example below shows.
 
 ```r
 library(showtext)
+font.add.google("Lobster", "lobster")
 
-wd = setwd(tempdir())
-download.file("http://fontpro.com/download-family.php?file=35701",
-              "merienda-r.ttf", mode="wb")
-download.file("http://fontpro.com/download-family.php?file=35700",
-              "merienda-b.ttf", mode="wb")
-font.add("merienda",
-         regular = "merienda-r.ttf",
-         bold = "merienda-b.ttf")
-setwd(wd)
-
-pdf("showtext-ex2.pdf", 7, 4)
-plot(1, type = "n", xlab = "", ylab = "")
+library(Cairo)
+CairoPNG("showtext-example-2.png", 504, 504)
 showtext.begin()
-par(family = "merienda")
-text(1, 1.2, "R can use this font!", cex = 2)
-text(1, 0.8, "And in Bold font face!", font = 2, cex = 2)
+plot(1, pch = 16, cex = 3)
+text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
 showtext.end()
 dev.off()
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/EUIGQ6L.png" />
+  <img src="http://i.imgur.com/pO87LFy.png" />
 </div>
 
-In this case we add two font faces(regular and bold) with the family name
-"merienda", and use `font = 2` to select the bold font face (`font = 1` is
-selected by default, which is the regular font face).
-
 At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
-OpenType fonts(\*.otf), but adding new
+OpenType fonts(\*.otf), and adding new
 font type is trivial as long as FreeType supports it.
 
 Note that `showtext` includes an open source CJK font
