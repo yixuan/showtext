@@ -1442,13 +1442,14 @@ showtext
 \end_layout
 
 \begin_layout Enumerate
-It provides 
+The output graph produced by showtext has 
 \series bold
-an easy and uniform interface
+uniform appearance across different platforms
 \series default
- across different operating systems.
- The usage is consistent in Windows, Linux, Mac OS and other Unix-alike
- platforms.
+.
+ Text will be converted into lines and curves, so that graph viewers can
+ see the characters with correct appearance without installing the fonts
+ that actually produced them.
 \end_layout
 
 \begin_layout Enumerate
@@ -2488,7 +2489,6 @@ columnwidth}
 \end_layout
 
 \begin_layout Verbatim
-
 We first do some setup work...
 \end_layout
 
@@ -2497,27 +2497,22 @@ We first do some setup work...
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r setup}
 \end_layout
 
 \begin_layout Verbatim
-
 library(knitr)
 \end_layout
 
 \begin_layout Verbatim
-
 library(showtext)
 \end_layout
 
 \begin_layout Verbatim
-
 opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
@@ -2526,7 +2521,6 @@ opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
-
 Then register a font from Google Fonts.
 \end_layout
 
@@ -2535,17 +2529,14 @@ Then register a font from Google Fonts.
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r fonts, message=FALSE}
 \end_layout
 
 \begin_layout Verbatim
-
 font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
@@ -2554,7 +2545,6 @@ font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
-
 Finally we create some fancy plot.
 \end_layout
 
@@ -2563,23 +2553,19 @@ Finally we create some fancy plot.
 \end_layout
 
 \begin_layout Verbatim
-
 ```{r fancy, fig.showtext=TRUE, fig.align='center'}
 \end_layout
 
 \begin_layout Verbatim
-
 plot(1, pch = 16, cex = 3)
 \end_layout
 
 \begin_layout Verbatim
-
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
  3)
 \end_layout
 
 \begin_layout Verbatim
-
 ```
 \end_layout
 
