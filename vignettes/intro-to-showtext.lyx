@@ -5,6 +5,11 @@
 \textclass article
 \begin_preamble
 \usepackage{framed}
+\newcommand{\code}{\texttt}
+\newcommand{\pkg}{\textbf}
+\newcommand{\CRANpkg}{\textbf}
+\newcommand{\strong}{\textbf}
+\newcommand{\dfn}{\emph}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -203,9 +208,18 @@ arts.html
 \end_inset
 
  serves as an tutorial for the 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{extrafont}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -219,9 +233,18 @@ key "extrafont"
 
 \begin_layout Standard
 With the same target, this article introduces the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{showtext}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -233,9 +256,18 @@ key "showtext"
  It has good support for various font formats and most graphics devices
  in R, and meanwhile provides some extra features such as loading web fonts
  and integration with 
-\series bold
-knitr
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{knitr}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -245,9 +277,18 @@ key "knitrbook,knitrchap,knitrpkg"
 
 .
  All efforts devoted to the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  package are trying to find an easy and elegant way to incorporate different
  fonts in R graphs.
 \end_layout
@@ -255,9 +296,18 @@ showtext
 \begin_layout Standard
 In the remaining part, this article will first review some existing methods
  to use fonts in R, and then gives an introduction to the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  package, including its usage, demonstration, limitation and some suggestions.
  The internals of this package are also discussed for readers who are interested
  in the design and development of this package.
@@ -269,16 +319,6 @@ Existing methods to use fonts
 
 \begin_layout Subsection
 Built-in graphics devices in R
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:built-in"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -306,13 +346,37 @@ http://cairographics.org/
 \end_inset
 
  has been compiled in R so that 
-\family typewriter
-png(type = "cairo")
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-cairo_pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
  are available, then it's quite straightforward to use system fonts in the
  plots, for which one only needs to specify the family name of font as is
  displayed in the system.
@@ -673,57 +737,147 @@ Use system fonts for PNG on Windows without Cairo graphics
 
 \begin_layout Standard
 Notice that we use the function 
-\family typewriter
-windowsFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{windowsFonts()}
+\end_layout
+
+\end_inset
+
  to register font and create name mapping.
  In other operating systems, there are corresponding functions such as 
-\family typewriter
-X11Fonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{X11Fonts()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-quartzFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{quartzFonts()}
+\end_layout
+
+\end_inset
+
  to do the similar job.
 \end_layout
 
 \begin_layout Standard
 When it comes to PDF graphs, things get even more complicated.
  The first step is similar: one should call 
-\family typewriter
-pdfFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
  to register new family names in R, and then use them in the plot.
  However, the obstacle here is that 
-\family typewriter
-pdfFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
  requires the metric files (
-\family typewriter
-.afm
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.afm}
+\end_layout
+
+\end_inset
+
 ) for the font, which may be unavailable for end users.
  As a contrary, TrueType fonts (
-\family typewriter
-.ttf
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.ttf}
+\end_layout
+
+\end_inset
+
 ) and OpenType fonts (mostly 
-\family typewriter
-.otf
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.otf}
+\end_layout
+
+\end_inset
+
 ) are most commonly used, but unfortunately, these font formats are not
  directly supported by 
-\family typewriter
-pdfFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
 .
  Additionally, to make the plot have consistent appearance across different
  PDF viewers, it is usually suggested to embed the font within the file
  by calling the function 
-\family typewriter
-embedFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embedFonts()}
+\end_layout
+
+\end_inset
+
 , which further invokes an external software Ghostscript
 \begin_inset Foot
 status open
@@ -760,9 +914,18 @@ key "nonstdfonts"
 Due to this complexity, when creating PDF graphs most users only select
  the built-in PDF font families, which in R can be queried by the command
  
-\family typewriter
-names(pdfFonts())
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{names(pdfFonts())}
+\end_layout
+
+\end_inset
+
 .
 \end_layout
 
@@ -796,9 +959,18 @@ The Cairo package
 
 \begin_layout Standard
 The 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{Cairo}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -810,13 +982,31 @@ key "Cairo"
  unified backend based on Cairo graphics.
  When the Cairo library is configured with FreeType and Fontcofig support,
  one can make use of the 
-\family typewriter
-CairoFonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{CairoFonts()}
+\end_layout
+
+\end_inset
+
  function to specify the fonts that will be used by all the devices in 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
 .
  Below is an example to show this.
  (Figure 
@@ -900,17 +1090,50 @@ dev.off()
 \begin_layout Standard
 On systems in which FreeType and Fontcofig are not configured with Cairo
  (e.g., Windows), the method to specify fonts with 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  package is similar to that of 
-\family typewriter
-png(type = "cairo")
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-cairo_pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
 .
  (Figure 
 \begin_inset CommandInset ref
@@ -1022,9 +1245,18 @@ name "fig:cairo_package"
 \end_inset
 
 Specify fonts in the 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  package.
  
 \emph on
@@ -1053,10 +1285,18 @@ The extrafont package
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
 
-\series bold
-extrafont
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{extrafont}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1067,18 +1307,45 @@ key "extrafont"
  is an R pakcage mainly used to simplify the usage of system fonts in PDF
  and PostScript graphics.
  It is able to extract metric files (
-\family typewriter
-.afm
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.afm}
+\end_layout
+
+\end_inset
+
 ) from TrueType fonts (
-\family typewriter
-.ttf
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.ttf}
+\end_layout
+
+\end_inset
+
 ) so that R PDF device can utilize that information to place text in graphics.
  This procedure is in effect accomplished by the 
-\series bold
-Rttf2pt1
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{Rttf2pt1}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1087,40 +1354,87 @@ key "Rttf2pt1"
 \end_inset
 
  which 
-\series bold
-extrafont
-\series default
- depends on.
- Also, for the same reason described in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:built-in"
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
 
 \end_inset
 
+ depends on.
+ Also, for the same reason described in section 
+\begin_inset Quotes eld
+\end_inset
+
+Built-in graphics devices in R
+\begin_inset Quotes erd
+\end_inset
+
 , 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  provides the function 
-\family typewriter
-embed_fonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embed
+\backslash
+_fonts()}
+\end_layout
+
+\end_inset
+
  to call Ghostscript to embed fonts in PDF files.
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
 
-\series bold
-extrafont
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  requires a first-time configuration, during which it will scan TrueType
  fonts installed in the system and generate metric files from them, along
  with other necessary configuration files.
  After that, one needs to further call 
-\family typewriter
-loadfonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{loadfonts()}
+\end_layout
+
+\end_inset
+
  to register these fonts in R.
  These two steps only need to be done once, and even unnecessary in a new
  R session.
@@ -1168,19 +1482,48 @@ loadfonts()
 \begin_layout Standard
 After this set-up, the user could query the available font families for
  PDF device by calling functions 
-\family typewriter
-fonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fonts()}
+\end_layout
+
+\end_inset
+
  or 
-\family typewriter
-fonttable()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fonttable()}
+\end_layout
+
+\end_inset
+
 , and use them in any plotting functions involving font selection.
  Also recall that the final step is to embed the fonts by calling function
  
-\family typewriter
-embed_fonts()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embed
+\backslash
+_fonts()}
+\end_layout
+
+\end_inset
+
 .
  (Figure 
 \begin_inset CommandInset ref
@@ -1285,9 +1628,18 @@ name "fig:extrafont_package"
 \end_inset
 
 Use 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  package to select fonts in PDF device
 \end_layout
 
@@ -1333,9 +1685,18 @@ Sys.setenv(R_GSCMD = "C:/Program Files/gs/gs9.05/bin/gswin32c.exe")
 
 \begin_layout Standard
 More details about 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  can be found in the README file
 \begin_inset Foot
 status open
@@ -1369,27 +1730,62 @@ The previous section describes a number of ways to use system fonts in R
  While they could be helpful in many situations when dealing with fonts
  in R, there is still room for seeking more elegant ways to achieve that
  target, among which the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  package is one trying to meet such goal.
  There are a number of highlighted features of 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 :
 \end_layout
 
 \begin_layout Enumerate
+\begin_inset ERT
+status open
 
-\series bold
-Easy for installation
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Easy for installation}
+\end_layout
+
+\end_inset
+
 .
  
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  only requires the lightweight FreeType library
 \begin_inset Foot
 status open
@@ -1417,10 +1813,18 @@ http://www.freetype.org/
 \end_layout
 
 \begin_layout Enumerate
+\begin_inset ERT
+status open
 
-\series bold
-Support for various font formats
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Support for various font formats}
+\end_layout
+
+\end_inset
+
 .
  A certain type of font is supported as long as the backend FreeType library
  can read it, usually including but not limited to TrueType fonts, OpenType
@@ -1428,82 +1832,148 @@ Support for various font formats
 \end_layout
 
 \begin_layout Enumerate
+\begin_inset ERT
+status open
 
-\series bold
-Support for various R graphics devices
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Support for various R graphics devices}
+\end_layout
+
+\end_inset
+
 .
  Technically 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  can work on almost any graphics device, whatever in PNG, PDF, SVG or JPEG
  formats, although some of them can achieve higher quality than the others.
 \end_layout
 
 \begin_layout Enumerate
-The output graph produced by showtext has 
-\series bold
-uniform appearance across different platforms
-\series default
-.
- Text will be converted into lines and curves, so that graph viewers can
- see the characters with correct appearance without installing the fonts
- that actually produced them.
+It provides 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{an easy and uniform interface}
+\end_layout
+
+\end_inset
+
+ across different operating systems.
+ The usage is consistent in Windows, Linux, Mac OS and other Unix-alike
+ platforms.
 \end_layout
 
 \begin_layout Enumerate
 It also features functions to 
-\series bold
-automatically search and download
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{automatically search and download}
+\end_layout
+
+\end_inset
+
  many beautiful, accessible and open source fonts on the web, and users
  can use these fonts without installing them to the system, thus maintaining
  the fonts for 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  independently against those in the OS.
 \end_layout
 
 \begin_layout Enumerate
+\begin_inset ERT
+status open
 
-\series bold
-Intergration with knitr package
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Intergration with 
+\backslash
+pkg{knitr} package}
+\end_layout
+
+\end_inset
+
 .
 \end_layout
 
 \begin_layout Standard
 Roughly speaking, 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  has usage similar to that of 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  and 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  packages: in the first step one needs to import or register fonts from
  the system, and then use them in the plotting functions.
- This will be described in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:register_fonts"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:showtext_functions"
-
-\end_inset
-
- respectively.
+ This will be described in the next two sections.
 \end_layout
 
 \begin_layout Subsection
@@ -1522,9 +1992,18 @@ name "sub:register_fonts"
 
 \begin_layout Standard
 The actual work of registering fonts is done by the 
-\series bold
-sysfonts
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{sysfonts}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1533,50 +2012,140 @@ key "sysfonts"
 \end_inset
 
 , which is depended upon by 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 .
  
-\series bold
-sysfonts
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
  provides the function 
-\family typewriter
-font.add()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add()}
+\end_layout
+
+\end_inset
+
  to register font families for 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 , which has six arguments in total and the first two are mandatory.
  The first parameter, 
-\family typewriter
-family
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{family}
+\end_layout
+
+\end_inset
+
 , is the family name that user wants to use in the plotting functions.
  The second one, 
-\family typewriter
-regular
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{regular}
+\end_layout
+
+\end_inset
+
 , should give the path to the font file for a regular font face.
  Other parameters, such as 
-\family typewriter
-bold
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{bold}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-italic
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{italic}
+\end_layout
+
+\end_inset
+
 , are similar to 
-\family typewriter
-regular
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{regular}
+\end_layout
+
+\end_inset
+
 , but pointing to the files with corresponding font faces.
  If any of the extra font face parameter is set to 
-\family typewriter
-NULL
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{NULL}
+\end_layout
+
+\end_inset
+
 , then the font file for regular font face will be used.
 \end_layout
 
@@ -1602,9 +2171,18 @@ http://xkcd.com/
 \end_inset
 
  font for 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 .
 \end_layout
 
@@ -1614,7 +2192,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE>>=
+<<cache=TRUE, message=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1657,14 +2235,32 @@ myxkcd
 \end_inset
 
  should appear in the result returned by 
-\family typewriter
-font.families()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.families()}
+\end_layout
+
+\end_inset
+
 .
  This function lists all font families that are available in 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 , among which 
 \begin_inset Quotes eld
 \end_inset
@@ -1705,14 +2301,32 @@ For most operating systems, fonts are usually installed in some standard
  locations, and to add fonts located in these directories, the user can
  provide the filename rather than the whole absolute path to save some typing.
  For example on Windows, 
-\series bold
-sysfonts
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
  knows about the standard font directory, so we can use the following code
  to register the Consolas families to 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 :
 \end_layout
 
@@ -1762,13 +2376,31 @@ if(.Platform$OS.type == "windows") {
 
 \begin_layout Standard
 Users can view or set such search paths through function 
-\family typewriter
-font.paths()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.paths()}
+\end_layout
+
+\end_inset
+
 , and list available font files in those paths by calling 
-\family typewriter
-font.files()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.files()}
+\end_layout
+
+\end_inset
+
 .
  While it may take some effort to figure out the filename of a font with
  a given family name (and perhaps also font face), the naming convention
@@ -1779,9 +2411,18 @@ font.files()
 
 \begin_layout Standard
 To make it even easier, 
-\series bold
-sysfonts
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
  also makes use of the Google Fonts project
 \begin_inset Foot
 status open
@@ -1807,23 +2448,59 @@ http://www.google.com/fonts
  Google Fonts hosts more than 600 open source fonts, and is still enriching
  its collection.
  Function 
-\family typewriter
-font.families.google()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.families.google()}
+\end_layout
+
+\end_inset
+
  lists the presently accessible fonts in the repository, and 
-\family typewriter
-font.add.google()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
  could search for a specific font family and download font files for all
  possible faces, and then add them to 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  with a user defined family name in R.
  These two functions require the 
-\series bold
-RCurl
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{RCurl}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1832,9 +2509,18 @@ key "RCurl"
 \end_inset
 
  and 
-\series bold
-jsonlite
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{jsonlite}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1883,9 +2569,18 @@ font.families()
 \begin_layout Standard
 Note that the Lato font has multiple font faces (regular, bold, italic,
  etc.) in Google Fonts repository, and 
-\family typewriter
-font.add.google()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
  will be aware of this and register all of them in R.
 \end_layout
 
@@ -1894,48 +2589,101 @@ showtext functions
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:showtext_functions"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 After registering the fonts, using them in plotting functions will be straightfo
 rward.
  However, there is an extra step in 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  compared with 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  or 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
 : user needs to enclose plotting functions where fonts are used by a pair
  of 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  functions, 
-\family typewriter
-showtext.begin()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-showtext.end()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.end()}
+\end_layout
+
+\end_inset
+
 .
  Below are two examples, one using base 
-\series bold
-graphics
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{graphics}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1944,9 +2692,18 @@ key "R"
 \end_inset
 
 , and the other using 
-\series bold
-ggplot2
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{ggplot2}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2085,9 +2842,18 @@ name "fig:xkcd"
 \end_inset
 
 Use 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  in PDF device
 \end_layout
 
@@ -2111,9 +2877,18 @@ reference "fig:xkcd"
 
  uses the xkcd font we added in the previous section.
  More interesting graphs of this style can be found in the 
-\series bold
-xkcd
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{xkcd}
+\end_layout
+
+\end_inset
+
  package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2123,13 +2898,31 @@ key "xkcd"
 
 .
  The next plot is a demonstration of using 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  with 
-\series bold
-ggplot2
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{ggplot2}
+\end_layout
+
+\end_inset
+
  (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2158,9 +2951,18 @@ http://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2
 \end_inset
 
  for inserting image in 
-\series bold
-ggplot2
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{ggplot2}
+\end_layout
+
+\end_inset
+
 ):
 \end_layout
 
@@ -2344,9 +3146,18 @@ name "fig:chinar"
 \end_inset
 
 Use 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  in CairoPNG device
 \end_layout
 
@@ -2390,26 +3201,71 @@ http://wenq.org/en
 \end_inset
 
  font that will be automatically loaded by 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 .
  WenQuanYi Micro Hei contains a large number of CJK (
-\series bold
-C
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{C}
+\end_layout
+
+\end_inset
+
 hinese, 
-\series bold
-J
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{J}
+\end_layout
+
+\end_inset
+
 apanese and 
-\series bold
-K
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{K}
+\end_layout
+
+\end_inset
+
 orean) characters, so combined with 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  it can be useful to show text in those languages.
 \end_layout
 
@@ -2418,10 +3274,18 @@ Integration with knitr
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
 
-\series bold
-knitr
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{knitr}
+\end_layout
+
+\end_inset
+
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2433,33 +3297,87 @@ key "knitrbook,knitrchap,knitrpkg"
  It's similar to the built-in Sweave engine inside R, but brings in many
  extensions and enhancement.
  Starting from version 1.6.10 (a development version), 
-\series bold
-knitr
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
  begins to have support for 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  through the option 
-\family typewriter
-fig.showtext
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fig.showtext}
+\end_layout
+
+\end_inset
+
 .
  Code chunk with this option being 
-\family typewriter
-TRUE
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{TRUE}
+\end_layout
+
+\end_inset
+
  will automatically invoke the 
-\family typewriter
-showtext.begin()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
  function, so users can write plotting code just like usual ones without
  calling those functions, given that the font families used in the code
  have already been registered in some code chunk.
  Here is a minimal example of an Rmd file that uses 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 .
 \end_layout
 
@@ -2489,6 +3407,7 @@ columnwidth}
 \end_layout
 
 \begin_layout Verbatim
+
 We first do some setup work...
 \end_layout
 
@@ -2497,22 +3416,27 @@ We first do some setup work...
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r setup}
 \end_layout
 
 \begin_layout Verbatim
+
 library(knitr)
 \end_layout
 
 \begin_layout Verbatim
+
 library(showtext)
 \end_layout
 
 \begin_layout Verbatim
+
 opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
@@ -2521,6 +3445,7 @@ opts_chunk$set(dev="CairoPNG", fig.width=7, fig.height=7, dpi=72)
 \end_layout
 
 \begin_layout Verbatim
+
 Then register a font from Google Fonts.
 \end_layout
 
@@ -2529,14 +3454,17 @@ Then register a font from Google Fonts.
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r fonts, message=FALSE}
 \end_layout
 
 \begin_layout Verbatim
+
 font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
@@ -2545,6 +3473,7 @@ font.add.google("Lobster", "lobster")
 \end_layout
 
 \begin_layout Verbatim
+
 Finally we create some fancy plot.
 \end_layout
 
@@ -2553,19 +3482,23 @@ Finally we create some fancy plot.
 \end_layout
 
 \begin_layout Verbatim
+
 ```{r fancy, fig.showtext=TRUE, fig.align='center'}
 \end_layout
 
 \begin_layout Verbatim
+
 plot(1, pch = 16, cex = 3)
 \end_layout
 
 \begin_layout Verbatim
+
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
  3)
 \end_layout
 
 \begin_layout Verbatim
+
 ```
 \end_layout
 
@@ -2594,18 +3527,45 @@ end{framed}
 
 \begin_layout Standard
 Note that in the setup code chunk, we set the graphics device to 
-\family typewriter
-CairoPNG()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{CairoPNG()}
+\end_layout
+
+\end_inset
+
 , instead of the default 
-\family typewriter
-png()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png()}
+\end_layout
+
+\end_inset
+
 .
  This is the suggested practice, since 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  supports anti-alias feature for bitmap devices, and thus being able to
  produce high quality graphs.
  More in-depth reasons are explained in the next section.
@@ -2616,39 +3576,65 @@ Limitations and solutions
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:limitation"
+The goal of developing 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The goal of developing 
-\series bold
-showtext
-\series default
  is to provide an elegant way to allow R using system fonts in graphics.
  While it should be useful in most situations, there are still some limitations
  that can be hard to overcome.
  This section lists a number of cons of 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 , as well as some hints of how to use 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  in the best way.
 \end_layout
 
 \begin_layout Standard
 First, 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  looks for fonts according to their filenames rather than the usual 
 \begin_inset Quotes eld
 \end_inset
@@ -2668,82 +3654,217 @@ font names
  for the first time (but quite convenient afterwards).
  One possible solution is to use the fonts in Google Fonts through function
  
-\family typewriter
-font.add.google()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
 , which maintains a standard and stable interface to access fonts.
 \end_layout
 
 \begin_layout Standard
 Second, 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  can produce poor-quality graphs on certain bitmap graphics devices, such
  as 
-\family typewriter
-png()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png()}
+\end_layout
+
+\end_inset
+
 , 
-\family typewriter
-jpeg()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{jpeg()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-tiff()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{tiff()}
+\end_layout
+
+\end_inset
+
 .
  This is because 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  is in effect transforming character glyphs into paths (described in more
  detail in the next section), and those devices don't support anti-alias
  feature, resulting in unsmooth edges of the characters.
  If bitmap is needed, it's strongly recommended to use the devices provided
  by the 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  package, such as 
-\family typewriter
-CairoPNG()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{CairoPNG()}
+\end_layout
+
+\end_inset
+
 , 
-\family typewriter
-CairoJPEG()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{CairoJPEG()}
+\end_layout
+
+\end_inset
+
 , etc., which support such features and hence are able to produce high quality
  output.
  
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  works well on vector graphics devices, including 
-\family typewriter
-pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdf()}
+\end_layout
+
+\end_inset
+
 , 
-\family typewriter
-svg()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{svg()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-postscript()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{postscript()}
+\end_layout
+
+\end_inset
+
 , since most readers and views of these formats will take care of the graphics
  rendering.
 \end_layout
 
 \begin_layout Standard
 Finally, the graphics device that uses 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  is required to implement the C-level function 
-\family typewriter
-path()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{path()}
+\end_layout
+
+\end_inset
+
 .
  This is more technical and will be explained in the next section.
  It shouldn't be a problem since most graphics devices in common use are
@@ -2756,9 +3877,18 @@ Design of showtext
 
 \begin_layout Standard
 This section introduces the design and internals of the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  package.
  To describe the mechanism behind that, it would be helpful to first have
  a brief introduction to the graphics device in R.
@@ -2772,43 +3902,94 @@ showtext
 \begin_layout Standard
 Each of these operations is defined by a C-level function, which can be
  named as a 
-\emph on
-device procedure
-\emph default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dfn{device procedure}
+\end_layout
+
+\end_inset
+
 .
  Below lists some device procedures that are related to text rendering:
 \end_layout
 
 \begin_layout Itemize
+\begin_inset ERT
+status open
 
-\family typewriter
-metricInfo()
-\family default
+\begin_layout Plain Layout
+
+
+\backslash
+code{metricInfo()}
+\end_layout
+
+\end_inset
+
 : compute the metric information (height, width, depth, etc.) of a given
  character
 \end_layout
 
 \begin_layout Itemize
+\begin_inset ERT
+status open
 
-\family typewriter
-strWidth()
-\family default
+\begin_layout Plain Layout
+
+
+\backslash
+code{strWidth()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-strWidthUTF8()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{strWidthUTF8()}
+\end_layout
+
+\end_inset
+
 : return the width of a given string
 \end_layout
 
 \begin_layout Itemize
+\begin_inset ERT
+status open
 
-\family typewriter
-text()
-\family default
+\begin_layout Plain Layout
+
+
+\backslash
+code{text()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-textUTF8()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{textUTF8()}
+\end_layout
+
+\end_inset
+
 : draw the text at a give location
 \end_layout
 
@@ -2825,9 +4006,18 @@ Nevertheless, when text is drawn on the canvas of graphics device, it is
  straight lines, quadratic curves and cubic curves.
  In practice, the outline of a character glyph can be well approximated
  by a 
-\emph on
-polypath
-\emph default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dfn{polypath}
+\end_layout
+
+\end_inset
+
 , which consists of one or more subpaths, each one being a polygon.
  This procedure is shown in Figure 
 \begin_inset CommandInset ref
@@ -2879,9 +4069,18 @@ status open
 
 \begin_layout Plain Layout
 Schematic of the glyph polypath calculated by 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
 .
  
 \emph on
@@ -2938,9 +4137,18 @@ Using this technique, we can represent the text to be drawn as a series
  of color-filled polypaths.
  Since most graphics devices in R are capable to draw such shapes (through
  the device procedure 
-\family typewriter
-path()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{path()}
+\end_layout
+
+\end_inset
+
 ), we could now use a unified backend to analyze the font and compute the
  coordinates of vertices, and then let device to do the remaining work.
  This procedure is demonstrated in Figure 
@@ -2977,9 +4185,18 @@ status open
 
 \begin_layout Plain Layout
 How 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  works with R graphics devices
 \begin_inset CommandInset label
 LatexCommand label
@@ -3002,58 +4219,140 @@ name "fig:how_showtext_works"
 
 \begin_layout Standard
 In a word, when 
-\family typewriter
-showtext.begin()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
  is called, 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  will override the text rendering procedures in the device, and call the
  
-\family typewriter
-path()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{path()}
+\end_layout
+
+\end_inset
+
  device function to draw the text.
  Due to this reason, the graphics device that uses 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  is required to implement the 
-\family typewriter
-path()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{path()}
+\end_layout
+
+\end_inset
+
  procedure (it is legal for a graphics device to lack this feature), and
  this explains one of the limitations discussed in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:limitation"
+\begin_inset Quotes eld
+\end_inset
 
+Limitations and solutions
+\begin_inset Quotes erd
 \end_inset
 
 .
  But once again, it's known that most of the commonly used graphics devices
  in R, such as 
-\family typewriter
-pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdf()}
+\end_layout
+
+\end_inset
+
 , 
-\family typewriter
-png()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png()}
+\end_layout
+
+\end_inset
+
 , and those in the 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  package, are capable for that.
 \end_layout
 
 \begin_layout Standard
 When text drawing is no longer needed, or the user wants to switch back
  to the original text rendering method of the device, the call of 
-\family typewriter
-showtext.end()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.end()}
+\end_layout
+
+\end_inset
+
  will restore all device procedures back.
 \end_layout
 
@@ -3063,9 +4362,18 @@ Summary
 
 \begin_layout Standard
 This article introduces the 
-\series bold
-showtext
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  package to use system fonts in R graphics, with both highlighted features
  and its limitations.
  We've also discussed a number of alternative ways in R and extension packages
@@ -3085,13 +4393,37 @@ The generic devices in R without Cairo support have the least dependencies
 
 \begin_layout Itemize
 When Cairo graphics is compiled in R, devices such as 
-\family typewriter
-png(type = "cairo")
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-cairo_pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
  allow users to select fonts by their family names.
  This should be the easiest way to use fonts in R graphs without extension
  packages.
@@ -3099,9 +4431,18 @@ cairo_pdf()
 
 \begin_layout Itemize
 The 
-\series bold
-Cairo
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
  package has similar functionality as the previous one, and additionally
  provides a global font selector, which is quite useful if the user wants
  to choose a different default font for all devices.
@@ -3109,17 +4450,44 @@ Cairo
 
 \begin_layout Itemize
 The 
-\series bold
-extrafont
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
  package provides a complete solution for 
-\family typewriter
-pdf()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdf()}
+\end_layout
+
+\end_inset
+
  and 
-\family typewriter
-postscript()
-\family default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{postscript()}
+\end_layout
+
+\end_inset
+
  devices with TrueType fonts, and also the support for Windows bitmap output.
  It uses the same interface as the first case, but provides a much easier
  way to import system fonts into R.
@@ -3128,22 +4496,40 @@ postscript()
 \end_layout
 
 \begin_layout Itemize
+\begin_inset ERT
+status open
 
-\series bold
-showtext
-\series default
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
  supports various font formats and most graphics devices.
  It also offers some convenient features like using web fonts on Google
  Fonts, and the integration with 
-\series bold
-knitr
-\series default
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
 .
  Some suggestions are given in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:limitation"
+\begin_inset Quotes eld
+\end_inset
 
+Limitations and solutions
+\begin_inset Quotes erd
 \end_inset
 
  in order to use it in the best way.
@@ -3154,7 +4540,7 @@ reference "sub:limitation"
 LatexCommand bibtex
 btprint "btPrintAll"
 bibfiles "ref"
-options "bibtotoc,jss"
+options "bibtotoc,abbrvnat"
 
 \end_inset
 
