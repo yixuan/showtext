@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean pack
 
 all: RJwrapper.pdf
 
@@ -15,4 +15,7 @@ qiu.Rnw: qiu.lyx
 	lyx -e knitr qiu.lyx
 
 clean:
-	rm *.aux *.bbl *.blg *.brf *.log *.out
+	-rm *.aux *.bbl *.blg *.brf *.log *.out *.lyx~
+
+pack:
+	zip RJournal.zip *.tex *.pdf *.png *.bib
