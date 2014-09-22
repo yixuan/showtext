@@ -10,7 +10,7 @@
 \maketitle
 
 \abstract{
-An abstract of less than 150 words.
+The \pkg{showtext} package can be used to select system fonts in R graphics, which greatly extends the collection of fonts that can be recognized by R graphics devices. \pkg{showtext} supports a large number of font formats and R graphics devices, and also provides convenient features such as using web fonts and the integration with \pkg{knitr}. This article provides an basic introduction to the usage of \pkg{showtext}, as well as its design and internals for interested readers.
 }
 \end_preamble
 \use_default_options true
@@ -246,7 +246,7 @@ pkg{showtext}
 
 \end_inset
 
- package are trying to find an easy and elegant way to incorporate different
+ package are trying to seek an easy and elegant way to incorporate different
  fonts in R graphs.
 \end_layout
 
@@ -1732,7 +1732,7 @@ http://www.freetype.org/
 
 \end_inset
 
- when being installed, and doesn't rely on any external software.
+ when being installed, and does not rely on any external software.
  This would be helpful when other solutions are not possible, e.g., when R
  is not configured with Cairo support, or the Cairo library is not installed
  in the system.
@@ -2967,8 +2967,12 @@ plt = ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
 
 \begin_layout Plain Layout
 
-    theme(axis.title = element_blank(), plot.title = element_text(family =
- "wqy-microhei"))
+    theme(axis.title = element_blank(),
+\end_layout
+
+\begin_layout Plain Layout
+
+          plot.title = element_text(family = "wqy-microhei"))
 \end_layout
 
 \begin_layout Plain Layout
@@ -3452,22 +3456,7 @@ code{png()}
 \end_inset
 
 .
- This is the suggested practice, since 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pkg{Cairo}
-\end_layout
-
-\end_inset
-
- supports anti-alias feature for bitmap devices, and thus being able to
- produce high quality graphs.
- More in-depth reasons are explained in the next section.
+ This is the suggested practice, as is explained in the next section.
 \end_layout
 
 \begin_layout Subsection
@@ -3622,9 +3611,9 @@ pkg{showtext}
 \end_inset
 
  is in effect transforming character glyphs into paths (described in more
- detail in the next section), and those devices don't support anti-alias
+ detail in the next section), and those devices do not support anti-alias
  feature, resulting in unsmooth edges of the characters.
- If bitmap is needed, it's strongly recommended to use the devices provided
+ If bitmap is needed, it is strongly recommended to use the devices provided
  by the 
 \begin_inset ERT
 status open
@@ -3847,7 +3836,7 @@ code{textUTF8()}
 \begin_layout Standard
 In general, every graphics device needs to implement its own device procedures
  including the ones above, meaning that different devices will have different
- interfaces to select fonts for use, and that's why there is hardly a universal
+ interfaces to select fonts for use, and that is why there is hardly a universal
  text rendering approach.
 \end_layout
 
@@ -4284,9 +4273,9 @@ pkg{Cairo}
 
 \end_inset
 
- package has similar functionality as the previous one, and additionally
- provides a global font selector, which is quite useful if the user wants
- to choose a different default font for all devices.
+ package has similar functionality to the previous one, and additionally
+ provides a global font selector, which is quite useful to choose a different
+ default font for all devices.
 \end_layout
 
 \begin_layout Itemize
@@ -4329,11 +4318,10 @@ code{postscript()}
 
 \end_inset
 
- devices with TrueType fonts, and also the support for Windows bitmap output.
- It uses the same interface as the first case, but provides a much easier
- way to import system fonts into R.
- Users only need to do some one-time configuration, and then the plotting
- commands can simply be written in the usual way.
+ devices with TrueType fonts, as well as support for Windows bitmap output.
+ It provides an easy way to import system fonts into R, so that users only
+ need to do some one-time configuration, and then the plotting commands
+ can simply be written in the usual way.
 \end_layout
 
 \begin_layout Itemize
