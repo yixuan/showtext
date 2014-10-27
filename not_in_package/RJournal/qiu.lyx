@@ -404,7 +404,9 @@ if(capabilities("cairo")) {
 
 \begin_layout Plain Layout
 
-    txt1 = annotate("text", 1, 1, label = "DejaVu Sans Mono",
+    txt1 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nDejaVu Sans Mono",
 \end_layout
 
 \begin_layout Plain Layout
@@ -433,7 +435,9 @@ if(capabilities("cairo")) {
 
 \begin_layout Plain Layout
 
-    txt2 = annotate("text", 1, 1, label = "DejaVu Serif Italic",
+    txt2 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nDejaVu Serif Italic",
 \end_layout
 
 \begin_layout Plain Layout
@@ -997,13 +1001,18 @@ CairoPDF("Cairo-1.pdf", 7, 4)
 
 \begin_layout Plain Layout
 
-txt4 = annotate("text", 1, 1.1, label = "Liberation", size = 20)
+txt4 = annotate("text", 1, 1.1, label = "A sample of Liberation Sans", size
+ = 12)
 \end_layout
 
 \begin_layout Plain Layout
 
-txt5 = annotate("text", 1, 0.9, label = "Liberation", fontface = "italic",
- size = 20)
+txt5 = annotate("text", 1, 0.9, label = "A sample of Liberation Serif",
+\end_layout
+
+\begin_layout Plain Layout
+
+                fontface = "italic", size = 12)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1105,22 +1114,22 @@ if(.Platform$OS.type == "windows") {
 
 \begin_layout Plain Layout
 
-    txt6 = annotate("text", 1, 1.1, label = "On Windows",
+    txt6 = annotate("text", 1, 1.1, label = "A sample of Constantia",
 \end_layout
 
 \begin_layout Plain Layout
 
-                    family = "Constantia", size = 15)
+                    family = "Constantia", size = 12)
 \end_layout
 
 \begin_layout Plain Layout
 
-    txt7 = annotate("text", 1, 0.9, label = "Lucida Console",
+    txt7 = annotate("text", 1, 0.9, label = "A sample of Lucida Console",
 \end_layout
 
 \begin_layout Plain Layout
 
-                    family = "Lucida Console", size = 15)
+                    family = "Lucida Console", size = 10)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1488,22 +1497,22 @@ pdf("extrafont-1-unembedded.pdf", 7, 4)
 
 \begin_layout Plain Layout
 
-txt8 = annotate("text", 1, 1.1, label = "Ubuntu Light",
+txt8 = annotate("text", 1, 1.1, label = "A sample of Ubuntu Light",
 \end_layout
 
 \begin_layout Plain Layout
 
-                family = "Ubuntu Light", size = 15)
+                family = "Ubuntu Light", size = 12)
 \end_layout
 
 \begin_layout Plain Layout
 
-txt9 = annotate("text", 1, 0.9, label = "Ubuntu Condensed",
+txt9 = annotate("text", 1, 0.9, label = "A sample of Ubuntu Condensed",
 \end_layout
 
 \begin_layout Plain Layout
 
-                family = "Ubuntu Condensed", size = 15)
+                family = "Ubuntu Condensed", size = 12)
 \end_layout
 
 \begin_layout Plain Layout
