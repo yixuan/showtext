@@ -772,7 +772,7 @@ code{pdfFonts()}
 
 \end_inset
 
- requires the metric files (
+ requires the Adobe Font Metrics files (
 \begin_inset ERT
 status open
 
@@ -785,7 +785,7 @@ code{.afm}
 
 \end_inset
 
-) for the font, which may be unavailable for end users.
+), which may be unavailable for end users.
  As a contrary, TrueType fonts (
 \begin_inset ERT
 status open
