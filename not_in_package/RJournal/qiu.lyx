@@ -10,7 +10,13 @@
 \maketitle
 
 \abstract{
-The \pkg{showtext} package can be used to select system fonts in R graphics, which greatly extends the collection of fonts that can be recognized by R graphics devices. \pkg{showtext} supports a large number of font formats and R graphics devices, and also provides convenient features such as using web fonts and the integration with \pkg{knitr}. This article provides an basic introduction to the usage of \pkg{showtext}, as well as its design and internals for interested readers.
+The \pkg{showtext} package can be used to select system fonts in R graphics,
+which greatly extends the collection of fonts that can be recognized by R
+graphics devices. \pkg{showtext} supports a large number of font formats and
+R graphics devices while providing convenient features such as using web
+fonts and the integration with \pkg{knitr}. This article provides a basic
+introduction to the usage of \pkg{showtext}, as well as its design and
+internals for interested readers.
 }
 \end_preamble
 \use_default_options true
@@ -104,7 +110,7 @@ Introduction
 
 \begin_layout Standard
 Using fonts in R graphics is neither a new topic nor a difficult task, if
- only standard font families such as 
+ only the standard font families such as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -129,7 +135,7 @@ mono
 \end_inset
 
  are needed.
- However, problem occurs when one wants to select fonts that are installed
+ However, problems occur when one wants to select fonts that are installed
  in the system but not among the standard families inside R, especially
  for the PDF graphics device.
  With the evolution of R graphics device as well as related extension packages,
@@ -280,10 +286,10 @@ Built-in graphics devices in R
 \end_layout
 
 \begin_layout Standard
-It is possible to let R's built-in graphics devices, e.g., PNG and PDF, to
+It is possible to let R's built-in graphics devices (e.g., PNG and PDF) to
  use installed fonts in the system.
  However, the implementation is quite configuration dependent.
- If support for Cairo graphics
+ If Cairo graphics
 \begin_inset Foot
 status open
 
@@ -303,7 +309,7 @@ http://cairographics.org/
 
 \end_inset
 
- has been compiled in R so that 
+ support has been compiled in R such that 
 \begin_inset ERT
 status open
 
@@ -336,8 +342,8 @@ _pdf()}
 \end_inset
 
  are available, then it is quite straightforward to use system fonts in
- the plots, for which one only needs to specify the family name of font
- as is used by the system.
+ the plots.
+ One only needs to specify the family name of font as is used by the system.
  (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -496,7 +502,7 @@ name "fig:builtin_with_cairo"
 
 \end_inset
 
-Specify family name when Cairo graphics is compiled in R.
+Specify full family name when Cairo graphics is compiled in R.
  
 \emph on
 Left
@@ -524,7 +530,7 @@ right
 
 \begin_layout Standard
 However, when Cairo graphics is not available, it will require more effort
- to achieve this target.
+ to customize the font.
  For PNG graphs, the user needs to first register a font family name in
  R which is mapped to a font that is installed in the system, and then specify
  the font family name in plotting functions.
@@ -738,7 +744,7 @@ code{quartzFonts()}
 \end_layout
 
 \begin_layout Standard
-When it comes to PDF graphs, things get even more complicated.
+For PDF graphs, the setup is more complicated.
  The first step is similar: one should call 
 \begin_inset ERT
 status open
@@ -870,8 +876,7 @@ key "nonstdfonts"
 
 \begin_layout Standard
 Due to this complexity, when creating PDF graphs most users only select
- the built-in PDF font families, which in R can be queried by the command
- 
+ the built-in PDF font families, which can be queried by the command 
 \begin_inset ERT
 status open
 
@@ -1267,7 +1272,7 @@ code{.ttf}
 \end_inset
 
 ) so that R PDF device can utilize that information to place text in graphics.
- This procedure is in effect accomplished by the 
+ This procedure is accomplished by the 
 \begin_inset ERT
 status open
 
@@ -1345,10 +1350,10 @@ pkg{extrafont}
 
 \end_inset
 
- requires a first-time configuration, during which it will scan TrueType
- fonts installed in the system and generate metric files from them, along
+ requires a first-time configuration, during which it will scan for TrueType
+ fonts installed in the system and generate corresponding metric files along
  with other necessary configuration files.
- After that, one needs to further call 
+ Afterwards, one needs to call 
 \begin_inset ERT
 status open
 
@@ -1361,8 +1366,8 @@ code{loadfonts()}
 
 \end_inset
 
- to register these fonts in R.
- These two steps only need to be done once, and even unnecessary in a new
+ to register the newly created metric fonts in R.
+ These two steps only need to be done once and are not necessary in a new
  R session.
 \end_layout
 
@@ -1377,12 +1382,12 @@ status open
 
 \begin_layout Plain Layout
 
-## Run once
+library(extrafont)
 \end_layout
 
 \begin_layout Plain Layout
 
-library(extrafont)
+## Run once
 \end_layout
 
 \begin_layout Plain Layout
@@ -1406,8 +1411,8 @@ loadfonts()
 \end_layout
 
 \begin_layout Standard
-After this set-up, the user could query the available font families for
- PDF device by calling functions 
+After this set-up, the user may query the available font families for PDF
+ device by calling functions 
 \begin_inset ERT
 status open
 
@@ -1434,8 +1439,9 @@ code{fonttable()}
 \end_inset
 
 , and use them in any plotting functions involving font selection.
- Also recall that the final step is to embed the fonts by calling function
- 
+ Since we are now using metric font files, it is best practice to embed
+ the fonts into the PDF file.
+ This is done by calling the function 
 \begin_inset ERT
 status open
 
@@ -1990,7 +1996,7 @@ pkg{showtext}
 
 \end_inset
 
-, which has six arguments in total and the first two are mandatory.
+, which has six arguments in total, the first two being mandatory.
  The first parameter, 
 \begin_inset ERT
 status open
@@ -2219,13 +2225,14 @@ wqy-microhei
 \begin_inset Quotes erd
 \end_inset
 
- are default ones that will be loaded automatically with the package.
+ will be loaded automatically with the package.
 \end_layout
 
 \begin_layout Standard
-For most operating systems, fonts are usually installed in some standard
- locations, and to add fonts located in these directories, the user can
- provide the filename rather than the whole absolute path to save some typing.
+For most operating systems, fonts are usually installed in standardized
+ locations.
+ To add fonts located in these directories, the user can provide the filename
+ rather than the absolute path to save some typing.
  For example on Windows, 
 \begin_inset ERT
 status open
@@ -2336,7 +2343,7 @@ code{font.files()}
 \end_layout
 
 \begin_layout Standard
-To make it even easier, 
+To make the search process easier, 
 \begin_inset ERT
 status open
 
@@ -2369,7 +2376,7 @@ http://www.google.com/fonts
 
 \end_inset
 
- to further simplify the process of downloading and registering fonts available
+ to simplify the process of downloading and registering fonts available
  on the web.
  Google Fonts hosts more than 600 open source fonts, and is still enriching
  its collection.
@@ -2400,7 +2407,7 @@ code{font.add.google()}
 \end_inset
 
  could search for a specific font family and download font files for all
- possible faces, and then add them to 
+ possible faces, adding the new font family to 
 \begin_inset ERT
 status open
 
@@ -2494,7 +2501,8 @@ font.families()
 
 \begin_layout Standard
 Note that the Lato font has multiple font faces (regular, bold, italic,
- etc.) in Google Fonts repository, and 
+ etc.) in Google Fonts repository.
+ 
 \begin_inset ERT
 status open
 
@@ -2507,7 +2515,7 @@ code{font.add.google()}
 
 \end_inset
 
- will be aware of this and register all of them in R.
+ is aware of this and will register all of the font faces in R.
 \end_layout
 
 \begin_layout Subsection
@@ -3733,10 +3741,10 @@ pkg{showtext}
  To describe the mechanism behind that, it would be helpful to first have
  a brief introduction to the graphics device in R.
  A graphics device is like an engine that defines a number of basic operations
- in creating an image, such as how to draw a straight line, how to create
- a rectangle, how to render text, etc.
- Plotting functions in R just need to combine these basic operations to
- accomplish more sophisticated tasks.
+ in creating an image, i.e.
+ draw a straight line, create a rectangle, render text, etc.
+ Plotting functions in R combine these basic operations to accomplish more
+ sophisticated tasks.
 \end_layout
 
 \begin_layout Standard
@@ -3835,15 +3843,16 @@ code{textUTF8()}
 
 \begin_layout Standard
 In general, every graphics device needs to implement its own device procedures
- including the ones above, meaning that different devices will have different
- interfaces to select fonts for use, and that is why there is hardly a universal
- text rendering approach.
+ including the items listed above.
+ This means that different devices will have different interfaces to select
+ fonts for use, which is why there is hardly a universal text rendering
+ approach.
 \end_layout
 
 \begin_layout Standard
 Nevertheless, when text is drawn on the canvas of graphics device, it is
- in nature some shape on the 2D plane, whose outline usually consists of
- straight lines, quadratic curves and cubic curves.
+ a shape on the 2D plane whose outline usually consists of straight lines,
+ quadratic curves, and cubic curves.
  In practice, the outline of a character glyph can be well approximated
  by a 
 \begin_inset ERT
@@ -3858,7 +3867,21 @@ dfn{polypath}
 
 \end_inset
 
-, which consists of one or more subpaths, each one being a polygon.
+.
+ A 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dfn{polypath}
+\end_layout
+
+\end_inset
+
+ consists of one or more subpaths, each one being a polygon.
  This procedure is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3928,11 +3951,11 @@ Left
 \emph default
 : glyph displayed on the screen; 
 \emph on
-middle
+Middle
 \emph default
 : control points contained in font file describing the glyph; 
 \emph on
-right
+Right
 \emph default
 : calculated polypath to approximate the glyph.
 \begin_inset CommandInset label
@@ -3963,9 +3986,10 @@ a
 \begin_inset Quotes erd
 \end_inset
 
- in Liberation Sans Italic font, and the middle one gives the control points
- defined in the font file that characterizes this glyph, among which the
- blue dots will be connected with straight lines or quadratic curves to
+ in Liberation Sans Italic font.
+ The middle panel gives the control points defined in the font file that
+ characterizes this glyph, among which the blue dots will be connected with
+ straight lines or quadratic curves through the neighboring red points to
  form the outline.
  The right panel is the polypath to approximate the glyph outline.
  If we place a sufficient number of points in the polypath, the approximation
@@ -3975,7 +3999,7 @@ a
 \begin_layout Standard
 Using this technique, we can represent the text to be drawn as a series
  of color-filled polypaths.
- Since most graphics devices in R are capable to draw such shapes (through
+ Since most graphics devices in R are capable of drawing such shapes (through
  the device procedure 
 \begin_inset ERT
 status open
@@ -3990,7 +4014,7 @@ code{path()}
 \end_inset
 
 ), we could now use a unified backend to analyze the font and compute the
- coordinates of vertices, and then let device to do the remaining work.
+ coordinates of vertices.
  This procedure is demonstrated in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4084,7 +4108,7 @@ pkg{showtext}
 
 \end_inset
 
- will override the text rendering procedures in the device, and call the
+ will override the text rendering procedures in the device and call the
  
 \begin_inset ERT
 status open
@@ -4099,20 +4123,7 @@ code{path()}
 \end_inset
 
  device function to draw the text.
- Due to this reason, the graphics device that uses 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pkg{showtext}
-\end_layout
-
-\end_inset
-
- is required to implement the 
+ Due to the dependency on 
 \begin_inset ERT
 status open
 
@@ -4125,8 +4136,21 @@ code{path()}
 
 \end_inset
 
- procedure (it is legal for a graphics device to lack this feature).
- For most of the commonly used graphics devices in R, such as 
+ function, the graphics devices must have the function implemented for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ to work.
+ Most of the commonly used graphics devices in R, such as 
 \begin_inset ERT
 status open
 
@@ -4165,12 +4189,25 @@ pkg{Cairo}
 
 \end_inset
 
- package, they are capable for that.
+ package, have implemented the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{path()}
+\end_layout
+
+\end_inset
+
+ function.
 \end_layout
 
 \begin_layout Standard
 When text drawing is no longer needed, or the user wants to switch back
- to the original text rendering method of the device, the call of 
+ to the original text rendering method of the device, calling 
 \begin_inset ERT
 status open
 
@@ -4183,7 +4220,7 @@ code{showtext.end()}
 
 \end_inset
 
- will restore all device procedures back.
+ will restore all original device procedures.
 \end_layout
 
 \begin_layout Section
@@ -4204,21 +4241,26 @@ pkg{showtext}
 
 \end_inset
 
- package to use system fonts in R graphics, with both highlighted features
- and its limitations.
- We have also discussed a number of alternative ways in R and extension
- packages to achieve the same goal.
- While there is hardly a universally best way to use fonts in R, it may
- be helpful to list some situations in which a certain approach is the most
- appropriate one.
+ package, which helps to use system fonts in R graphics, with both highlighted
+ features and its limitations.
+\end_layout
+
+\begin_layout Standard
+We have also discussed a number of alternative ways in R and extension packages
+ to achieve the same goal.
+\end_layout
+
+\begin_layout Standard
+While there is hardly a universally best way to use fonts in R, some situations
+ were described in which a certain approach is most appropriate.
 \end_layout
 
 \begin_layout Itemize
 The generic devices in R without Cairo support have the least dependency
  on external libraries and softwares.
  More effort needs to be taken in this situation compared with others, but
- when R is compiled with a minimal environment, it may be the only possible
- solution.
+ this may be the only possible solution, especially when R is compiled in
+ a minimal environment.
 \end_layout
 
 \begin_layout Itemize
@@ -4273,9 +4315,10 @@ pkg{Cairo}
 
 \end_inset
 
- package has similar functionality to the previous one, and additionally
- provides a global font selector, which is quite useful to choose a different
- default font for all devices.
+ package has similar functionality to the previous item while additionally
+ providing a global font selector.
+ This selector is useful when choosing a different default font for all
+ devices.
 \end_layout
 
 \begin_layout Itemize
@@ -4339,7 +4382,7 @@ pkg{showtext}
 
  supports various font formats and most graphics devices.
  It also offers some convenient features like using web fonts on Google
- Fonts, and the integration with 
+ Fonts, and the integration with the 
 \begin_inset ERT
 status open
 
@@ -4352,7 +4395,7 @@ pkg{knitr}
 
 \end_inset
 
-.
+ package.
  Some suggestions are given in section 
 \begin_inset Quotes eld
 \end_inset
