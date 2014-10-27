@@ -538,65 +538,7 @@ However, when Cairo graphics is not available, it will require more effort
  For PNG graphs, the user needs to first register a font family name in
  R which is mapped to a font that is installed in the system, and then specify
  the font family name in plotting functions.
- (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:mapping"
-
-\end_inset
-
-)
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename mapping.pdf
-	lyxscale 30
-	width 80text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Diagram to show the font mapping in R
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:mapping"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Below is an example to show this procedure on Windows.
+ Below is an example to show this procedure on Windows.
  (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
