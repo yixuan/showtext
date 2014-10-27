@@ -623,7 +623,7 @@ if(.Platform$OS.type == "windows") {
 
 \begin_layout Plain Layout
 
-    windowsFonts(comic = "Comic Sans MS")
+    windowsFonts(century = "Century Gothic")
 \end_layout
 
 \begin_layout Plain Layout
@@ -633,8 +633,14 @@ if(.Platform$OS.type == "windows") {
 
 \begin_layout Plain Layout
 
-    txt3 = annotate("text", 1, 1, label = "Comic Sans MS", family = "comic",
- size = 25)
+    txt3 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nCentury Gothic",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "century", size = 20)
 \end_layout
 
 \begin_layout Plain Layout
