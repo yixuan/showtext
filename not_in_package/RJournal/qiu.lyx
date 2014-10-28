@@ -1200,7 +1200,7 @@ key "extrafont"
 
 \end_inset
 
- is an R pakcage mainly used to simplify the usage of system fonts in PDF
+ is an R package mainly used to simplify the usage of system fonts in PDF
  and PostScript graphics.
  It is able to extract metric files (
 \begin_inset ERT
@@ -2428,7 +2428,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE, message=FALSE>>=
+<<cache=TRUE, message=FALSE, warning=FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -3489,7 +3489,7 @@ font names
  In contrast, font file is the entity that actually contains the glyphs
  of a specific font, hence it helps to avoid such confusion.
  While this setting may cause some problems for users who are searching
- the filename for the first time, it should be quite convenient afterwards,
+ the filename for the first time, it should be quite convenient afterward,
  and one possible solution is to use the fonts in Google Fonts through function
  
 \begin_inset ERT
@@ -4213,8 +4213,8 @@ While there is hardly a universally best way to use fonts in R, some situations
 \end_layout
 
 \begin_layout Itemize
-The generic devices in R without Cairo support have the least dependency
- on external libraries and softwares.
+The built-in devices in R without Cairo support have the least dependency
+ on external libraries and software.
  More effort needs to be taken in this situation compared with others, but
  this may be the only possible solution, especially when R is compiled in
  a minimal environment.
