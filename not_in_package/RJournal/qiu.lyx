@@ -4364,6 +4364,43 @@ Limitations and solutions
  in order to use it in the best way.
 \end_layout
 
+\begin_layout Section
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+The author of this article would thank Yihui Xie for adding the support
+ for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ in his 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ package, and for his kind suggestions for this article.
+ The author would also thank Barret Schloerke who provided a lot of helpful
+ comments and corrections.
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
