@@ -78,7 +78,7 @@ dev.off()
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/Z3r9sg2.png" />
+  <img src="http://i.imgur.com/Z3r9sg2.png" alt="example1" />
 </div>
 
 The use of `intToUtf8()` is for convenience if you can't view or input
@@ -122,7 +122,7 @@ dev.off()
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/pO87LFy.png" />
+  <img src="http://i.imgur.com/pO87LFy.png" alt="example2" />
 </div>
 
 At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
