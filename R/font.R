@@ -13,10 +13,14 @@
                   dirname(getNamespaceInfo("showtext", "path"))
               else NULL;
 
-    wqy.r = system.file("fonts", "wqy-microhei.ttc",
-                        package = "showtext", lib.loc = lib.loc);
-    
-    font.add("wqy-microhei", wqy.r);
+    fontfile = system.file("fonts", "wqy-microhei.ttc.xz",
+                           package = "showtext", lib.loc = lib.loc);
+    con = xzfile(fontfile, "rb");
+    reader = readBin(con, "raw", 5177400);
+    close(con);
+    outfile = file.path(tempdir(), "wqy-microhei.ttc");
+    writeBin(reader, outfile);
+    font.add("wqy-microhei", outfile);
 
     invisible(NULL);
 }
