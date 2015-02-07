@@ -5,10 +5,9 @@
 #' \pkg{showtext} is that user can use any supported font file for
 #' the text rendering, and all text glyphs will be converted
 #' into lines and curves, thus producing device independent output in all
-#' platforms. This function would be very useful if you want to 
-#' use non-standard fonts in the graphics device (for example,
-#' pdf device dealing with Chinese characters). The usage of this
-#' function is pretty simple: just open your graphics device, and
+#' platforms. This function would be useful if you want to 
+#' use non-standard fonts in the graphics device. The usage of this
+#' function is easy: simply open the graphics device, and
 #' "claim" that you want to use \pkg{showtext} by calling this function.
 #' See the "Examples" section for details.
 #' 
