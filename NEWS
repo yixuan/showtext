@@ -1,3 +1,13 @@
+      CHANGES IN showtext VERSION 0.2-2
+
+BUG FIXES
+
+    o The included font has been compressed to reduce package size.
+
+
+
+
+
       CHANGES IN showtext VERSION 0.2-1
 
 BUG FIXES

@@ -6,11 +6,10 @@ It tries to do the following two things:
 - Use these fonts to draw text
 
 The motivation to develop this package is that using non-standard
-fonts in PDF device is neither straightforward nor easy.
-From my own experience, I find it always troublesome to create PDF
+fonts in PDF device is not straightforward, for example, to create PDF
 graphs with Chinese characters. This is because most of the standard
-fonts used by `pdf()` don't contain Chinese character glyphs, and
-even worse users could hardly use the fonts that are already installed
+fonts used by `pdf()` do not contain Chinese character glyphs, and
+users could hardly use the fonts that are already installed
 in their operating systems.
 
 The [extrafont](https://github.com/wch/extrafont) package developed by
@@ -19,11 +18,10 @@ which mainly focuses on using TrueType fonts(`.ttf`) in PDF graphics device.
 Now `showtext` is able to support more font formats and more graphics devices,
 and avoids using external software such as Ghostscript.
 
-### Why `pdf()` doesn't work and how `showtext` works
+### How `showtext` works
 Let me explain a little bit about how `pdf()` works.
 
-To my best knowledge (may be wrong, so please point it out if I make
-mistakes), the default PDF device of R doesn't "draw" the text,
+To my best knowledge, the default PDF device in R does not "draw" the text,
 but actually "describes" the text in the PDF file.
 That is to say, instead of drawing lines and curves of the actual glyph,
 it only embeds information about the text, for example what characters
@@ -31,7 +29,7 @@ it has, which font it uses, etc.
 
 However, the text with declared font may be displayed differently in
 different OS, which means that the appearance of graph created by `pdf()` is
-system dependent. If you unfortunately don't have the declared font
+system dependent. If you unfortunately do not have the declared font
 in your system, you may not be able to see the text correctly at all. 
 
 In comparison, `showtext` package tries to solve this problem by
@@ -40,12 +38,12 @@ under all platforms. More importantly, `showtext` can use system font
 files, so you can show your text in any font you want.
 This solves the Chinese character problem I mentioned in the beginning
 because I can load my favorite Chinese font to R and use that to draw
-text. Also, people who view this graph don't need to install the font
+text. Also, people who view this graph do not need to install the font
 that creates the graph. It provides convenience to both graph makers
 and graph viewers.
 
 ### The Usage
-The `showtext` package is definitely designed for lazy users.
+The `showtext` package is designed for "lazy" users.
 To create a graph using a specified font, you only need to do:
 
 - (\*) Load the font
@@ -131,7 +129,7 @@ font type is trivial as long as FreeType supports it.
 
 Note that `showtext` includes an open source CJK font
 [WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
-If you just want to show CJK text in your graph, you don't need to add any
+If you just want to show CJK text in your graph, you do not need to add any
 extra font at all.
 
 ### Known issues
