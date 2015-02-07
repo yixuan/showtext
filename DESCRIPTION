@@ -1,8 +1,8 @@
 Package: showtext
 Type: Package
 Title: Enable (any) R Graphics Device to Show Text Using System Fonts
-Version: 0.2
-Date: 2014-01-01
+Version: 0.2-1
+Date: 2015-02-07
 Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
