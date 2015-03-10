@@ -1,3 +1,4 @@
 import(sysfonts)
+import(showtextdb)
 export(showtext.begin, showtext.end)
 
