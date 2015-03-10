@@ -141,25 +141,24 @@ int GetNseg()
     return INTEGER(nseg)[0];
 }
 
-pDevDesc GetDevDesc()
+pDevDesc GetSavedDevDesc()
 {
     pDevDesc dd_save;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".dd.save", "showtext");
+    extPtr = GetVarFromPkgEnv(".dd_saved", "showtext");
     dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
 
     return dd_save;
 }
 
-pGEDevDesc GetGEDevDesc()
+pGEDevDesc GetSavedDeviceID()
 {
-    pGEDevDesc gdd_save;
+    pGEDevDesc gdd_saved;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".gdd.save", "showtext");
-    gdd_save = (pGEDevDesc) R_ExternalPtrAddr(extPtr);
+    extPtr = GetVarFromPkgEnv(".device_id", "showtext");
+    gdd_saved = (pGEDevDesc) R_ExternalPtrAddr(extPtr);
 
-    return gdd_save;
+    return gdd_saved;
 }
-

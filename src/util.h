@@ -17,10 +17,10 @@
 int utf8toucs4(unsigned int *ucs4, const char *utf8, int n);
 
 SEXP GetPkgEnv(const char *pkgName);
-pDevDesc GetDevDesc();
-pGEDevDesc GetGEDevDesc();
 FT_Face GetFTFace(const pGEcontext gc);
 FT_Outline_Funcs* GetFTOutlineFuncs();
 int GetNseg();
+pDevDesc GetSavedDevDesc();
+pGEDevDesc GetSavedDeviceID();
 
 #endif /* UTIL_H_INCLUDED */
