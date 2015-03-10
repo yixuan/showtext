@@ -80,6 +80,7 @@ SEXP showtextEnd()
     int currDev = curDevice();
     pGEDevDesc gdd;
     pDevDesc dd;
+    pDevDesc dd_saved;
     
     if(currDev == 0)
         Rf_error("no active graphics device");
@@ -92,7 +93,16 @@ SEXP showtextEnd()
     
     /* Restore dd */
     dd = gdd->dev;
-    *dd = *(GetSavedDevDesc());
+    dd_saved = GetSavedDevDesc();
+    
+    dd->canHAdj        = dd_saved->canHAdj;
+    dd->metricInfo     = dd_saved->metricInfo;
+    dd->hasTextUTF8    = dd_saved->hasTextUTF8;
+    dd->text           = dd_saved->text;
+    dd->textUTF8       = dd_saved->textUTF8;
+    dd->strWidth       = dd_saved->strWidth;
+    dd->strWidthUTF8   = dd_saved->strWidthUTF8;
+    dd->wantSymbolUTF8 = dd_saved->wantSymbolUTF8;
 
     return R_NilValue;
 }
