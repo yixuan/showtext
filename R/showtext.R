@@ -1,4 +1,4 @@
-#' Render text for R graphics devices
+#' Render Text for R Graphics Devices
 #' 
 #' Calling this function will use \pkg{showtext} to render text
 #' for the current graphics device. The main advantage of
@@ -9,7 +9,7 @@
 #' use non-standard fonts in the graphics device. The usage of this
 #' function is easy: simply open the graphics device, and
 #' "claim" that you want to use \pkg{showtext} by calling this function.
-#' See the "Examples" section for details.
+#' See the \strong{Examples} section for details.
 #' 
 #' 
 #' @param nseg parameter to control the smoothness of the outlines
@@ -44,7 +44,7 @@
 #'          that create the graph.
 #'          
 #'          Notice that this function is only effective to the current
-#'          \bold{ACTIVE} device. So to use this function, the device
+#'          \strong{ACTIVE} device. So to use this function, the device
 #'          you want to work with must have already been opened (through
 #'          functions like \code{\link[grDevices]{png}()},
 #'          \code{\link[grDevices]{pdf}()}, etc.).
@@ -111,16 +111,16 @@
 #' }
 showtext.begin = function(nseg = 10L)
 {
-    if(dev.cur() == 1) stop("no active graphics device");
-    if(nseg <= 0) stop("nseg must be positive");
-    if(nseg > 100) stop("nseg too large");
+    if(dev.cur() == 1) stop("no active graphics device")
+    if(nseg <= 0) stop("nseg must be positive")
+    if(nseg > 100) stop("nseg too large")
     
-    .pkg.env$.nseg = as.integer(nseg);
-    .Call("showtextBegin", PACKAGE = "showtext");
-    invisible(NULL);
+    .pkg.env$.nseg = as.integer(nseg)
+    .Call("showtextBegin", PACKAGE = "showtext")
+    invisible(NULL)
 }
 
-#' Turn off "showtext" text rendering
+#' Turn Off 'showtext' Text Rendering
 #' 
 #' This function will turn off the \pkg{showtext} functionality
 #' of rendering text. When you call this function, the current
@@ -135,8 +135,8 @@ showtext.begin = function(nseg = 10L)
 #' @seealso \code{\link{showtext.begin}()}
 showtext.end = function()
 {
-    if(dev.cur() == 1) stop("no active graphics device");
+    if(dev.cur() == 1) stop("no active graphics device")
     
-    .Call("showtextEnd", PACKAGE = "showtext");
-    invisible(NULL);
+    .Call("showtextEnd", PACKAGE = "showtext")
+    invisible(NULL)
 }

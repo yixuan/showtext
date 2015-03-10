@@ -2,7 +2,7 @@
 % Please edit documentation in R/showtext.R
 \name{showtext.end}
 \alias{showtext.end}
-\title{Turn off "showtext" text rendering}
+\title{Turn Off 'showtext' Text Rendering}
 \usage{
 showtext.end()
 }

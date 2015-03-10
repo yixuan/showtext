@@ -2,7 +2,7 @@
 % Please edit documentation in R/showtext.R
 \name{showtext.begin}
 \alias{showtext.begin}
-\title{Render text for R graphics devices}
+\title{Render Text for R Graphics Devices}
 \usage{
 showtext.begin(nseg = 10L)
 }
@@ -25,7 +25,7 @@ platforms. This function would be useful if you want to
 use non-standard fonts in the graphics device. The usage of this
 function is easy: simply open the graphics device, and
 "claim" that you want to use \pkg{showtext} by calling this function.
-See the "Examples" section for details.
+See the \strong{Examples} section for details.
 }
 \details{
 This package uses FreeType to load font files and render
@@ -52,7 +52,7 @@ This package uses FreeType to load font files and render
          that create the graph.
 
          Notice that this function is only effective to the current
-         \bold{ACTIVE} device. So to use this function, the device
+         \strong{ACTIVE} device. So to use this function, the device
          you want to work with must have already been opened (through
          functions like \code{\link[grDevices]{png}()},
          \code{\link[grDevices]{pdf}()}, etc.).
