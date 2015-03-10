@@ -4,6 +4,7 @@
 \section{Changes in showtext version 0.3}{
   \itemize{
     \item Font files have been moved to the \pkg{showtextdb} package
+    \item Fixed potential problem that may crash the graphics device
   }
 }
 
@@ -15,8 +16,8 @@
 
 \section{Changes in showtext version 0.2-1}{
   \itemize{
-    \item Updates README
-    \item Eliminates some warnings of CRAN check
+    \item Updated README
+    \item Eliminated some warnings of CRAN check
   }
 }
 
