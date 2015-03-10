@@ -8,7 +8,8 @@ SEXP showtextNullPointer()
 {
     SEXP extPtr;
 
-    extPtr = R_MakeExternalPtr(NULL, R_NilValue, R_NilValue);
+    extPtr = PROTECT(R_MakeExternalPtr(NULL, R_NilValue, R_NilValue));
+    UNPROTECT(1);
     return extPtr;
 }
 
@@ -17,14 +18,15 @@ SEXP showtextNewDevDesc()
     pDevDesc dd_save = (pDevDesc) calloc(1, sizeof(DevDesc));
     SEXP extPtr;
 
-    extPtr = R_MakeExternalPtr(dd_save, R_NilValue, R_NilValue);
+    extPtr = PROTECT(R_MakeExternalPtr(dd_save, R_NilValue, R_NilValue));
+    UNPROTECT(1);
     return extPtr;
 }
 
 SEXP showtextFreeDevDesc(SEXP extPtr)
 {
-    pDevDesc dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
-    if(dd_save) free(dd_save);
+    pDevDesc dd_saved = (pDevDesc) R_ExternalPtrAddr(extPtr);
+    if(dd_saved) free(dd_saved);
     
     return R_NilValue;
 }
