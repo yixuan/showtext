@@ -156,7 +156,7 @@ void showtextTextUTF8(double x, double y, const char *str, double rot, double ha
                     y_ptr++;
                 }
             } else {
-                Rf_error("device should at least provide the line() function");
+                Rf_error("device should be capable of path(), polygon() or line()");
             }
         }
         ArrayDestroy(data.outline_x);
