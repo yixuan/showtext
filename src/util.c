@@ -126,7 +126,7 @@ FT_Outline_Funcs* GetFTOutlineFuncs()
     FT_Outline_Funcs *funs;
     SEXP extPtr;
 
-    extPtr = GetVarFromPkgEnv(".outline.funs", "showtext");
+    extPtr = GetVarFromPkgEnv(".outline_funs", "showtext");
     funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
 
     return funs;

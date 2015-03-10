@@ -61,8 +61,7 @@ typedef struct
 
 
 // transform point, i.e., rotate by theta and translate by (x, y)
-void transformPoint(Point *before, Point *after,
-                    TransData *trans);
+void transformPoint(Point *before, Point *after, TransData *trans);
 
 // Outline drawing functions used by FT_Outline_Decompose()
 int outlineMoveTo(const FT_Vector* to, void* user);

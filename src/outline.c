@@ -1,7 +1,6 @@
 #include "outline.h"
 
-void transformPoint(Point *before, Point *after,
-                    TransData *trans)
+void transformPoint(Point *before, Point *after, TransData *trans)
 {
     /* degree to radian */
     double rad = trans->theta * DEG2RAD; /* from R_ext/GraphicsEngine.h */
@@ -188,7 +187,7 @@ void errorcode(FT_Error err)
     }
 }
 
-SEXP showtextLoadOutlineFuns()
+SEXP showtextNewOutlineFuns()
 {
     FT_Outline_Funcs *funs = (FT_Outline_Funcs *) calloc(1, sizeof(FT_Outline_Funcs));
     SEXP extPtr;
@@ -200,11 +199,13 @@ SEXP showtextLoadOutlineFuns()
     funs->shift = 0;
     funs->delta = 0;
     
-    extPtr = R_MakeExternalPtr(funs, R_NilValue, R_NilValue);
+    extPtr = PROTECT(R_MakeExternalPtr(funs, R_NilValue, R_NilValue));
+    UNPROTECT(1);
+    
     return extPtr;
 }
 
-SEXP showtextCleanOutlineFuns(SEXP extPtr)
+SEXP showtextFreeOutlineFuns(SEXP extPtr)
 {
     FT_Outline_Funcs *funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
     if(funs) free(funs);

@@ -1,7 +1,7 @@
 LIBRARY showtext.dll
 EXPORTS
- showtextLoadOutlineFuns
- showtextCleanOutlineFuns
+ showtextNewOutlineFuns
+ showtextFreeOutlineFuns
  showtextNullPointer
  showtextNewDevDesc
  showtextFreeDevDesc

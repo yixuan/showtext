@@ -1,8 +1,7 @@
 .onLoad <- function(libname, pkgname) {
     library.dynam("showtext", pkgname, libname)
     .add.default.font()
-    .pkg.env$.outline.funs = .Call("showtextLoadOutlineFuns",
-                                   PACKAGE = "showtext")
+    .pkg.env$.outline_funs = .Call("showtextNewOutlineFuns", PACKAGE = "showtext")
     .pkg.env$.nseg = 10L
     ## The identifier of the device on which showtext.begin() is called.
     ## Initialized to be a null pointer.
@@ -11,7 +10,7 @@
 }
 
 .onUnload <- function(libpath) {
-    .Call("showtextCleanOutlineFuns", .pkg.env$.outline.funs,
+    .Call("showtextFreeOutlineFuns", .pkg.env$.outline_funs,
           PACKAGE = "showtext")
     .Call("showtextFreeDevDesc", .pkg.env$.dd_saved, PACKAGE = "showtext")
     library.dynam.unload("showtext", libpath)
