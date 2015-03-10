@@ -4,7 +4,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
 double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd);
 void showtextTextUTF8(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd);
 
-SEXP showtextReturnNullPointer()
+SEXP showtextNullPointer()
 {
     SEXP extPtr;
 
@@ -12,7 +12,7 @@ SEXP showtextReturnNullPointer()
     return extPtr;
 }
 
-SEXP showtextLoadDevDesc()
+SEXP showtextNewDevDesc()
 {
     pDevDesc dd_save = (pDevDesc) calloc(1, sizeof(DevDesc));
     SEXP extPtr;
@@ -21,7 +21,7 @@ SEXP showtextLoadDevDesc()
     return extPtr;
 }
 
-SEXP showtextCleanDevDesc(SEXP extPtr)
+SEXP showtextFreeDevDesc(SEXP extPtr)
 {
     pDevDesc dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
     if(dd_save) free(dd_save);
@@ -31,22 +31,34 @@ SEXP showtextCleanDevDesc(SEXP extPtr)
 
 SEXP showtextBegin()
 {
+    /* currDev is an integer assigned to the current graphics device.
+       If currDev == 1, then there is no active device, since the null
+       device is always assigned the number 0. */
     int currDev = curDevice();
     SEXP extPtr;
+    /* gdd serves as the identifier of a graphics device. We need an id
+       for each device since showtext.begin() and showtext.end() must
+       work on the same graphics device.
+    
+       When calling showtext.begin(), we save the gdd of the current device
+       to the package database(showtext:::.pkg.env), and in the call of
+       showtext.end(), we compare it with the active device at that time. */
     pGEDevDesc gdd;
+    /* The device structure that we want to modify */
     pDevDesc dd;
     
     if(currDev == 0)
         Rf_error("no active graphics device");
-        
+
+    /* Save the current gdd to showtext:::.pkg.env */
     gdd = GEgetDevice(currDev);
-    dd = gdd->dev;
+    extPtr = PROTECT(R_MakeExternalPtr(gdd, R_NilValue, R_NilValue));
+    Rf_setVar(install(".device_id"), extPtr, GetPkgEnv("showtext"));
+    UNPROTECT(1);
     
-    /* Save the current gdd */
-    extPtr = R_MakeExternalPtr(gdd, R_NilValue, R_NilValue);
-    Rf_setVar(install(".gdd.save"), extPtr, GetPkgEnv("showtext"));
     /* Save the current dd */
-    *(GetDevDesc()) = *dd;
+    dd = gdd->dev;
+    *(GetSavedDevDesc()) = *dd;
     
     /* Replace the text functions */
     dd->canHAdj = TRUE;
@@ -71,15 +83,14 @@ SEXP showtextEnd()
         Rf_error("no active graphics device");
         
     gdd = GEgetDevice(currDev);
-    dd = gdd->dev;
-    
-    if(gdd != GetGEDevDesc())
+    if(gdd != GetSavedDeviceID())
     {
         Rf_error("current device does not match the one that uses showtext.begin()");
     }
     
     /* Restore dd */
-    *dd = *(GetDevDesc());
+    dd = gdd->dev;
+    *dd = *(GetSavedDevDesc());
 
     return R_NilValue;
 }
