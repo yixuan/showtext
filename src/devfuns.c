@@ -1,3 +1,4 @@
+#include "fonts.h"
 #include "outline.h"
 #include "util.h"
 
@@ -19,7 +20,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)
     {
-        errorcode(err);
+        FTError(err);
         *ascent = *descent = *width = 0.0;
         return;
     }
@@ -50,7 +51,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
         if(err)
         {
-            errorcode(err);
+            FTError(err);
             continue;
         }
         width += face->glyph->metrics.horiAdvance * ratio;
@@ -103,14 +104,14 @@ void showtextTextUTF8(double x, double y, const char *str, double rot, double ha
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
         if(err)
         {
-            errorcode(err);
+            FTError(err);
             continue;
         }
         outline = face->glyph->outline;
         err = FT_Outline_Decompose(&outline, funs, &data);
         if(err)
         {
-            errorcode(err);
+            FTError(err);
             ArrayDestroy(data.outline_x);
             ArrayDestroy(data.outline_y);
             data.outline_x = ArrayNew(100);

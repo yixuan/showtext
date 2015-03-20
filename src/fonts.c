@@ -134,7 +134,8 @@ void FTError(FT_Error err)
 void GetCharMetrics(FT_Face face, unsigned int ch,
                     int *bearingY, int *tail, int *advance)
 {
-    FT_Error error = FT_Load_Char(face, ch, FT_LOAD_RENDER);
+    FT_Error err = FT_Load_Char(face, ch, FT_LOAD_RENDER);
+    if(err)  FTError(err);
     *bearingY = face->glyph->bitmap_top;
     *tail = face->glyph->bitmap.rows - *bearingY;
     *advance = face->glyph->advance.x / 64;
