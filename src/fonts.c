@@ -1,5 +1,7 @@
 #include "fonts.h"
 #include "utf8.h"
+#include "util.h"
+
 
 int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
 {
