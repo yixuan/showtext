@@ -1,18 +1,7 @@
 #ifndef OUTLINE_H_INCLUDED
 #define OUTLINE_H_INCLUDED
 
-#include <R.h>
-#include <Rdefines.h>
-#include <Rinternals.h>
-
-#define R_USE_PROTOTYPES 1
-#include <R_ext/GraphicsEngine.h>
-#include <R_ext/GraphicsDevice.h>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-
+#include "fonts.h"
 #include "array.h"
 
 // FreeType will draw characters around the origin (0, 0).
@@ -70,7 +59,5 @@ int outlineConicTo(const FT_Vector* control, const FT_Vector* to, void* user);
 int outlineCubicTo(const FT_Vector* control1, const FT_Vector* control2,
                    const FT_Vector* to, void* user);
 
-// Warning/Error message of FreeType
-void errorcode(FT_Error err);
 
 #endif /* OUTLINE_H_INCLUDED */

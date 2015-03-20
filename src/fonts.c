@@ -91,3 +91,68 @@ FT_Face GetFTFace(const pGEcontext gc)
     
     return font->face;
 }
+
+/* Errors that may occur in loading font characters.
+   Here we just give warnings. */
+void FTError(FT_Error err)
+{
+    switch(err)
+    {
+        case 0x10:
+            Rf_warning("freetype: invalid glyph index");
+            break;
+        case 0x11:
+            Rf_warning("freetype: invalid character code");
+            break;
+        case 0x12:
+            Rf_warning("freetype: unsupported glyph image format");
+            break;
+        case 0x13:
+            Rf_warning("freetype: cannot render this glyph format");
+            break;
+        case 0x14:
+            Rf_warning("freetype: invalid outline");
+            break;
+        case 0x15:
+            Rf_warning("freetype: invalid composite glyph");
+            break;
+        case 0x16:
+            Rf_warning("freetype: too many hints");
+            break;
+        case 0x17:
+            Rf_warning("freetype: invalid pixel size");
+            break;
+        default:
+            Rf_warning("freetype: error code %d", err);
+            break;
+    }
+}
+
+/* bearingY is the vertical distance from the baseline to the top of the glyph
+   tail is the vertical distance from the baseline to the bottom of the glyph
+   Both are positive integers */
+void GetCharMetrics(FT_Face face, unsigned int ch,
+                    int *bearingY, int *tail, int *advance)
+{
+    FT_Error error = FT_Load_Char(face, ch, FT_LOAD_RENDER);
+    *bearingY = face->glyph->bitmap_top;
+    *tail = face->glyph->bitmap.rows - *bearingY;
+    *advance = face->glyph->advance.x / 64;
+}
+
+void GetStringMetrics(FT_Face face, const unsigned int *str, int nchar,
+                      int *bearingY, int *tail, int *advance)
+{
+    int charBearingY, charTail, charAdvance;
+    *bearingY = 0;
+    *tail = 0;
+    *advance = 0;
+
+    for(int i = 0; i < nchar; i++)
+    {
+        GetCharMetrics(face, str[i], &charBearingY, &charTail, &charAdvance);
+        if(charBearingY > *bearingY)  *bearingY = charBearingY;
+        if(charTail > *tail)  *tail = charTail;
+        *advance += charAdvance;
+    }
+}
