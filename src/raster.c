@@ -22,7 +22,8 @@ void FreeRasterData(RasterData *rd)
 /* Write bitmap to the matrix
    The upper-left corner of the bitmap will be written to matrix(i, j),
    i.e., matrix(i + s, j + t) = buffer(s, t) */
-static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj)
+static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj,
+                        const pGEcontext gc)
 {
     /* Bitmap is stored by row, starting from the upperleft corner.
        Therefore, the pixel in the p-th row and q-th column (0-based) is
@@ -38,14 +39,18 @@ static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj
             if(i < 0 || j < 0 || i >= mat_nrow || j >= mat_ncol)
                 continue;
 
-            unsigned int scale = 255 - bitmap->buffer[p * bitmap->pitch + q];
+            unsigned char intensity = bitmap->buffer[p * bitmap->pitch + q];
             /* RasterData is also stored by row */
-            mat->data[i * mat_ncol + j] = R_RGBA(scale, scale, scale, 255);
+            mat->data[i * mat_ncol + j] = R_RGBA(R_RED(gc->col),
+                                                 R_GREEN(gc->col),
+                                                 R_BLUE(gc->col),
+                                                 (R_ALPHA(gc->col) * intensity) / 255);
         }
     }
 }
 
-RasterData* GetStringRasterImage(unsigned int *unicode, int nchar, int size, const pGEcontext gc)
+RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
+                                 int psizeX, int psizeY, const pGEcontext gc)
 {
     FT_Face face = GetFTFace(gc);
     FT_GlyphSlot slot = face->glyph;
@@ -64,7 +69,7 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar, int size, con
     RasterData* rd;
     
     /* Set pixel size */
-    err = FT_Set_Pixel_Sizes(face, size, size);
+    err = FT_Set_Pixel_Sizes(face, psizeX, psizeY);
     if(err)  FTError(err);
 
     /* Get metric information */
@@ -76,7 +81,7 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar, int size, con
     {
         FT_Load_Char(face, unicode[i], FT_LOAD_RENDER);
         mi = bearingY - slot->bitmap_top;
-        WriteMatrix(&(slot->bitmap), rd, mi, mj + slot->bitmap_left);
+        WriteMatrix(&(slot->bitmap), rd, mi, mj + slot->bitmap_left, gc);
         mj += slot->advance.x / 64;
     }
     

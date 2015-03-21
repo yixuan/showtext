@@ -12,8 +12,8 @@ typedef struct rasterData {
 RasterData* NewRasterData(int nrow, int ncol);
 void FreeRasterData(RasterData *rd);
 
-RasterData* GetStringRasterImage(unsigned int *unicode, int nchar, int size,
-                                 const pGEcontext gc);
+RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
+                                 int psizeX, int psizeY, const pGEcontext gc);
 
 
 #endif /* RASTER_H_INCLUDED */
