@@ -1,3 +1,25 @@
+showtext.opts = function(...)
+{
+    old_opts = list(nseg = .pkg.env$.nseg, dpi = .pkg.env$.dpi)
+    
+    opts = list(...)
+    if("nseg" %in% names(opts))  nseg = opts$nseg  else  nseg = old_opts$nseg
+    if("dpi" %in% names(opts))  dpi = opts$dpi  else  dpi = old_opts$dpi
+    
+    nseg = as.integer(nseg)
+    dpi = as.integer(rep_len(dpi, length.out = 2))
+    
+    if(nseg <= 0) stop("nseg must be positive")
+    if(nseg > 100) stop("nseg too large")
+    if(any(dpi <= 0)) stop("dpi must be positive")
+    
+    .pkg.env$.nseg = nseg
+    .pkg.env$.dpi = dpi
+    
+    invisible(old_opts)
+}
+
+
 #' Render Text for R Graphics Devices
 #' 
 #' Calling this function will use \pkg{showtext} to render text

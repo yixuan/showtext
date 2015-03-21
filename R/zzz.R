@@ -8,6 +8,7 @@
     
     ## Similar to above. The data can be set by R and accessed by C easily.
     .pkg.env$.nseg = 10L
+    .pkg.env$.dpi = c(96L, 96L)
     
     ## The identifier of the device on which showtext.begin() is called.
     ## Initialized to be a null pointer.
