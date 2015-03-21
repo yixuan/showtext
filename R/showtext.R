@@ -134,6 +134,15 @@ showtext.opts = function(...)
 showtext.begin = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
+    
+    ## For some bitmap and on-screen devices, we use raster image
+    ## instead of polygon to draw text
+    device_using_raster = c("png", "PNG", "jpeg", "tiff", "bmp",
+                            "X11", "X11cairo")
+    if(names(dev.cur()) %in% device_using_raster)
+        .pkg.env$.use_raster = TRUE
+    else
+        .pkg.env$.use_raster = FALSE
 
     .Call("showtextBegin", PACKAGE = "showtext")
     invisible(NULL)
