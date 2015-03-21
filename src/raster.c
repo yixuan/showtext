@@ -46,9 +46,7 @@ static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj
 
             unsigned char intensity = bitmap->buffer[p * bitmap->pitch + q];
             /* RasterData is also stored by row */
-            if(intensity == 0)
-                mat->data[i * mat_ncol + j] = R_TRANWHITE;
-            else
+            if(intensity > 0)
                 mat->data[i * mat_ncol + j] = R_RGBA(R_RED(gc->col),
                                                      R_GREEN(gc->col),
                                                      R_BLUE(gc->col),
@@ -62,15 +60,12 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
 {
     FT_Face face = GetFTFace(gc);
     FT_GlyphSlot slot = face->glyph;
+    FT_Matrix trans;
+    FT_Vector pen;
     FT_Error err;
     
-    /* How many rows above baseline */
-    int bearingY;
-    /* How many rows below baseline */
-    int tail;
-    /* How many columns */
-    int advance;
-    /* Enty to be written */
+    /* String bounding box */
+    int xmin, xmax, ymin, ymax;
     int mi = 0, mj = 0, i;
     
     /* Raster data */
@@ -80,18 +75,33 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
     err = FT_Set_Pixel_Sizes(face, psizeX, psizeY);
     if(err)  FTError(err);
 
-    /* Get metric information */
-    GetStringMetrics(face, unicode, nchar, &bearingY, &tail, &advance);
+    /* Get bounding box */
+    GetStringBBox(face, unicode, nchar, 0.0, &xmin, &xmax, &ymin, &ymax);
+    
+    /* Set transformation */
+    trans.xx = trans.yy = (FT_Fixed)( cos(0.0) * 0x10000L);
+    trans.xy = (FT_Fixed)(-sin(0.0) * 0x10000L);
+    trans.yx = -trans.xy;
+    pen.x = pen.y = 0;
     
     /* Create raster data */
-    rd = NewRasterData(bearingY + tail, advance);
+    rd = NewRasterData(ymax - ymin, xmax - xmin);
     for(i = 0; i < nchar; i++)
     {
+        FT_Set_Transform(face, &trans, &pen);
         FT_Load_Char(face, unicode[i], FT_LOAD_RENDER);
-        mi = bearingY - slot->bitmap_top;
-        WriteMatrix(&(slot->bitmap), rd, mi, mj + slot->bitmap_left, gc);
-        mj += slot->advance.x / 64;
+        mi = ymax - slot->bitmap_top;
+        mj = slot->bitmap_left - xmin;
+        WriteMatrix(&(slot->bitmap), rd, mi, mj, gc);
+        pen.x += slot->advance.x;
+        pen.y += slot->advance.y;
     }
+    
+    /* Restore to identity */
+    trans.xx = trans.yy = 0x10000L;
+    trans.xy = trans.yx = 0;
+    pen.x = pen.y = 0;
+    FT_Set_Transform(face, &trans, &pen);
     
     return rd;
 }

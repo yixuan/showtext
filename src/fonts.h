@@ -29,13 +29,9 @@ FT_Face GetFTFace(const pGEcontext gc);
 /* Warning/Error message of FreeType */
 void FTError(FT_Error err);
 
-/* Get the font metrics of a character */
-void GetCharMetrics(FT_Face face, unsigned int ch,
-                    int *bearingY, int *tail, int *advance);
-
-/* Get the font metrics of a string */
-void GetStringMetrics(FT_Face face, const unsigned int *str, int nchar,
-                      int *bearingY, int *tail, int *advance);
+/* Get the bounding box of a string */
+void GetStringBBox(FT_Face face, const unsigned int *str, int nchar, double rot,
+                   int *xmin, int *xmax, int *ymin, int *ymax);
 
 
 #endif /* FONTS_H_INCLUDED */
