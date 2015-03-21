@@ -1,8 +1,5 @@
+#include "devfuns.h"
 #include "util.h"
-
-void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* descent, double* width, pDevDesc dd);
-double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd);
-void showtextTextUTF8(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd);
 
 SEXP showtextNullPointer()
 {
@@ -63,11 +60,17 @@ SEXP showtextBegin()
     *(GetSavedDevDesc()) = *dd;
     
     /* Replace the text functions */
-    dd->canHAdj = TRUE;
+    dd->canHAdj = 2;
     dd->metricInfo = showtextMetricInfo;
     dd->hasTextUTF8 = TRUE;
-    dd->text = showtextTextUTF8;
-    dd->textUTF8 = showtextTextUTF8;
+    if(UseRaster())
+    {
+        dd->text = showtextTextUTF8Raster;
+        dd->textUTF8 = showtextTextUTF8Raster;
+    } else {
+        dd->text = showtextTextUTF8Polygon;
+        dd->textUTF8 = showtextTextUTF8Polygon;
+    }
     dd->strWidth = showtextStrWidthUTF8;
     dd->strWidthUTF8 = showtextStrWidthUTF8;
     dd->wantSymbolUTF8 = TRUE;

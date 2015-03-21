@@ -1,4 +1,5 @@
-#include "fonts.h"
+#include "devfuns.h"
+#include "raster.h"
 #include "outline.h"
 #include "util.h"
 
@@ -60,7 +61,31 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
     return width;
 }
 
-void showtextTextUTF8(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
+void showtextTextUTF8Raster(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
+{
+    /* Convert UTF-8 string to Unicode array */
+    int maxLen = strlen(str);
+    unsigned int *unicode =
+        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, maxLen);
+    
+    /* Calculate pixel size on X and Y */
+    int px = (int) (gc->ps * gc->cex * GetDPIX() / 72.0 + 0.5);
+    int py = (int) (gc->ps * gc->cex * GetDPIY() / 72.0 + 0.5);
+    RasterData *rd = GetStringRasterImage(unicode, len, px, py, gc);
+    
+    /* raster() rotates around the bottom-left corner,
+       and text() rotates around teh adj center. */
+    int transSign = dd->bottom > dd->top ? -1: 1;
+    double transX = x - hadj * rd->ncol * cos(rot * DEG2RAD);
+    double transY = y - hadj * rd->ncol * transSign * sin(rot * DEG2RAD);  
+
+    dd->raster(rd->data, rd->ncol, rd->nrow,
+               transX, transY, rd->ncol, -rd->nrow, rot, FALSE, gc, dd);
+    FreeRasterData(rd);
+}
+
+void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
     int maxLen = strlen(str);
