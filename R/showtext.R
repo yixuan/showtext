@@ -138,7 +138,7 @@ showtext.begin = function()
     ## For some bitmap and on-screen devices, we use raster image
     ## instead of polygon to draw text
     device_using_raster = c("png", "PNG", "jpeg", "tiff", "bmp",
-                            "X11", "X11cairo")
+                            "X11", "X11cairo", "windows")
     if(names(dev.cur()) %in% device_using_raster)
         .pkg.env$.use_raster = TRUE
     else
