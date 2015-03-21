@@ -49,6 +49,20 @@ int GetNseg()
     return INTEGER(nseg)[0];
 }
 
+int GetDPIX()
+{
+    SEXP dpi = GetVarFromPkgEnv(".dpi", "showtext");
+
+    return INTEGER(dpi)[0];
+}
+
+int GetDPIY()
+{
+    SEXP dpi = GetVarFromPkgEnv(".dpi", "showtext");
+
+    return INTEGER(dpi)[1];
+}
+
 pDevDesc GetSavedDevDesc()
 {
     pDevDesc dd_save;

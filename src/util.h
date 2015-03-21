@@ -19,6 +19,8 @@ SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName);
 SEXP GetPkgEnv(const char *pkgName);
 FT_Outline_Funcs* GetFTOutlineFuncs();
 int GetNseg();
+int GetDPIX();
+int GetDPIY();
 pDevDesc GetSavedDevDesc();
 pGEDevDesc GetSavedDeviceID();
 
