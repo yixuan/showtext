@@ -13,7 +13,9 @@ RasterData* NewRasterData(int nrow, int ncol);
 void FreeRasterData(RasterData *rd);
 
 RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
-                                 int psizeX, int psizeY, const pGEcontext gc);
+                                 int psizeX, int psizeY,
+                                 double rot, double hadj, const pGEcontext gc,
+                                 double *centerH, double *centerV);
 
 
 #endif /* RASTER_H_INCLUDED */

@@ -56,7 +56,9 @@ static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj
 }
 
 RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
-                                 int psizeX, int psizeY, const pGEcontext gc)
+                                 int psizeX, int psizeY,
+                                 double rad, double hadj, const pGEcontext gc,
+                                 double *centerH, double *centerV)
 {
     FT_Face face = GetFTFace(gc);
     FT_GlyphSlot slot = face->glyph;
@@ -64,23 +66,42 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
     FT_Vector pen;
     FT_Error err;
     
-    /* String bounding box */
+    /* String bounding box, in Cartesian system */
     int xmin, xmax, ymin, ymax;
-    int mi = 0, mj = 0, i;
-    
+    /* Alignment center, in Cartesian system */
+    double cx, cy;
+    /* Rotation coefficients */
+    double sinr = sin(rad), cosr = cos(rad);
     /* Raster data */
     RasterData* rd;
+    /* Entry point of the raster data to be written to */
+    int mi = 0, mj = 0, i;
     
     /* Set pixel size */
     err = FT_Set_Pixel_Sizes(face, psizeX, psizeY);
     if(err)  FTError(err);
 
-    /* Get bounding box */
+    /* Get bounding box when no transformation is applied */
     GetStringBBox(face, unicode, nchar, 0.0, &xmin, &xmax, &ymin, &ymax);
+    /* Calculate the alignment center before transformation */
+    cx = hadj * xmax + (1 - hadj) * xmin;
+    cy = 0.0;
+    /* Obtain the center after transformation */
+    /* x' = x * cos(r) - y * sin(r) */
+    /* y' = x * sin(r) + y * cos(r) */
+    cy = cx * sinr;
+    cx = cx * cosr;
+    
+    /* Calculate bounding box when transformation is applied */
+    GetStringBBox(face, unicode, nchar, rad, &xmin, &xmax, &ymin, &ymax);
+    /* Calculate the horizontal and vertical distance from the alignment center
+       to the bottom-left corner of the (new) bounding box */
+    *centerH = cx - xmin;
+    *centerV = cy - ymin;
     
     /* Set transformation */
-    trans.xx = trans.yy = (FT_Fixed)( cos(0.0) * 0x10000L);
-    trans.xy = (FT_Fixed)(-sin(0.0) * 0x10000L);
+    trans.xx = trans.yy = (FT_Fixed)(cosr * 0x10000L);
+    trans.xy = (FT_Fixed)(-sinr * 0x10000L);
     trans.yx = -trans.xy;
     pen.x = pen.y = 0;
     

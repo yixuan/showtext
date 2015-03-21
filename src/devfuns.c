@@ -69,19 +69,21 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
         (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
     int len = utf8toucs4(unicode, str, maxLen);
     
+    /* raster() rotates around the bottom-left corner,
+       and text() rotates around the center indicated by hadj. */
+    int transSign = dd->bottom > dd->top ? -1: 1;
+    double transX, transY;
+    
     /* Calculate pixel size on X and Y */
     int px = (int) (gc->ps * gc->cex * GetDPIX() / 72.0 + 0.5);
     int py = (int) (gc->ps * gc->cex * GetDPIY() / 72.0 + 0.5);
-    RasterData *rd = GetStringRasterImage(unicode, len, px, py, gc);
     
-    /* raster() rotates around the bottom-left corner,
-       and text() rotates around teh adj center. */
-    int transSign = dd->bottom > dd->top ? -1: 1;
-    double transX = x - hadj * rd->ncol * cos(rot * DEG2RAD);
-    double transY = y - hadj * rd->ncol * transSign * sin(rot * DEG2RAD);  
+    /* Get raster data */
+    RasterData *rd = GetStringRasterImage(unicode, len, px, py,
+        rot * DEG2RAD, hadj, gc, &transX, &transY); 
 
     dd->raster(rd->data, rd->ncol, rd->nrow,
-               transX, transY, rd->ncol, -rd->nrow, rot, FALSE, gc, dd);
+               x - transX, y - transSign * transY, rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
     FreeRasterData(rd);
 }
 
