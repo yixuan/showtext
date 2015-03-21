@@ -4,9 +4,14 @@
 RasterData* NewRasterData(int nrow, int ncol)
 {
     RasterData *rd = (RasterData *) malloc(sizeof(RasterData));
+    int i;
+    
     rd->nrow = nrow;
     rd->ncol = ncol;
     rd->data = (unsigned int *) calloc(nrow * ncol, sizeof(unsigned int));
+    /* Fill data with transparent white */
+    for(i = 0; i < nrow * ncol; i++)
+        rd->data[i] = R_TRANWHITE;
     
     return rd;
 }
@@ -41,10 +46,13 @@ static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj
 
             unsigned char intensity = bitmap->buffer[p * bitmap->pitch + q];
             /* RasterData is also stored by row */
-            mat->data[i * mat_ncol + j] = R_RGBA(R_RED(gc->col),
-                                                 R_GREEN(gc->col),
-                                                 R_BLUE(gc->col),
-                                                 (R_ALPHA(gc->col) * intensity) / 255);
+            if(intensity == 0)
+                mat->data[i * mat_ncol + j] = R_TRANWHITE;
+            else
+                mat->data[i * mat_ncol + j] = R_RGBA(R_RED(gc->col),
+                                                     R_GREEN(gc->col),
+                                                     R_BLUE(gc->col),
+                                                     (R_ALPHA(gc->col) * intensity) / 255);
         }
     }
 }
