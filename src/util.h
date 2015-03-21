@@ -23,5 +23,6 @@ int GetDPIX();
 int GetDPIY();
 pDevDesc GetSavedDevDesc();
 pGEDevDesc GetSavedDeviceID();
+Rboolean UseRaster();
 
 #endif /* UTIL_H_INCLUDED */

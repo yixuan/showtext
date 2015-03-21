@@ -80,3 +80,10 @@ pGEDevDesc GetSavedDeviceID()
 
     return gdd_saved;
 }
+
+Rboolean UseRaster()
+{
+    SEXP use_raster = GetVarFromPkgEnv(".use_raster", "showtext");
+
+    return LOGICAL(use_raster)[0];
+}

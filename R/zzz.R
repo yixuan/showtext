@@ -16,6 +16,12 @@
     
     ## Device data to be saved
     .pkg.env$.dd_saved = .Call("showtextNewDevDesc", PACKAGE = "showtext")
+    
+    ## Whether to use raster image to draw text, or to use polygons
+    ## Using raster image is suitable for bitmap devices without anti-alias
+    ## feature, such as png(), jpeg(), tiff(), bmp(), and on-screen devices
+    ## Drawing text with polygons is appropriate for vector graphics like pdf()
+    .pkg.env$.use_raster = FALSE
 }
 
 .onUnload <- function(libpath) {
