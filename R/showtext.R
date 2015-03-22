@@ -1,8 +1,74 @@
+#' Setting Options for 'showtext' package
+#' 
+#' This function sets parameters that will affect the apprearance of the
+#' graphs created with \pkg{showtext}.
+#' 
+#' @param \dots Options to be set, expressed in \code{name = value} pairs.
+#'              It can also be a list containing these pairs (for example,
+#'              the list returned by a previous call of \code{showtext.opts()}).
+#'              Currently accepted parameters are \code{nseg} and \code{dpi}.
+#'              See the \strong{Options Used} section.
+#' 
+#' @section Options Used:
+#' \describe{
+#'     \item{\code{nseg}}{Parameter to control the smoothness of the outlines
+#'                        of glyphs, typically used in vector graphics devices
+#'                        such as \code{pdf()} and \code{svg()}.
+#'                        It is the number of line segments to approximate
+#'                        a piece of curve in the glyph. The larger \code{nseg} is,
+#'                        the smoother text outlines would be, but also with
+#'                        larger file size for vector graphics. Usually a value
+#'                        between 5~20 would be enough.}
+#'     \item{\code{dpi}}{A vector of length one or two, giving the resolution
+#'                       of the device in horizontal and vertical directions.
+#'                       If only one number is given, it will be used for both
+#'                       directions. This parameter is only used in bitmap
+#'                       and on-screen graphics devices such as \code{png()} and
+#'                       \code{x11()}, to determine the pixel size of text from
+#'                       point size. For example, if \code{dpi} is set to 96,
+#'                       then a character with 12 point size will have a pixel
+#'                       size of \code{12 * 96 / 72 = 16}.}
+#' }
+#' @export
+#' 
+#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' 
+#' @examples \dontrun{
+#' ## Set dpi to 200
+#' op = showtext.opts(dpi = 200)
+#' 
+#' png("dpi_200.png", 800, 800, res = 200)
+#' par(family = "sans")
+#' showtext.begin()
+#' 
+#' set.seed(123)
+#' plot(density(rnorm(100)))
+#' 
+#' showtext.end()
+#' dev.off()
+#' 
+#' ## Restore old options
+#' showtext.opts(op)
+#' 
+#' png("dpi_96.png", 800, 800, res = 96)
+#' par(family = "sans")
+#' showtext.begin()
+#' 
+#' set.seed(123)
+#' plot(density(rnorm(100)))
+#' 
+#' showtext.end()
+#' dev.off()
+#' }
 showtext.opts = function(...)
 {
     old_opts = list(nseg = .pkg.env$.nseg, dpi = .pkg.env$.dpi)
     
     opts = list(...)
+    ## If ... is a list containing the parameter components
+    ## (usually returned by a previous showtext.opts() call)
+    if(length(opts) == 1 && is.list(opts[[1]]))
+        opts = opts[[1]]
     if("nseg" %in% names(opts))  nseg = opts$nseg  else  nseg = old_opts$nseg
     if("dpi" %in% names(opts))  dpi = opts$dpi  else  dpi = old_opts$dpi
     
@@ -25,22 +91,15 @@ showtext.opts = function(...)
 #' Calling this function will use \pkg{showtext} to render text
 #' for the current graphics device. The main advantage of
 #' \pkg{showtext} is that user can use any supported font file for
-#' the text rendering, and all text glyphs will be converted
-#' into lines and curves, thus producing device independent output in all
-#' platforms. This function would be useful if you want to 
-#' use non-standard fonts in the graphics device. The usage of this
-#' function is easy: simply open the graphics device, and
-#' "claim" that you want to use \pkg{showtext} by calling this function.
+#' the text rendering, and text glyphs will be converted
+#' into polygons (for vector graphics) or raster images
+#' (for bitmap and on-screen graphics),
+#' thus producing device independent output on all platforms.
+#' This function would be useful if you want to use non-standard fonts
+#' in the graphics device. The usage of this function is easy:
+#' simply open the graphics device, and "claim" that you want to use
+#' \pkg{showtext} by calling this function.
 #' See the \strong{Examples} section for details.
-#' 
-#' 
-#' @param nseg parameter to control the smoothness of the outlines
-#'             of glyphs. It is the number
-#'             of segments of lines to approximate each piece of curve
-#'             in the glyph. The larger \code{nseg} is, the
-#'             better visual perception would be, but also with larger
-#'             file size for vector graphics. Usually a value
-#'             between 5~20 would be enough.
 #' 
 #' @details This package uses FreeType to load font files and render
 #'          text characters. The font loading part is done by function
@@ -58,12 +117,11 @@ showtext.opts = function(...)
 #'          text rendering functions contained in the current device.
 #'          \pkg{showtext} will first use FreeType to analyze the
 #'          outline of each character in the text, and then call some
-#'          low-level drawing functions (e.g., functions to draw
-#'          polygons and lines) in the current device to draw
+#'          low-level drawing functions in the current device to draw
 #'          the glyph. As a result, glyphs of the text will be finally
-#'          converted into lines and polygons, which means that the system
-#'          where the graph is viewed doesn't need to install the fonts
-#'          that create the graph.
+#'          converted into polygons or raster images, which means that
+#'          the system where the graph is viewed does not need to install
+#'          the fonts that create the graph.
 #'          
 #'          Notice that this function is only effective to the current
 #'          \strong{ACTIVE} device. So to use this function, the device
@@ -77,58 +135,58 @@ showtext.opts = function(...)
 #'
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://yixuan.cos.name/}>
+#' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
 #' @seealso \code{\link{showtext.end}()}
 #' 
 #' @examples \dontrun{
-#' old = setwd(tempdir());
+#' old = setwd(tempdir())
 #' 
 #' ###  Enable pdf() to draw Chinese characters nicely  ###
 #' ###  Requires the simkai.ttf font file, usually      ###
 #' ###  installed in Windows                            ###
 #' 
 #' ## First, open the device
-#' pdf("showtext-ex1.pdf");
+#' pdf("showtext-ex1.pdf")
 #' 
 #' ## For now we are using the original device functions to draw axis labels
-#' plot(1, type = "n");
+#' plot(1, type = "n")
 #' 
 #' ## Then turn showtext on and draw some characters
-#' showtext.begin();
-#' text(1, 1.2, intToUtf8(c(21315, 31179, 19975, 36733)), cex = 5);
+#' showtext.begin()
+#' text(1, 1.2, intToUtf8(c(21315, 31179, 19975, 36733)), cex = 5)
 #' 
 #' ## Use another font
-#' if("simkai.ttf" %in% font.files()) font.add("kaishu", "simkai.ttf");
+#' if("simkai.ttf" %in% font.files()) font.add("kaishu", "simkai.ttf")
 #' text(1, 0.8, intToUtf8(c(19968, 32479, 27743, 28246)),
-#'      cex = 5, family = "kaishu");
+#'      cex = 5, family = "kaishu")
 #'      
 #' ## Turn showtext off
-#' showtext.end();
+#' showtext.end()
 #' 
 #' ## Also turn off the device
-#' dev.off();
+#' dev.off()
 #' 
 #' 
 #' ###  Download font file from web  ###
 #' 
 #' download.file("http://fontpro.com/download-family.php?file=36289",
-#'               "newrocker.ttf", mode="wb");
+#'               "newrocker.ttf", mode="wb")
 #' download.file("http://fontpro.com/download-family.php?file=35128",
-#'               "cutetumblr.ttf", mode ="wb");
+#'               "cutetumblr.ttf", mode ="wb")
 #' 
-#' font.add("newrocker", "newrocker.ttf");
-#' font.add("cutetumblr", "cutetumblr.ttf");
+#' font.add("newrocker", "newrocker.ttf")
+#' font.add("cutetumblr", "cutetumblr.ttf")
 #' 
-#' pdf("showtext-ex2.pdf", 8, 5);
-#' plot(1, type = "n");
-#' showtext.begin();
-#' text(1, 1.2, "Let me tell you a story", cex = 4, family = "newrocker");
-#' text(1, 0.8, "Long long ago...", cex = 4, family = "cutetumblr");
-#' showtext.end();
-#' dev.off();
+#' png("showtext-ex2.png", 800, 500)
+#' plot(1, type = "n")
+#' showtext.begin()
+#' text(1, 1.2, "Let me tell you a story", cex = 4, family = "newrocker")
+#' text(1, 0.8, "Long long ago...", cex = 4, family = "cutetumblr")
+#' showtext.end()
+#' dev.off()
 #' 
-#' setwd(old);
+#' setwd(old)
 #' 
 #' }
 showtext.begin = function()
@@ -152,13 +210,13 @@ showtext.begin = function()
 #' 
 #' This function will turn off the \pkg{showtext} functionality
 #' of rendering text. When you call this function, the current
-#' active device should be the same with the one when you call
+#' active device should be the same as the one when you call
 #' \code{\link{showtext.begin}()}, or an error will be issued.
 #' See the example in \code{\link{showtext.begin}()}.
 #'
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://yixuan.cos.name/}>
+#' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
 #' @seealso \code{\link{showtext.begin}()}
 showtext.end = function()
