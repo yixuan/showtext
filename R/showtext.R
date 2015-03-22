@@ -86,7 +86,7 @@ showtext.opts = function(...)
 }
 
 
-#' Render Text for R Graphics Devices
+#' Rendering Text for R Graphics Devices
 #' 
 #' Calling this function will use \pkg{showtext} to render text
 #' for the current graphics device. The main advantage of
@@ -137,7 +137,8 @@ showtext.opts = function(...)
 #' 
 #' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
-#' @seealso \code{\link{showtext.end}()}
+#' @seealso \code{\link{showtext.opts}()}, \code{\link{showtext.auto}()},
+#'          \code{\link{showtext.end}()}
 #' 
 #' @examples \dontrun{
 #' old = setwd(tempdir())
@@ -206,7 +207,8 @@ showtext.begin = function()
     invisible(NULL)
 }
 
-#' Turn Off 'showtext' Text Rendering
+
+#' Turning Off 'showtext' Text Rendering
 #' 
 #' This function will turn off the \pkg{showtext} functionality
 #' of rendering text. When you call this function, the current
@@ -225,4 +227,57 @@ showtext.end = function()
     
     .Call("showtextEnd", PACKAGE = "showtext")
     invisible(NULL)
+}
+
+
+#' Automatically Using 'showtext' for New Graphics Devices
+#' 
+#' This function could turn on/off the automatic use of \pkg{showtext}
+#' functionality. If turned on, any newly opened graphics devices will use
+#' \pkg{showtext} to draw text. This helps to avoid the repeated calls of
+#' \code{\link{showtext.begin}()} and \code{\link{showtext.end}()}.
+#' 
+#' @param enable \code{TRUE} to turn on and \code{FALSE} to turn off
+#'
+#' @export
+#' 
+#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' 
+#' @seealso \code{\link{showtext.begin}()}, \code{\link{showtext.end}()}
+#' 
+#' @examples \dontrun{
+#' pdf("test1.pdf")
+#' plot(1, main = "\u6b22\u8fce")  ## may not render properly
+#' dev.off()
+#' 
+#' ## Automatically use showtext for future devices
+#' showtext.auto()
+#' plot(1, main = "\u6b22\u8fce", family = "wqy-microhei")
+#' 
+#' pdf("test2.pdf")
+#' plot(1, main = "\u6b22\u8fce", family = "wqy-microhei")
+#' dev.off()
+#' 
+#' ## Turn off if needed
+#' showtext.auto(FALSE)
+#' }
+showtext.auto = function(enable = TRUE)
+{
+    enable = as.logical(enable)
+    
+    has_hook = length(getHook("before.plot.new")) > 0
+    is_showtext_hook = sapply(getHook("before.plot.new"), identical,
+                              y = showtext::showtext.begin)
+
+    already_hooked = has_hook && any(is_showtext_hook)
+    
+    if(enable && (!already_hooked))
+        setHook("before.plot.new", showtext::showtext.begin)
+    
+    if((!enable) && already_hooked)
+    {
+        old_hooks = getHook("before.plot.new")
+        new_hooks = old_hooks[!is_showtext_hook]
+        setHook("before.plot.new", new_hooks, "replace")
+    }
 }
