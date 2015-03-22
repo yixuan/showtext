@@ -2,7 +2,7 @@
 % Please edit documentation in R/showtext.R
 \name{showtext.begin}
 \alias{showtext.begin}
-\title{Render Text for R Graphics Devices}
+\title{Rendering Text for R Graphics Devices}
 \usage{
 showtext.begin()
 }
@@ -109,6 +109,7 @@ setwd(old)
 Yixuan Qiu <\url{http://statr.me/}>
 }
 \seealso{
-\code{\link{showtext.end}()}
+\code{\link{showtext.opts}()}, \code{\link{showtext.auto}()},
+         \code{\link{showtext.end}()}
 }
 
