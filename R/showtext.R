@@ -268,16 +268,32 @@ showtext.auto = function(enable = TRUE)
     has_hook = length(getHook("before.plot.new")) > 0
     is_showtext_hook = sapply(getHook("before.plot.new"), identical,
                               y = showtext::showtext.begin)
+    
+    has_hook_grid = length(getHook("grid.newpage")) > 0
+    is_showtext_hook_grid = sapply(getHook("grid.newpage"), identical,
+                                   y = showtext::showtext.begin)
 
     already_hooked = has_hook && any(is_showtext_hook)
+    already_hooked_grid = has_hook_grid && any(is_showtext_hook_grid)
     
-    if(enable && (!already_hooked))
-        setHook("before.plot.new", showtext::showtext.begin)
-    
-    if((!enable) && already_hooked)
+    if(enable)
     {
-        old_hooks = getHook("before.plot.new")
-        new_hooks = old_hooks[!is_showtext_hook]
-        setHook("before.plot.new", new_hooks, "replace")
+        if(!already_hooked)
+            setHook("before.plot.new", showtext::showtext.begin)
+        if(!already_hooked_grid)
+            setHook("grid.newpage", showtext::showtext.begin)
+    } else {
+        if(already_hooked)
+        {
+            old_hooks = getHook("before.plot.new")
+            new_hooks = old_hooks[!is_showtext_hook]
+            setHook("before.plot.new", new_hooks, "replace")
+        }
+        if(already_hooked_grid)
+        {
+            old_hooks = getHook("grid.newpage")
+            new_hooks = old_hooks[!is_showtext_hook_grid]
+            setHook("grid.newpage", new_hooks, "replace")
+        }
     }
 }
