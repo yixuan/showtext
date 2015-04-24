@@ -1,6 +1,21 @@
 #include "util.h"
 
 
+SEXP GetPkgEnv(const char *pkgName)
+{
+    SEXP pkgNS, pkgEnv;
+    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
+    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
+    if(TYPEOF(pkgEnv) == PROMSXP) {
+        PROTECT(pkgEnv);
+        pkgEnv = eval(pkgEnv, pkgNS);
+        UNPROTECT(1);
+    }
+    UNPROTECT(2);
+    
+    return pkgEnv;
+}
+
 SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
 {
     /* See grDevices/src/devPS getFontDB() */
@@ -16,21 +31,6 @@ SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
     UNPROTECT(3);
     
     return var;
-}
-
-SEXP GetPkgEnv(const char *pkgName)
-{
-    SEXP pkgNS, pkgEnv;
-    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
-    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
-    if(TYPEOF(pkgEnv) == PROMSXP) {
-        PROTECT(pkgEnv);
-        pkgEnv = eval(pkgEnv, pkgNS);
-        UNPROTECT(1);
-    }
-    UNPROTECT(2);
-    
-    return pkgEnv;
 }
 
 FT_Outline_Funcs* GetFTOutlineFuncs()
@@ -49,18 +49,11 @@ int GetNseg()
     return INTEGER(nseg)[0];
 }
 
-int GetDPIX()
+double GetDevUnitsPerPoint()
 {
-    SEXP dpi = GetVarFromPkgEnv(".dpi", "showtext");
+    SEXP dev_units_per_point = GetVarFromPkgEnv(".dev_units_per_point", "showtext");
 
-    return INTEGER(dpi)[0];
-}
-
-int GetDPIY()
-{
-    SEXP dpi = GetVarFromPkgEnv(".dpi", "showtext");
-
-    return INTEGER(dpi)[1];
+    return REAL(dev_units_per_point)[0];
 }
 
 pDevDesc GetSavedDevDesc()
