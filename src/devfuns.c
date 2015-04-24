@@ -7,14 +7,20 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
 {
     FT_Face face = GetFTFace(gc);
     FT_Error err;
-    double fontSize = gc->ps * gc->cex;
-    double ratio = fontSize / face->units_per_EM;
+    
+    /* Font size in points (1/72 inches) */
+    double font_size = gc->ps * gc->cex;
+    /* Metrics given by FreeType are represented in EM units when
+       we set FT_LOAD_NO_SCALE.
+       Therefore, we first transform EM units into points. */
+    double pts_per_EM_unit = font_size / face->units_per_EM;
+    /* Then we further convert points to device units.
+       Device unit can be in points (usually vector graphics),
+       or in pixels (usually bitmap graphics). */
+    double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
   
     if(c == 0) c = 77;  /* Letter 'M' */
-    if(c < 0)
-    {
-        c = -c;
-    }
+    if(c < 0)  c = -c;
     
     /* c is the unicode of the character */
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
@@ -25,23 +31,25 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
         return;
     }
     
-    *ascent = face->glyph->metrics.horiBearingY * ratio;
-    *descent = face->glyph->metrics.height * ratio - *ascent;
-    *width = face->glyph->metrics.horiAdvance * ratio;
+    *ascent = face->glyph->metrics.horiBearingY * dev_units_per_EM_unit;
+    *descent = face->glyph->metrics.height * dev_units_per_EM_unit - *ascent;
+    *width = face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
 }
 
 double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
-    int maxLen = strlen(str);
+    int max_len = strlen(str);
     unsigned int *unicode =
-        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, maxLen);
+        (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, max_len);
     
     FT_Face face = GetFTFace(gc);
     FT_Error err;
-    double fontSize = gc->ps * gc->cex;
-    double ratio = fontSize / face->units_per_EM;
+    
+    double font_size = gc->ps * gc->cex;
+    double pts_per_EM_unit = font_size / face->units_per_EM;
+    double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
     
     double width = 0.0;
     int i;
@@ -54,7 +62,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
             FTError(err);
             continue;
         }
-        width += face->glyph->metrics.horiAdvance * ratio;
+        width += face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
     }
 
     return width;
@@ -63,26 +71,26 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
 void showtextTextUTF8Raster(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
-    int maxLen = strlen(str);
+    int max_len = strlen(str);
     unsigned int *unicode =
-        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, maxLen);
+        (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, max_len);
     
     /* raster() rotates around the bottom-left corner,
        and text() rotates around the center indicated by hadj. */
-    int transSign = dd->bottom > dd->top ? -1: 1;
-    double transX, transY;
+    int trans_sign = dd->bottom > dd->top ? -1: 1;
+    double trans_X, trans_Y;
     
-    /* Calculate pixel size on X and Y */
-    int px = (int) (gc->ps * gc->cex * GetDPIX() / 72.0 + 0.5);
-    int py = (int) (gc->ps * gc->cex * GetDPIY() / 72.0 + 0.5);
+    /* Calculate pixel size */
+    int px = (int) (gc->ps * gc->cex * GetDevUnitsPerPoint() + 0.5);
     
     /* Get raster data */
-    RasterData *rd = GetStringRasterImage(unicode, len, px, py,
-        rot * DEG2RAD, hadj, gc, &transX, &transY); 
+    RasterData *rd = GetStringRasterImage(unicode, len, px, px,
+        rot * DEG2RAD, hadj, gc, &trans_X, &trans_Y);
 
     dd->raster(rd->data, rd->ncol, rd->nrow,
-               x - transX, y - transSign * transY, rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
+               x - trans_X, y - trans_sign * trans_Y,
+               rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
     FreeRasterData(rd);
 }
 
