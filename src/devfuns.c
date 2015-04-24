@@ -10,14 +10,13 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
     double fontSize = gc->ps * gc->cex;
     double ratio = fontSize / face->units_per_EM;
   
-    if(c == 0) c = 77;
+    if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)
     {
         c = -c;
     }
     
     /* c is the unicode of the character */
-    FT_Set_Char_Size(face, 0, fontSize * 64, 72, 0);
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)
     {
