@@ -1,12 +1,18 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-1}{
+  \itemize{
+    \item Fixed bugs in calculating metric information of characters
+  }
+}
+
 \section{Changes in showtext version 0.4}{
   \itemize{
-    \item New function \code{shwotext.auto()} to automatically use \pkg{showtext}
-          in future graphics devices, avoiding repeated calls of
-          \code{showtext.begin()} and \code{showtext.end()}
-    \item Better appearance for a number of bitmap and on-screen devices
+    \item New function \code{shwotext.auto()} to automatically call
+          \code{showtext.begin()} in any newly opened graphics devices,
+          saving a lot of typing.
+    \item Better visual effect for a number of bitmap and on-screen devices
           including \code{png()}, \code{jpeg()}, \code{tiff()}, \code{bmp()},
           \code{x11()} and \code{windows()}. For these devices we use
           raster image rather than polygons to draw text.
