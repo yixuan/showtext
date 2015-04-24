@@ -19,10 +19,8 @@
 #'                        the smoother text outlines would be, but also with
 #'                        larger file size for vector graphics. Usually a value
 #'                        between 5~20 would be enough.}
-#'     \item{\code{dpi}}{A vector of length one or two, giving the resolution
-#'                       of the device in horizontal and vertical directions.
-#'                       If only one number is given, it will be used for both
-#'                       directions. This parameter is only used in bitmap
+#'     \item{\code{dpi}}{An integer that gives the resolution
+#'                       of the device. This parameter is only used in bitmap
 #'                       and on-screen graphics devices such as \code{png()} and
 #'                       \code{x11()}, to determine the pixel size of text from
 #'                       point size. For example, if \code{dpi} is set to 96,
@@ -72,12 +70,12 @@ showtext.opts = function(...)
     if("nseg" %in% names(opts))  nseg = opts$nseg  else  nseg = old_opts$nseg
     if("dpi" %in% names(opts))  dpi = opts$dpi  else  dpi = old_opts$dpi
     
-    nseg = as.integer(nseg)
-    dpi = as.integer(rep_len(dpi, length.out = 2))
+    nseg = as.integer(nseg)[1]
+    dpi = as.integer(dpi)[1]
     
-    if(nseg <= 0) stop("nseg must be positive")
+    if(nseg <= 0)  stop("nseg must be positive")
     if(nseg > 100) stop("nseg too large")
-    if(any(dpi <= 0)) stop("dpi must be positive")
+    if(dpi <= 0)   stop("dpi must be positive")
     
     .pkg.env$.nseg = nseg
     .pkg.env$.dpi = dpi
@@ -199,9 +197,13 @@ showtext.begin = function()
     device_using_raster = c("png", "PNG", "jpeg", "tiff", "bmp",
                             "X11", "X11cairo", "windows")
     if(names(dev.cur()) %in% device_using_raster)
+    {
         .pkg.env$.use_raster = TRUE
-    else
+        .pkg.env$.dev_units_per_point = as.numeric(.pkg.env$.dpi / 72.0)
+    } else {
         .pkg.env$.use_raster = FALSE
+        .pkg.env$.dev_units_per_point = 1.0
+    }
 
     .Call("showtextBegin", PACKAGE = "showtext")
     invisible(NULL)
