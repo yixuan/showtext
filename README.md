@@ -80,7 +80,7 @@ Windows and `x11()` on Linux.
 
 ### How **showtext** Works
 
-Let me explain a little bit how `pdf()` works.
+Let me first explain a little bit how `pdf()` works.
 
 To my best knowledge, the default PDF device in R does not "draw" the text,
 but actually "describes" the text in the PDF file.
@@ -173,14 +173,14 @@ dev.off()
 Loading font is actually done by package **sysfonts**.
 
 The easy way to load font into **showtext** is by calling `font.add(family, regular)`,
-where `family` is the name that you give to that font (so that later you can
+where `family` is the name that you assign to that font (so that later you can
 call `par(family = ...)` to use this font in plotting), and `regular` is the
 path to the font file. That is to say, only knowing the "font name" is not
 enough, since they are usually system dependent. On the contrary, font file
 is the entity that actually provides the character glyphs.
 
 Usually the font files are located in some "standard" directories in the system 
-(for example on Windows it is typically C:/Windows/Fonts).
+(for example on Windows it is typically `C:\Windows\Fonts`).
 You can use `font.paths()` to check the current search path or add a new one,
 and use `font.files()` to list available font files in the search path.
 
