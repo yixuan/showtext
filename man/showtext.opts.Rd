@@ -28,10 +28,8 @@ graphs created with \pkg{showtext}.
                        the smoother text outlines would be, but also with
                        larger file size for vector graphics. Usually a value
                        between 5~20 would be enough.}
-    \item{\code{dpi}}{A vector of length one or two, giving the resolution
-                      of the device in horizontal and vertical directions.
-                      If only one number is given, it will be used for both
-                      directions. This parameter is only used in bitmap
+    \item{\code{dpi}}{An integer that gives the resolution
+                      of the device. This parameter is only used in bitmap
                       and on-screen graphics devices such as \code{png()} and
                       \code{x11()}, to determine the pixel size of text from
                       point size. For example, if \code{dpi} is set to 96,
