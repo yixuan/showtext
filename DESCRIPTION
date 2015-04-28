@@ -7,7 +7,7 @@ Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
 Description: Making it easy to use various types of fonts
-    (TrueType, OpenType, Type 1, web fonts, etc.) in R graphs, and
+    ('TrueType', 'OpenType', Type 1, web fonts, etc.) in R graphs, and
     supporting most output formats of R graphics including PNG, PDF and
     SVG. Text glyphs will be converted into polygons or raster images,
     hence after the plot has been created, it no longer relies on the font files.
