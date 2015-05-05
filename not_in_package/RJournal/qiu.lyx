@@ -660,7 +660,7 @@ code{windowsFonts()}
 \end_inset
 
  to register font and create name mapping.
- In other operating systems, there are corresponding functions such as 
+ In other operating systems, there are analogous functions such as 
 \begin_inset ERT
 status open
 
@@ -821,8 +821,9 @@ key "nonstdfonts"
 \end_layout
 
 \begin_layout Standard
-Due to this complexity, when creating PDF graphs most users only select
- the built-in PDF font families, which can be queried by the command 
+Due to this complexity, when creating PDF graphs users are most likely to
+ only select the built-in PDF font families, which can be queried by the
+ command 
 \begin_inset ERT
 status open
 
@@ -978,21 +979,8 @@ dev.off()
 \end_layout
 
 \begin_layout Standard
-On systems in which FreeType and Fontcofig are not configured with Cairo
- (e.g., Windows), the method to specify fonts with 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pkg{Cairo}
-\end_layout
-
-\end_inset
-
- package is similar to that of 
+For systems where Cairo is not configured with FreeType or Fontconfig (e.g.,
+ Windows), the method to specify fonts is similar to that of 
 \begin_inset ERT
 status open
 
@@ -1152,7 +1140,7 @@ pkg{Cairo}
 \emph on
 Left
 \emph default
-: with FreeType and Fontcofig support; 
+: with FreeType and Fontconfig support; 
 \emph on
 right
 \emph default
@@ -1184,13 +1172,6 @@ status open
 \backslash
 CRANpkg{extrafont}
 \end_layout
-
-\end_inset
-
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "extrafont"
 
 \end_inset
 
@@ -1604,7 +1585,7 @@ http://cran.r-project.org/web/packages/extrafont/README.html
 \end_layout
 
 \begin_layout Section
-The design of showtext
+The new approach: showtext
 \end_layout
 
 \begin_layout Standard
@@ -1689,10 +1670,10 @@ http://www.freetype.org/
 
 \end_inset
 
- when being installed, and does not rely on any external software.
- This would be helpful when other solutions are not possible, e.g., when R
- is not configured with Cairo support, or the Cairo library is not installed
- in the system.
+ for installation, and works without the dependence on external software
+ such as Ghostscript.
+ This would be helpful when other solutions are not possible, e.g., when the
+ Cairo library is unavailable in the system.
 \end_layout
 
 \begin_layout Enumerate
@@ -1767,7 +1748,7 @@ status open
 
 
 \backslash
-strong{uniform and platform-independent appearence}
+strong{platform-independent appearence}
 \end_layout
 
 \end_inset
@@ -1792,8 +1773,11 @@ strong{automatically search and download}
 \end_inset
 
  many beautiful, accessible and open source fonts on the web, and users
- can use these fonts without installing them to the system, thus maintaining
- the fonts for 
+ can use these fonts without installing them to the operating system, which
+ means that the system level font library can be kept intact and clean.
+\end_layout
+
+\begin_layout Enumerate
 \begin_inset ERT
 status open
 
@@ -1806,10 +1790,7 @@ pkg{showtext}
 
 \end_inset
 
- independently against those in the OS.
-\end_layout
-
-\begin_layout Enumerate
+ has a neat 
 \begin_inset ERT
 status open
 
@@ -1817,9 +1798,9 @@ status open
 
 
 \backslash
-strong{Intergration with 
+strong{integration with 
 \backslash
-pkg{knitr} package}
+pkg{knitr}}
 \end_layout
 
 \end_inset
@@ -1974,8 +1955,8 @@ pkg{showtext}
 
 \end_inset
 
- is quite simple and intuitive, consisting of two major steps: registering
- system fonts into R, and enabling 
+ is easy and intuitive, consisting of two major steps: registering system
+ fonts into R, and enabling 
 \begin_inset ERT
 status open
 
@@ -2338,11 +2319,11 @@ wqy-microhei
 \begin_inset Quotes erd
 \end_inset
 
- will be loaded automatically with the package.
+ are built-in and will be loaded automatically with the package.
 \end_layout
 
 \begin_layout Standard
-For most operating systems, fonts are usually installed in standardized
+For most operating systems, fonts are usually installed in some standard
  locations.
  To add fonts located in these directories, users can provide the filename
  rather than the absolute path to save some typing.
@@ -2456,7 +2437,7 @@ code{font.files()}
 \end_layout
 
 \begin_layout Standard
-To make the search process easier, 
+To make the searching process easier, 
 \begin_inset ERT
 status open
 
@@ -3803,7 +3784,14 @@ CRANpkg{RSvgDevice}
 
 \end_inset
 
- package for SVG output.
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RSvgDevice"
+
+\end_inset
+
+ for SVG output.
 \end_layout
 
 \begin_layout Standard
@@ -4121,7 +4109,7 @@ pkg{knitr}
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintAll"
-bibfiles "ref"
+bibfiles "qiu"
 options "bibtotoc,abbrvnat"
 
 \end_inset
