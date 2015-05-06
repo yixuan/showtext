@@ -22,7 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,9 +40,9 @@
      id="namedview980"
      showgrid="false"
      showguides="false"
-     inkscape:zoom="0.34764398"
-     inkscape:cx="186.02709"
-     inkscape:cy="923.21285"
+     inkscape:zoom="1.3905759"
+     inkscape:cx="1510.4656"
+     inkscape:cy="401.17346"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -579,10 +579,10 @@
          id="text5137-9"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
-           x="52.149765"
+           x="52.149769"
            y="-70.519142"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25.65850258px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;text-anchor:middle"
-           id="tspan5141-2">Device C</tspan><tspan
+           id="tspan5141-2">Default device</tspan><tspan
            id="tspan4663"
            sodipodi:role="line"
            x="52.149765"
@@ -629,10 +629,10 @@
              id="tspan5141-2-9"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25.70887947px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;text-anchor:middle"
              y="-19.81922"
-             x="-11.066859"
+             x="-11.06686"
              sodipodi:role="line"><tspan
    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25.70887947px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold'"
-   id="tspan4735">showtext </tspan>C</tspan><tspan
+   id="tspan4735">showtext</tspan> device</tspan><tspan
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25.70887947px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;text-anchor:middle"
              y="12.31688"
              x="-11.066857"
@@ -849,7 +849,7 @@
            x="52.149765"
            y="-70.519142"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.29266548px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;text-anchor:middle"
-           id="tspan5141-2-0">Device C</tspan><tspan
+           id="tspan5141-2-0">Default device</tspan><tspan
            id="tspan4663-8"
            sodipodi:role="line"
            x="52.149765"
@@ -881,10 +881,10 @@
          id="text5137-9-4-4"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
-           x="52.149765"
+           x="52.149761"
            y="-70.519142"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.31503296px;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;text-anchor:middle"
-           id="tspan5141-2-0-5">Device C</tspan><tspan
+           id="tspan5141-2-0-5">Default device</tspan><tspan
            id="tspan4663-8-3"
            sodipodi:role="line"
            x="52.149765"
