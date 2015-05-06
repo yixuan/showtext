@@ -218,7 +218,7 @@ key "showtext"
 
 \end_inset
 
- that provides an alternative way to use fonts in R graphs.
+ that provides an alternative way to use fonts in R graphics.
  It has good support for various font formats and most graphics devices
  in R, and meanwhile provides some extra features such as loading web fonts
  and integration with 
@@ -256,7 +256,7 @@ pkg{showtext}
 \end_inset
 
  package are trying to seek an easy and elegant way to make use of different
- fonts in R graphs.
+ fonts in R graphics.
 \end_layout
 
 \begin_layout Standard
@@ -507,16 +507,16 @@ name "fig:builtin_with_cairo"
 
 \end_inset
 
-Specify full family name when Cairo graphics is compiled in R.
+Specify full family name when Cairo graphics is compiled into R.
  
 \emph on
 Left
 \emph default
-: PNG graph; 
+: graph in PNG format; 
 \emph on
 right
 \emph default
-: PDF graph
+: graph in PDF format
 \end_layout
 
 \end_inset
@@ -734,7 +734,7 @@ code{.afm}
 
 \end_inset
 
-), which may be unavailable for end users.
+), which may be unavailable for users.
  On the contrary, TrueType fonts (
 \begin_inset ERT
 status open
@@ -868,7 +868,7 @@ key "Cairo"
 \end_inset
 
  provides a number of high-quality graphics devices that are driven by a
- unified backend based on Cairo graphics.
+ unified back-end based on Cairo graphics.
  When the Cairo library is configured with FreeType and Fontconfig support,
  one can make use of the 
 \begin_inset ERT
@@ -1173,12 +1173,12 @@ status open
 
 
 \backslash
-CRANpkg{extrafont}
+pkg{extrafont}
 \end_layout
 
 \end_inset
 
- is an R package mainly used to simplify the usage of system fonts in PDF
+ is an R package mainly used to simplify the use of system fonts in PDF
  and PostScript graphics.
  It is able to extract metric files (
 \begin_inset ERT
@@ -1693,9 +1693,9 @@ strong{Support for various font formats}
 \end_inset
 
 .
- A certain type of font is supported as long as the backend FreeType library
- can read it, usually including but not limited to TrueType fonts, OpenType
- fonts, Type 1 fonts, etc.
+ A certain type of font is supported as long as the back-end FreeType library
+ can read it, including but not limited to TrueType fonts, OpenType fonts,
+ Type 1 fonts, etc.
 \end_layout
 
 \begin_layout Enumerate
@@ -2175,7 +2175,7 @@ code{NULL}
 
 \end_inset
 
-, then the font file for regular font face will be used.
+, the font file for regular font face will be used.
 \end_layout
 
 \begin_layout Standard
@@ -2432,7 +2432,7 @@ code{font.files()}
 \end_inset
 
 .
- While it may take some effort to figure out the filename of a font with
+ While it may take some efforts to figure out the filename of a font with
  a given family name (and perhaps also font face), the naming convention
  of font files is usually intuitive and fixed.
  Also, some font file viewers can help mapping the font name to its real
@@ -2440,7 +2440,7 @@ code{font.files()}
 \end_layout
 
 \begin_layout Standard
-To make the searching process easier, 
+To make the font adding process easier, 
 \begin_inset ERT
 status open
 
@@ -2503,8 +2503,8 @@ code{font.add.google()}
 
 \end_inset
 
- could search for a specific font family and download font files for all
- possible faces, adding the new font family to 
+ could search for a specific font family, download its font files for all
+ possible faces, and add them to 
 \begin_inset ERT
 status open
 
@@ -2517,7 +2517,7 @@ pkg{showtext}
 
 \end_inset
 
- with a user defined family name in R.
+.
  These two functions require the 
 \begin_inset ERT
 status open
@@ -2648,7 +2648,7 @@ code{showtext.auto()}
 
 \end_inset
 
- function, after which users are allowed use the font families that are
+ function, after which users are allowed to use the font families that are
  listed in 
 \begin_inset ERT
 status open
@@ -3393,15 +3393,8 @@ status open
 
 
 \backslash
-CRANpkg{knitr}
+pkg{knitr}
 \end_layout
-
-\end_inset
-
- 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "knitrbook,knitrchap,knitrpkg"
 
 \end_inset
 
@@ -4026,8 +4019,7 @@ code{postscript()}
 
  devices with TrueType fonts, as well as support for Windows bitmap output.
  It introduces an easy way to import system fonts into R, so that users
- only need to do some one-time configuration, and then the plotting commands
- can simply be written in the usual way.
+ only need to do some one-time configuration.
 \end_layout
 
 \begin_layout Itemize
@@ -4071,7 +4063,7 @@ Limitations and solutions
 \end_layout
 
 \begin_layout Section
-Acknowledgements
+Acknowledgments
 \end_layout
 
 \begin_layout Standard
