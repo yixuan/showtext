@@ -10,13 +10,16 @@
 \maketitle
 
 \abstract{
-The \pkg{showtext} package can be used to select system fonts in R graphics,
-which greatly extends the collection of fonts that can be recognized by R
-graphics devices. \pkg{showtext} supports a large number of font formats and
-R graphics devices while providing convenient features such as using web
-fonts and the integration with \pkg{knitr}. This article provides a basic
-introduction to the usage of \pkg{showtext}, as well as its design and
-internals for interested readers.
+This article introduces the \pkg{showtext} package that makes it easy to use system
+fonts in R graphics. Unlike other methods to embed fonts into graphics,
+\pkg{showtext} converts text into raster images or polygons, and then adds them
+to the plot canvas. This method produces platform-independent image files that do not
+rely on the fonts that create them.
+It supports a large number of font formats and
+R graphics devices, and meanwhile provides convenient features such as using web
+fonts and integrating with \pkg{knitr}.
+This article provides an elaborate introduction to the \pkg{showtext} package,
+including its design, usage, and examples.
 }
 \end_preamble
 \use_default_options true
@@ -1893,7 +1896,7 @@ status open
 \begin_inset Graphics
 	filename grDevice.pdf
 	lyxscale 60
-	width 99text%
+	width 80text%
 
 \end_inset
 
