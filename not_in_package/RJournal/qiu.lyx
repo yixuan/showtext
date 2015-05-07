@@ -361,7 +361,36 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<setup, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(warning=FALSE, message=FALSE, eval=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -552,7 +581,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -914,7 +943,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1032,7 +1061,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1312,7 +1341,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1408,7 +1437,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -1532,7 +1561,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2221,7 +2250,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE, message=FALSE>>=
+<<eval=TRUE, cache=TRUE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2366,7 +2395,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE>>=
+<<eval=TRUE, cache=TRUE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2568,7 +2597,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<cache=TRUE, message=FALSE, warning=FALSE>>=
+<<eval=TRUE, cache=TRUE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2752,7 +2781,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -3191,7 +3220,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<eval=FALSE>>=
+<<>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -3698,8 +3727,9 @@ font names
 \end_inset
 
  in the system.
- This design is intentional since font name can be ambiguous, e.g., the same
- font can have multiple names given by different font management software.
+ This design is intentional since font name can be ambiguous.
+ For example, the same font can have multiple names given by different font
+ management software.
  In contrast, font file is the entity that actually contains the glyphs
  of a specific font, hence it helps to avoid such confusion.
  While this setting may cause some problems for users who are searching
@@ -3791,7 +3821,7 @@ key "RSvgDevice"
 \end_layout
 
 \begin_layout Standard
-Finally, at the time of writing 
+In addition, at the time of writing 
 \begin_inset ERT
 status open
 
@@ -3804,9 +3834,29 @@ pkg{showtext}
 
 \end_inset
 
- is not working well with the graphics device provided by the RStudio IDE.
- The simple solution is to manually open a graphics device window using
- functions such as 
+ is not working well with the plot window provided by the RStudio IDE
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.rstudio.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ The simple solution is to manually open a graphics device using functions
+ such as 
 \begin_inset ERT
 status open
 
@@ -3834,6 +3884,80 @@ code{x11()}
 
 , and then draw plots inside this window, rather than the built-in one offered
  by RStudio IDE.
+\end_layout
+
+\begin_layout Standard
+Finally, in terms of the overall design, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is in some sense intrusive, since when user calls 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
+, it temporarily replaces the device functions by its own ones, and later
+ restores them after 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.end()}
+\end_layout
+
+\end_inset
+
+ is called.
+ An alternative and probably more elegant way to address the font problem
+ is to develop new graphics devices that are based on 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, so that they can make use of the text handling functionality contained
+ in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+ This possibility is left to future developers of graphics devices.
 \end_layout
 
 \begin_layout Section
