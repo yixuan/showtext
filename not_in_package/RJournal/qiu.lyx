@@ -1,0 +1,4301 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\title{\pkg{showtext}: Using System Fonts in R Graphics}
+\author{by Yixuan Qiu}
+
+\maketitle
+
+\abstract{
+This article introduces the \pkg{showtext} package that makes it easy to use system
+fonts in R graphics. Unlike other methods to embed fonts into graphics,
+\pkg{showtext} converts text into raster images or polygons, and then adds them
+to the plot canvas. This method produces platform-independent image files that do not
+rely on the fonts that create them.
+It supports a large number of font formats and
+R graphics devices, and meanwhile provides convenient features such as using web
+fonts and integrating with \pkg{knitr}.
+This article provides an elaborate introduction to the \pkg{showtext} package,
+including its design, usage, and examples.
+}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+knitr
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2.5cm
+\rightmargin 2.5cm
+\bottommargin 2.5cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Using fonts in R graphics is neither a new topic nor a difficult task, if
+ only the standard font families such as 
+\begin_inset Quotes eld
+\end_inset
+
+sans
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+serif
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+mono
+\begin_inset Quotes erd
+\end_inset
+
+ are needed.
+ However, problems occur when one wants to select fonts that are installed
+ in the system but not among the standard families inside R, especially
+ for the PDF graphics device.
+ With the evolution of R graphics device as well as related extension packages,
+ there are more and more solutions emerging to solve the font problem.
+ The R News article 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nonstdfonts"
+
+\end_inset
+
+ systematically describes the working mechanism of PostScript and PDF devices
+ to handle nonstandard fonts, and more recently, the blog post by Winston
+ Chang
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://blog.revolutionanalytics.com/2012/09/how-to-use-your-favorite-fonts-in-r-ch
+arts.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ serves as an tutorial for the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{extrafont}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "extrafont"
+
+\end_inset
+
+ which makes it easy to use TrueType fonts in PostScript, PDF and Windows
+ bitmap devices.
+\end_layout
+
+\begin_layout Standard
+With the same target, this article introduces the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{showtext}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "showtext"
+
+\end_inset
+
+ that provides an alternative way to use fonts in R graphics.
+ It has good support for various font formats and most graphics devices
+ in R, and meanwhile provides some extra features such as loading web fonts
+ and integration with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{knitr}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "knitrbook,knitrchap,knitrpkg"
+
+\end_inset
+
+.
+ All efforts devoted to the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ package are trying to seek an easy and elegant way to make use of different
+ fonts in R graphics.
+\end_layout
+
+\begin_layout Standard
+In the remaining part, this article will first review some existing methods
+ of font selection in R, and then give an introduction to the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ package, including its design, usage, examples and a number of suggestions
+ for use.
+\end_layout
+
+\begin_layout Section
+Existing methods to use fonts
+\end_layout
+
+\begin_layout Subsection
+Built-in graphics devices in R
+\end_layout
+
+\begin_layout Standard
+It is possible to let R's built-in graphics devices (e.g., PNG and PDF) to
+ use installed fonts in the system.
+ However, the implementation is quite configuration dependent.
+ If Cairo graphics
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://cairographics.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ support has been compiled in R such that 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
+ are available, then it is quite straightforward to use system fonts in
+ the plots.
+ One only needs to specify the family name of font as is used by the system.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:builtin_with_cairo"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<setup, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(warning=FALSE, message=FALSE, eval=FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+# background for various plots later
+\end_layout
+
+\begin_layout Plain Layout
+
+bg = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.title = element_blank(), axis.ticks = element_blank(),
+\end_layout
+
+\begin_layout Plain Layout
+
+          axis.text = element_blank())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if(capabilities("cairo")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    png("builtin-1.png", 672, 384, type = "cairo", res = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt1 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nDejaVu Sans Mono",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "DejaVu Sans Mono", size = 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    cairo_pdf("builtin-2.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt2 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nDejaVu Serif Italic",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "DejaVu Serif", fontface = "italic", size =
+ 15)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename builtin-1.png
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename builtin-2.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:builtin_with_cairo"
+
+\end_inset
+
+Specify full family name when Cairo graphics is compiled into R.
+ 
+\emph on
+Left
+\emph default
+: graph in PNG format; 
+\emph on
+right
+\emph default
+: graph in PDF format
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+However, when Cairo graphics is not available, it will require more effort
+ to customize the font.
+ For PNG graphs, the user needs to first register a font family name in
+ R which is mapped to a font that is installed in the system, and then specify
+ the font family name in plotting functions.
+ Below is an example to show this procedure on Windows.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:builtin_png_windows"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    windowsFonts(century = "Century Gothic")
+\end_layout
+
+\begin_layout Plain Layout
+
+    png("builtin-3.png", 672, 384, res = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt3 = annotate("text", 1, 1, label = "A sample of
+\backslash
+nCentury Gothic",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "century", size = 20)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt3)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename builtin-3.png
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:builtin_png_windows"
+
+\end_inset
+
+Use system fonts for PNG on Windows without Cairo graphics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Notice that we use the function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{windowsFonts()}
+\end_layout
+
+\end_inset
+
+ to register font and create name mapping.
+ In other operating systems, there are analogous functions such as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{X11Fonts()}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{quartzFonts()}
+\end_layout
+
+\end_inset
+
+ to do the similar job.
+\end_layout
+
+\begin_layout Standard
+For PDF graphs, the setup is more complicated.
+ The first step is similar: one should call 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
+ to register new family names in R, and then use them in the plot.
+ However, the obstacle here is that 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
+ requires the Adobe Font Metrics files (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.afm}
+\end_layout
+
+\end_inset
+
+), which may be unavailable for users.
+ On the contrary, TrueType fonts (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.ttf}
+\end_layout
+
+\end_inset
+
+) and OpenType fonts (mostly 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.otf}
+\end_layout
+
+\end_inset
+
+) are most commonly used, but unfortunately, these font formats are not
+ directly supported by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdfFonts()}
+\end_layout
+
+\end_inset
+
+.
+ Additionally, to make the plot have consistent appearance across different
+ PDF viewers, it is usually suggested to embed the font within the file
+ by calling the function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embedFonts()}
+\end_layout
+
+\end_inset
+
+, which further invokes an external software Ghostscript
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.ghostscript.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ For the details, interested readers are referred to the R News article
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nonstdfonts"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Due to this complexity, when creating PDF graphs users are most likely to
+ only select the built-in PDF font families, which can be queried by the
+ command 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{names(pdfFonts())}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+The Cairo package
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{Cairo}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Cairo"
+
+\end_inset
+
+ provides a number of high-quality graphics devices that are driven by a
+ unified back-end based on Cairo graphics.
+ When the Cairo library is configured with FreeType and Fontconfig support,
+ one can make use of the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{CairoFonts()}
+\end_layout
+
+\end_inset
+
+ function to specify the fonts that will be used by all the devices in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
+.
+ Below is an example to show this.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cairo_package"
+
+\end_inset
+
+, left)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Cairo)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CairoFonts(regular = "Liberation Sans:style=Regular",
+\end_layout
+
+\begin_layout Plain Layout
+
+           italic = "Liberation Serif:style=Italic")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CairoPDF("Cairo-1.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt4 = annotate("text", 1, 1.1, label = "A sample of Liberation Sans", size
+ = 12)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt5 = annotate("text", 1, 0.9, label = "A sample of Liberation Serif",
+\end_layout
+
+\begin_layout Plain Layout
+
+                fontface = "italic", size = 12)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(bg + txt4 + txt5)
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For systems where Cairo is not configured with FreeType or Fontconfig (e.g.,
+ Windows), the method to specify fonts is similar to that of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
+.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cairo_package"
+
+\end_inset
+
+, right)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    CairoPDF("Cairo-2.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt6 = annotate("text", 1, 1.1, label = "A sample of Constantia",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "Constantia", size = 12)
+\end_layout
+
+\begin_layout Plain Layout
+
+    txt7 = annotate("text", 1, 0.9, label = "A sample of Lucida Console",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    family = "Lucida Console", size = 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print(bg + txt6 + txt7)
+\end_layout
+
+\begin_layout Plain Layout
+
+    dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Cairo-1.pdf
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Cairo-2.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cairo_package"
+
+\end_inset
+
+Specify fonts in the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
+ package.
+ 
+\emph on
+Left
+\emph default
+: with FreeType and Fontconfig support; 
+\emph on
+right
+\emph default
+: without (e.g.
+ on Windows)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+The extrafont package
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ is an R package mainly used to simplify the use of system fonts in PDF
+ and PostScript graphics.
+ It is able to extract metric files (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.afm}
+\end_layout
+
+\end_inset
+
+) from TrueType fonts (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{.ttf}
+\end_layout
+
+\end_inset
+
+) so that R PDF device can utilize that information to place text in graphics.
+ This procedure is accomplished by the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{Rttf2pt1}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Rttf2pt1"
+
+\end_inset
+
+ that 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ depends on.
+ Also, for the same reason previously described, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ provides the function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embed
+\backslash
+_fonts()}
+\end_layout
+
+\end_inset
+
+ to call Ghostscript to embed fonts in PDF files.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ requires a first-time configuration, during which it will scan for TrueType
+ fonts installed in the system and generate corresponding metric files along
+ with other necessary configuration files.
+ Afterwards, one needs to call 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{loadfonts()}
+\end_layout
+
+\end_inset
+
+ to register the newly created metric fonts in R.
+ These two steps only need to be done once and are not necessary in a new
+ R session.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(extrafont)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Run once
+\end_layout
+
+\begin_layout Plain Layout
+
+font_import()
+\end_layout
+
+\begin_layout Plain Layout
+
+loadfonts()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After this set-up, the user may query the available font families for PDF
+ device by calling functions 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fonts()}
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fonttable()}
+\end_layout
+
+\end_inset
+
+, and use them in any plotting functions involving font selection.
+ Since we are now using metric font files, it is best practice to embed
+ the fonts into the PDF file.
+ This is done by calling the function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{embed
+\backslash
+_fonts()}
+\end_layout
+
+\end_inset
+
+.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:extrafont_package"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(extrafont)
+\end_layout
+
+\begin_layout Plain Layout
+
+pdf("extrafont-1-unembedded.pdf", 7, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt8 = annotate("text", 1, 1.1, label = "A sample of Ubuntu Light",
+\end_layout
+
+\begin_layout Plain Layout
+
+                family = "Ubuntu Light", size = 12)
+\end_layout
+
+\begin_layout Plain Layout
+
+txt9 = annotate("text", 1, 0.9, label = "A sample of Ubuntu Condensed",
+\end_layout
+
+\begin_layout Plain Layout
+
+                family = "Ubuntu Condensed", size = 12)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(bg + txt8 + txt9)
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+embed_fonts("extrafont-1-unembedded.pdf", outfile = "extrafont-1.pdf")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename extrafont-1.pdf
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:extrafont_package"
+
+\end_inset
+
+Use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ package to select fonts in PDF device
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The embedding procedure requires the Ghostscript program to be installed
+ in the system and findable to R.
+ On Windows, the command below is an example to tell R where it is.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv(R_GSCMD = "C:/Program Files/gs/gs9.05/bin/gswin32c.exe")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+More details about 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ can be found in the README file
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://cran.r-project.org/web/packages/extrafont/README.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of this package.
+\end_layout
+
+\begin_layout Section
+The new approach: showtext
+\end_layout
+
+\begin_layout Standard
+The previous section describes a number of ways to use system fonts in R
+ graphics.
+ While they could be helpful in many situations when dealing with fonts
+ in R, there is still room for seeking more elegant ways to achieve that
+ target, among which the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ package is one trying to meet such goal.
+ There are a number of highlighted features of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Easy for installation}
+\end_layout
+
+\end_inset
+
+.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ only requires the lightweight FreeType library
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.freetype.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ for installation, and works without the dependence on external software
+ such as Ghostscript.
+ This would be helpful when other solutions are not possible, e.g., when the
+ Cairo library is unavailable in the system.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Support for various font formats}
+\end_layout
+
+\end_inset
+
+.
+ A certain type of font is supported as long as the back-end FreeType library
+ can read it, including but not limited to TrueType fonts, OpenType fonts,
+ Type 1 fonts, etc.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{Support for various R graphics devices}
+\end_layout
+
+\end_inset
+
+.
+ Technically 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ can work on almost any graphics device, whatever in PNG, PDF, SVG or JPEG
+ formats.
+\end_layout
+
+\begin_layout Enumerate
+The output graph produced by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ has a 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{platform-independent appearence}
+\end_layout
+
+\end_inset
+
+.
+ There is no need to embed fonts into the graph, and viewers can read the
+ text without installing the fonts that actually produced them.
+\end_layout
+
+\begin_layout Enumerate
+It also features functions to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{automatically search and download}
+\end_layout
+
+\end_inset
+
+ many beautiful, accessible and open source fonts on the web, and users
+ can use these fonts without installing them to the operating system, which
+ means that the system level font library can be kept intact and clean.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ has a neat 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{integration with 
+\backslash
+pkg{knitr}}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The basic idea behind 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is quite simple: it converts text into raster images (for bitmap and on-screen
+ devices) or polygons (for vector graphics), and then put them in the graphics.
+ This design comes from the fact that handling text is a much complicated
+ task for graphics devices, but polygons and raster images are lower-level
+ operations that are easier to deal with.
+ Therefore, as long as a device understands how to draw polygons or overlay
+ bitmap on its canvas, it will also be able to show text with the help of
+ this package.
+\end_layout
+
+\begin_layout Standard
+More specifically, the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ package develops a general framework to render text in R graphics.
+ First, it overrides the functions contained in the graphics device that
+ are responsible for drawing text, so that 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ will take over the text rendering procedure.
+ Then, it uses the FreeType library to read font file and analyze the character
+ string that is going to be displayed in the graph.
+ Finally, the text is transformed into basic graphical components (raster
+ images or polygons) that can be easily rendered by the device.
+ As a result, the created graph does not rely on the original font file,
+ thus being platform-independent.
+\end_layout
+
+\begin_layout Standard
+This procedure can be better explained by the diagram in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:how_showtext_works"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename grDevice.pdf
+	lyxscale 60
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+How 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ works with R graphics devices
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:how_showtext_works"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Usage of showtext
+\end_layout
+
+\begin_layout Standard
+The usage of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is easy and intuitive, consisting of two major steps: registering system
+ fonts into R, and enabling 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ when executing plotting commands.
+ As an additional feature, its integration with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ is also introduced in this section.
+\end_layout
+
+\begin_layout Subsection
+Registering fonts
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:register_fonts"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The purpose of this step is to create a mapping between the font family
+ name used by R and the path of the corresponding font file, so that every
+ time the graphics device requests a font with a given name, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ can locate and open that font file.
+ The actual work of registering fonts is done by the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{sysfonts}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "sysfonts"
+
+\end_inset
+
+, which is depended upon by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
+ provides the function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add()}
+\end_layout
+
+\end_inset
+
+ to register font families for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, with six arguments in total and the first two being mandatory.
+ The first parameter, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{family}
+\end_layout
+
+\end_inset
+
+, is the family name that user wants to use in the plotting functions.
+ The second one, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{regular}
+\end_layout
+
+\end_inset
+
+, should give the path to the font file for a regular font face.
+ Other parameters, such as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{bold}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{italic}
+\end_layout
+
+\end_inset
+
+, are similar to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{regular}
+\end_layout
+
+\end_inset
+
+, but pointing to the files with corresponding font faces.
+ If any of the extra font face parameter is set to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{NULL}
+\end_layout
+
+\end_inset
+
+, the font file for regular font face will be used.
+\end_layout
+
+\begin_layout Standard
+Below is an example to download and register the xkcd
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://xkcd.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ font for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=TRUE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(showtext)
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "xkcd.ttf")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file("http://simonsoftware.se/other/xkcd.ttf", dest, mode = "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add("myxkcd", regular = dest)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If successful, 
+\begin_inset Quotes eld
+\end_inset
+
+myxkcd
+\begin_inset Quotes erd
+\end_inset
+
+ should appear in the result returned by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.families()}
+\end_layout
+
+\end_inset
+
+.
+ This function lists all font families that are available in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, among which 
+\begin_inset Quotes eld
+\end_inset
+
+sans
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+serif
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+mono
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+wqy-microhei
+\begin_inset Quotes erd
+\end_inset
+
+ are built-in and will be loaded automatically with the package.
+\end_layout
+
+\begin_layout Standard
+For most operating systems, fonts are usually installed in some standard
+ locations.
+ To add fonts located in these directories, users can provide the filename
+ rather than the absolute path to save some typing.
+ For example on Windows, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
+ knows about the standard font directory, so we can use the following code
+ to register the Consolas families to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=TRUE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+if(.Platform$OS.type == "windows") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    font.add("consolas", regular = "consola.ttf", bold = "consolab.ttf",
+\end_layout
+
+\begin_layout Plain Layout
+
+         italic = "consolai.ttf", bolditalic = "consolaz.ttf")
+\end_layout
+
+\begin_layout Plain Layout
+
+    font.families()
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Users can view or set such search paths through function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.paths()}
+\end_layout
+
+\end_inset
+
+, and list available font files in those paths by calling 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.files()}
+\end_layout
+
+\end_inset
+
+.
+ While it may take some efforts to figure out the filename of a font with
+ a given family name (and perhaps also font face), the naming convention
+ of font files is usually intuitive and fixed.
+ Also, some font file viewers can help mapping the font name to its real
+ file name in the system.
+\end_layout
+
+\begin_layout Standard
+To make the font adding process easier, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{sysfonts}
+\end_layout
+
+\end_inset
+
+ also makes use of the Google Fonts project
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.google.com/fonts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to simplify the process of downloading and registering fonts available
+ on the web.
+ Google Fonts hosts more than 600 open source fonts, and is still enriching
+ its collection.
+ Function 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.families.google()}
+\end_layout
+
+\end_inset
+
+ lists the presently accessible fonts in the repository, and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
+ could search for a specific font family, download its font files for all
+ possible faces, and add them to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+ These two functions require the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{RCurl}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RCurl"
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{jsonlite}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "jsonlite"
+
+\end_inset
+
+ packages.
+ The following code demonstrates this process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<eval=TRUE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+head(font.families.google(), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add.google("Lato", "lato")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.families()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the Lato font has multiple font faces (regular, bold, italic,
+ etc.) in Google Fonts repository.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
+ is aware of this and will register all of the font faces in R.
+\end_layout
+
+\begin_layout Subsection
+Enabling showtext in plots
+\end_layout
+
+\begin_layout Standard
+After registering the fonts, using them in plotting functions will be straightfo
+rward.
+ The simplest way to enable 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ in R graphs is to call the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.auto()}
+\end_layout
+
+\end_inset
+
+ function, after which users are allowed to use the font families that are
+ listed in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.families()}
+\end_layout
+
+\end_inset
+
+ to draw text.
+ When it is no longer needed, users may call 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.auto(FALSE)}
+\end_layout
+
+\end_inset
+
+ to turn 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ off.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:chinar"
+
+\end_inset
+
+ is an example to demonstrate this usage with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{ggplot2}
+\end_layout
+
+\end_inset
+
+ (credit goes to the answer in Stackoverflow
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://stackoverflow.com/questions/9917049/inserting-an-image-to-ggplot2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ for inserting image in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{ggplot2}
+\end_layout
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(png)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(grid)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(ggplot2)
+\end_layout
+
+\begin_layout Plain Layout
+
+# download and read an image
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "pic.png")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file("http://china-r.org/img/China-R-Logo-trans.png", dest, mode =
+ "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+g = rasterGrob(readPNG(dest), interpolate = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+# assume fonts have been loaded using the code in previous section
+\end_layout
+
+\begin_layout Plain Layout
+
+ttl = "
+\backslash
+u6b22
+\backslash
+u8fce
+\backslash
+u5173
+\backslash
+u6ce8
+\backslash
+u4e2d
+\backslash
+u56fd
+\backslash
+u0052
+\backslash
+u8bed
+\backslash
+u8a00
+\backslash
+u4f1a
+\backslash
+u8bae"
+\end_layout
+
+\begin_layout Plain Layout
+
+plt = ggplot(NULL, aes(x = 1, y = 1)) + xlim(73, 135) + ylim(17, 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotation_custom(g, xmin = 73, xmax = 135, ymin = 17, ymax = 54) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotate("text", -Inf, -Inf, label = "http://china-r.org", size = 8,
+\end_layout
+
+\begin_layout Plain Layout
+
+             family = "lato", fontface = "italic", hjust = -0.1, vjust =
+ -1) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_fixed() + ggtitle(ttl) + theme_grey(base_size = 20) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(axis.title = element_blank(),
+\end_layout
+
+\begin_layout Plain Layout
+
+          plot.title = element_text(family = "wqy-microhei"))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.opts(dpi = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.auto()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ggsave("showtext-1.png", plt, width = 8.75, height = 5, dpi = 96)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename chinar.png
+	lyxscale 80
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:chinar"
+
+\end_inset
+
+Use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{ggplot2}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this example, 
+\begin_inset Quotes eld
+\end_inset
+
+wqy-microhei
+\begin_inset Quotes erd
+\end_inset
+
+ is the name for the WenQuanYi Micro Hei
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://wenq.org/en
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ font that will be automatically loaded by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+ WenQuanYi Micro Hei contains a large number of CJK (
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{C}
+\end_layout
+
+\end_inset
+
+hinese, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{J}
+\end_layout
+
+\end_inset
+
+apanese and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+strong{K}
+\end_layout
+
+\end_inset
+
+orean) characters, so combined with 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ it can be useful to show text in those languages.
+\end_layout
+
+\begin_layout Standard
+Note that when working with bitmap image formats (e.g.
+ PNG, JPEG, TIFF), users should be careful about the resolution of the image.
+ Since 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is unable to query the DPI that is used by the graphics device, users should
+ set it manually by the command 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.opts(dpi = ...)}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+While 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.auto()}
+\end_layout
+
+\end_inset
+
+ should be enough for most cases in using 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, users actually have more freedom to control which part of the graph should
+ be rendered by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ and which not.
+ Generally speaking, users could enclose code that wants to use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ by a pair of function calls: 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.end()}
+\end_layout
+
+\end_inset
+
+.
+ The code outside of these parts will still use the standard way to draw
+ text.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:xkcd"
+
+\end_inset
+
+ is an example to show this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+pdf("showtext-2.pdf", 7, 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+p = runif(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.begin()
+\end_layout
+
+\begin_layout Plain Layout
+
+op = par(family = "myxkcd", mar = c(0.1, 0.1, 3.1, 1.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+pie(c(1 - p, p), cex = 1.2, labels = c("Those who understand
+\backslash
+nbinary",
+\end_layout
+
+\begin_layout Plain Layout
+
+                                       "Those who don't"),
+\end_layout
+
+\begin_layout Plain Layout
+
+    col = c("#F8766D", "#00BFC4"), border = NA, radius = 0.9)
+\end_layout
+
+\begin_layout Plain Layout
+
+box()
+\end_layout
+
+\begin_layout Plain Layout
+
+par(op)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.end()
+\end_layout
+
+\begin_layout Plain Layout
+
+title("There are 10 types of people in the world", font.main = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+dev.off()
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename xkcd.pdf
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:xkcd"
+
+\end_inset
+
+Use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ in part of the graph.
+ The title is drawn using a standard font, while the pie chart labels are
+ using fonts loaded by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:xkcd"
+
+\end_inset
+
+ uses the xkcd font we added in the previous section.
+ More interesting graphs of this style can be found in the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{xkcd}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "xkcd"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Integration with knitr
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ is an R package and engine to generate dynamic document with R.
+ It is similar to the built-in Sweave engine inside R, but brings in many
+ extensions and enhancement.
+ Starting from version 1.7, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ begins to support 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ through the option 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{fig.showtext}
+\end_layout
+
+\end_inset
+
+.
+ Code chunk with this option being 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{TRUE}
+\end_layout
+
+\end_inset
+
+ will automatically invoke the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
+ function, so there is no need to manually call it from the user.
+ Here is a minimal example of an Rmd file that uses 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{framed}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minipage}[t]{1
+\backslash
+columnwidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{example}
+\end_layout
+
+\begin_layout Plain Layout
+
+We first do some setup work...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+```{r setup}
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(showtext)
+\end_layout
+
+\begin_layout Plain Layout
+
+showtext.opts(dpi = 72)
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(fig.width = 7, fig.height = 7, dpi = 72)
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Then register a font from Google Fonts.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+```{r fonts, message=FALSE}
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add.google("Lobster", "lobster")
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Finally we create some fancy plot.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+```{r fancy, fig.showtext=TRUE, fig.align='center'}
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(1, pch = 16, cex = 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex =
+ 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+```
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{example}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minipage}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{framed}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Limitations and solutions
+\end_layout
+
+\begin_layout Standard
+The goal of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is to provide an elegant way to allow R using system fonts in graphics.
+ While it should be useful in most situations, there are a few limitations
+ that need to take care.
+ This section lists these cons of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, as well as some hints of how to use it in the best way.
+\end_layout
+
+\begin_layout Standard
+First, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ looks for fonts according to their filenames rather than the usual 
+\begin_inset Quotes eld
+\end_inset
+
+font names
+\begin_inset Quotes erd
+\end_inset
+
+ in the system.
+ This design is intentional since font name can be ambiguous.
+ For example, the same font can have multiple names given by different font
+ management software.
+ In contrast, font file is the entity that actually contains the glyphs
+ of a specific font, hence it helps to avoid such confusion.
+ While this setting may cause some problems for users who are searching
+ the filename for the first time, it should be quite convenient afterward,
+ and one possible solution is to use the fonts in Google Fonts through function
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{font.add.google()}
+\end_layout
+
+\end_inset
+
+, which maintains a standard and stable interface to access fonts.
+\end_layout
+
+\begin_layout Standard
+Second, for vector graphics such as PDF and SVG, since text will be converted
+ into polygons, it is no longer real text that can be searched in a PDF
+ or SVG viewer.
+ Also, the size of the PDF or SVG file created by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is usually larger than the one produced in the standard way.
+ For users who do concern these issues, they are advised to use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
+ package to generate PDF graph, and to use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+CRANpkg{RSvgDevice}
+\end_layout
+
+\end_inset
+
+ package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RSvgDevice"
+
+\end_inset
+
+ for SVG output.
+\end_layout
+
+\begin_layout Standard
+In addition, at the time of writing 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is not working well with the plot window provided by the RStudio IDE
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.rstudio.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ The simple solution is to manually open a graphics device using functions
+ such as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{windows()}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{x11()}
+\end_layout
+
+\end_inset
+
+, and then draw plots inside this window, rather than the built-in one offered
+ by RStudio IDE.
+\end_layout
+
+\begin_layout Standard
+Finally, in terms of the overall design, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ is in some sense intrusive, since when user calls 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.begin()}
+\end_layout
+
+\end_inset
+
+, it temporarily replaces the device functions by its own ones, and later
+ restores them after 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{showtext.end()}
+\end_layout
+
+\end_inset
+
+ is called.
+ An alternative and probably more elegant way to address the font problem
+ is to develop new graphics devices that are based on 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+, so that they can make use of the text handling functionality contained
+ in 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+.
+ This possibility is left to future developers of graphics devices.
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout Standard
+This article introduces the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ package, which helps to use various types of fonts in R graphics, with
+ both highlighted features and its limitations.
+\end_layout
+
+\begin_layout Standard
+We have also discussed a number of alternative ways in R to create graphs
+ using non-standard fonts.
+\end_layout
+
+\begin_layout Standard
+While there is hardly a universally best way to use fonts in R, some situations
+ were described in which a certain approach is most appropriate.
+\end_layout
+
+\begin_layout Itemize
+The built-in devices in R without Cairo support have the least dependency
+ on external libraries and software.
+ More effort needs to be taken in this situation compared with others, but
+ this may be the only possible solution, especially when R is compiled in
+ a minimal environment.
+\end_layout
+
+\begin_layout Itemize
+When Cairo graphics is compiled in R, devices such as 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
+ allow users to select fonts by their family names.
+ This should be the easiest way to use fonts in R graphs without extension
+ packages.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
+ package has similar functionality to 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{png(type = 
+\backslash
+textquotedbl{}cairo
+\backslash
+textquotedbl{})}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{cairo
+\backslash
+_pdf()}
+\end_layout
+
+\end_inset
+
+, and additionally provides a global font selector, which is useful when
+ choosing a default font for all 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{Cairo}
+\end_layout
+
+\end_inset
+
+ devices.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{extrafont}
+\end_layout
+
+\end_inset
+
+ package provides a complete solution for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{pdf()}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+code{postscript()}
+\end_layout
+
+\end_inset
+
+ devices with TrueType fonts, as well as support for Windows bitmap output.
+ It introduces an easy way to import system fonts into R, so that users
+ only need to do some one-time configuration.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ supports various font formats and most graphics devices.
+ It also offers some convenient features like using web fonts on Google
+ Fonts, and the integration with the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ package.
+ Some suggestions are given in section 
+\begin_inset Quotes eld
+\end_inset
+
+Limitations and solutions
+\begin_inset Quotes erd
+\end_inset
+
+ in order to use it in the best way.
+\end_layout
+
+\begin_layout Section
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+The author of this article would thank Yihui Xie, for his kind work of adding
+ the support for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{showtext}
+\end_layout
+
+\end_inset
+
+ in his 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pkg{knitr}
+\end_layout
+
+\end_inset
+
+ package, and Barret Schloerke, who provided a lot of helpful comments and
+ corrections of the original manuscript.
+ The author is also grateful to the editor and two anonymous reviewers,
+ who made many helpful suggestions to this article.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "qiu"
+options "bibtotoc,abbrvnat"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+bibliography{qiu}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+address{Yixuan Qiu
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  Purdue University
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  Department of Statistics, West Lafayette, IN 47906
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  USA}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+email{yixuanq@gmail.com}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
