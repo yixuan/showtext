@@ -2818,7 +2818,7 @@ library(ggplot2)
 
 \begin_layout Plain Layout
 
-# download and read an image
+## download and read an image
 \end_layout
 
 \begin_layout Plain Layout
@@ -2839,7 +2839,12 @@ g = rasterGrob(readPNG(dest), interpolate = TRUE)
 
 \begin_layout Plain Layout
 
-# assume fonts have been loaded using the code in previous section
+## load font and plot
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add.google("Lato", "lato")
 \end_layout
 
 \begin_layout Plain Layout
@@ -3250,6 +3255,30 @@ status open
 \begin_layout Plain Layout
 
 <<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+## load font
+\end_layout
+
+\begin_layout Plain Layout
+
+dest = file.path(tempdir(), "xkcd.ttf")
+\end_layout
+
+\begin_layout Plain Layout
+
+download.file("http://simonsoftware.se/other/xkcd.ttf", dest, mode = "wb")
+\end_layout
+
+\begin_layout Plain Layout
+
+font.add("myxkcd", regular = dest)
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
