@@ -376,6 +376,11 @@ opts_chunk$set(warning=FALSE, message=FALSE, eval=FALSE)
 
 \begin_layout Plain Layout
 
+render_sweave()
+\end_layout
+
+\begin_layout Plain Layout
+
 @
 \end_layout
 
@@ -1177,7 +1182,19 @@ Left
 right
 \emph default
 : without (e.g.
- on Windows)
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ 
+\end_layout
+
+\end_inset
+
+on Windows)
 \end_layout
 
 \end_inset
@@ -1925,7 +1942,7 @@ status open
 \begin_inset Graphics
 	filename grDevice.pdf
 	lyxscale 60
-	width 80text%
+	width 95text%
 
 \end_inset
 
@@ -3089,7 +3106,19 @@ pkg{showtext}
 
 \begin_layout Standard
 Note that when working with bitmap image formats (e.g.
- PNG, JPEG, TIFF), users should be careful about the resolution of the image.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ 
+\end_layout
+
+\end_inset
+
+PNG, JPEG, TIFF), users should be careful about the resolution of the image.
  Since 
 \begin_inset ERT
 status open
@@ -3844,7 +3873,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://www.rstudio.com/
+http://www.rstudio.com/products/RStudio/
 \end_layout
 
 \end_inset
