@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-2}{
+  \itemize{
+    \item When the requested font family is not found, the program will give
+          warnings, and then the default font will be used
+          (previously this was done silently).
+  }
+}
+
 \section{Changes in showtext version 0.4-1}{
   \itemize{
     \item Fixed bugs in calculating metric information of characters
