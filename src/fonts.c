@@ -3,6 +3,7 @@
 #include "util.h"
 
 
+/* Convert a UTF-8 string to an array of Unicodes */
 int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
 {
     int len = 0;
@@ -26,7 +27,7 @@ int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
     return len;
 }
 
-/* a small example */
+/* A small example */
 /*
 SEXP utf8toint(SEXP str)
 {
@@ -47,47 +48,54 @@ SEXP utf8toint(SEXP str)
 
 
 
+/* Obtain the FT_Face structure given family name and font face */
 FT_Face GetFTFace(const pGEcontext gc)
 {
-    int gcfontface = gc->fontface;
+    int font_face = gc->fontface;
     FontDesc *font;
     
-    SEXP fontList;
-    SEXP fontNames;
-    SEXP extPtr;
-    int i, listLen;
+    SEXP font_list;
+    SEXP font_names;
+    SEXP ext_ptr;
+    int i, list_len;
     
     /* Font list is sysfonts:::.pkg.env$.font.list,
        defined in sysfonts/R/font.R */    
-    fontList = GetVarFromPkgEnv(".font.list", "sysfonts");
+    font_list = GetVarFromPkgEnv(".font.list", "sysfonts");
     
     /* Search the given family name */
-    fontNames = GET_NAMES(fontList);
-    listLen = Rf_length(fontList);
-    for(i = 0; i < listLen; i++)
+    font_names = GET_NAMES(font_list);
+    list_len = Rf_length(font_list);
+    for(i = 0; i < list_len; i++)
     {
-        if(strcmp(gc->fontfamily, CHAR(STRING_ELT(fontNames, i))) == 0)
+        if(strcmp(gc->fontfamily, CHAR(STRING_ELT(font_names, i))) == 0)
         {
             break;
         }
     }
     /* If not found, search "wqy-microhei" */
-    if(i == listLen)
+    if(i == list_len)
     {
-        for(i = 0; i < listLen; i++)
+        if(gc->fontfamily[0] != '\0')
+            Rf_warning("font family '%s' not found, will use 'wqy-microhei' instead", gc->fontfamily);
+        for(i = 0; i < list_len; i++)
         {
-            if(strcmp("wqy-microhei", CHAR(STRING_ELT(fontNames, i))) == 0)
+            if(strcmp("wqy-microhei", CHAR(STRING_ELT(font_names, i))) == 0)
             {
                 break;
             }
         }
     }
     /* If still not found, use "sans" */
-    if(i == listLen) i = 0;
-    if(gcfontface < 1 || gcfontface > 5) gcfontface = 1;
+    if(i == list_len)
+    {
+        Rf_warning("font family 'wqy-microhei' not found, will use 'sans' instead");
+        i = 0;
+    }
+    if(font_face < 1 || font_face > 5) font_face = 1;
     
-    extPtr = VECTOR_ELT(VECTOR_ELT(fontList, i), gcfontface - 1);
-    font = (FontDesc *) R_ExternalPtrAddr(extPtr);
+    ext_ptr = VECTOR_ELT(VECTOR_ELT(font_list, i), font_face - 1);
+    font = (FontDesc *) R_ExternalPtrAddr(ext_ptr);
     
     return font->face;
 }
