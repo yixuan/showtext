@@ -1,11 +1,17 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-3}{
+  \itemize{
+    \item Fixed a compilation conflict with FreeType 2.6
+  }
+}
+
 \section{Changes in showtext version 0.4-2}{
   \itemize{
     \item When the requested font family is not found, the program will give
           warnings, and then the default font will be used
-          (previously this was done silently).
+          (previously this was done silently)
   }
 }
 
@@ -19,12 +25,12 @@
   \itemize{
     \item New function \code{shwotext.auto()} to automatically call
           \code{showtext.begin()} in any newly opened graphics devices,
-          saving a lot of typing.
+          saving a lot of typing
     \item Better visual effect for a number of bitmap and on-screen devices
           including \code{png()}, \code{jpeg()}, \code{tiff()}, \code{bmp()},
           \code{x11()} and \code{windows()}. For these devices we use
-          raster image rather than polygons to draw text.
-    \item Options setting has been moved to a new function \code{showtext.opts()}.
+          raster image rather than polygons to draw text
+    \item Options setting has been moved to a new function \code{showtext.opts()}
           (previously \code{nseg} is in \code{showtext.begin()})
     \item Fixed bug in setting device parameter \code{canHAdj}
   }
