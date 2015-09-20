@@ -1,4 +1,6 @@
 import(sysfonts)
 import(showtextdb)
+importFrom("grDevices", "dev.cur")
+
 export(showtext.opts, showtext.begin, showtext.end, showtext.auto)
 

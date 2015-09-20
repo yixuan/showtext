@@ -15,7 +15,7 @@ Description: Making it easy to use various types of fonts
 Depends:
     sysfonts
 Imports:
-    showtextdb
+    showtextdb, grDevices
 SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
