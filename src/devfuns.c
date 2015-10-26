@@ -7,7 +7,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
 {
     FT_Face face = GetFTFace(gc);
     FT_Error err;
-    
+
     /* Font size in points (1/72 inches) */
     double font_size = gc->ps * gc->cex;
     /* Metrics given by FreeType are represented in EM units when
@@ -18,10 +18,10 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
        Device unit can be in points (usually vector graphics),
        or in pixels (usually bitmap graphics). */
     double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
-  
+
     if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)  c = -c;
-    
+
     /* c is the unicode of the character */
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)
@@ -30,7 +30,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
         *ascent = *descent = *width = 0.0;
         return;
     }
-    
+
     *ascent = face->glyph->metrics.horiBearingY * dev_units_per_EM_unit;
     *descent = face->glyph->metrics.height * dev_units_per_EM_unit - *ascent;
     *width = face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
@@ -43,14 +43,14 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8toucs4(unicode, str, max_len);
-    
+
     FT_Face face = GetFTFace(gc);
     FT_Error err;
-    
+
     double font_size = gc->ps * gc->cex;
     double pts_per_EM_unit = font_size / face->units_per_EM;
     double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
-    
+
     double width = 0.0;
     int i;
     /* Add up the 'advance' of each character */
@@ -65,6 +65,8 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
         width += face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
     }
 
+    free(unicode);
+
     return width;
 }
 
@@ -75,15 +77,15 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8toucs4(unicode, str, max_len);
-    
+
     /* raster() rotates around the bottom-left corner,
        and text() rotates around the center indicated by hadj. */
     int trans_sign = dd->bottom > dd->top ? -1: 1;
     double trans_X, trans_Y;
-    
+
     /* Calculate pixel size */
     int px = (int) (gc->ps * gc->cex * GetDevUnitsPerPoint() + 0.5);
-    
+
     /* Get raster data */
     RasterData *rd = GetStringRasterImage(unicode, len, px, px,
         rot * DEG2RAD, hadj, gc, &trans_X, &trans_Y);
@@ -92,6 +94,7 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
                x - trans_X, y - trans_sign * trans_Y,
                rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
     FreeRasterData(rd);
+    free(unicode);
 }
 
 void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
@@ -101,7 +104,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     unsigned int *unicode =
         (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
     int len = utf8toucs4(unicode, str, maxLen);
-    
+
     FT_Outline_Funcs *funs = GetFTOutlineFuncs();
     FT_Face face = GetFTFace(gc);
     double fontSize = gc->ps * gc->cex;
@@ -112,7 +115,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     FT_Outline outline;
     FT_Error err;
     int i;
-    
+
     double strWidth = showtextStrWidthUTF8(str, gc, dd);
     double l = hadj * strWidth;
 
@@ -122,13 +125,13 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     data.trans.sign = dd->bottom > dd->top ? -1: 1;
     data.trans.theta = rot;
     data.trans.x = x - l * cos(rot * DEG2RAD);
-    data.trans.y = y - data.trans.sign * l * sin(rot * DEG2RAD);    
+    data.trans.y = y - data.trans.sign * l * sin(rot * DEG2RAD);
     data.curr_dev_trans.x = 0;
     data.curr_dev_trans.y = 0;
     data.outline_x = ArrayNew(100);
     data.outline_y = ArrayNew(100);
     data.npoly = 0;
-    
+
     gc_modify.fill = gc->col;
     gc_modify.col = R_RGBA(0xFF, 0xFF, 0xFF, 0x00);
     //gc_modify.col = NA_INTEGER;
@@ -199,7 +202,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         data.outline_x = ArrayNew(100);
         data.outline_y = ArrayNew(100);
         data.npoly = 0;
-        /* 
+        /*
            After we draw a character, we move the pen right to a distance
            of the advance.
            See the picture in
@@ -209,5 +212,5 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     }
     ArrayDestroy(data.outline_x);
     ArrayDestroy(data.outline_y);
+    free(unicode);
 }
-
