@@ -1,9 +1,15 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-4}{
+  \itemize{
+    \item Fixed a memory leak problem
+  }
+}
+
 \section{Changes in showtext version 0.4-3}{
   \itemize{
-    \item Fixed a compilation conflict with FreeType 2.6
+    \item Fixed a compilation conflict with FreeType 2.6, thanks to Kurt Hornik
   }
 }
 
