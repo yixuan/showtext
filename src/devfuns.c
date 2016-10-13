@@ -74,6 +74,9 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
+    if(max_len < 1)
+        return;
+    
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8toucs4(unicode, str, max_len);
@@ -100,10 +103,13 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
 void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
-    int maxLen = strlen(str);
+    int max_len = strlen(str);
+    if(max_len < 1)
+        return;
+    
     unsigned int *unicode =
-        (unsigned int *) calloc(maxLen + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, maxLen);
+        (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
+    int len = utf8toucs4(unicode, str, max_len);
 
     FT_Outline_Funcs *funs = GetFTOutlineFuncs();
     FT_Face face = GetFTFace(gc);
