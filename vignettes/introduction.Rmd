@@ -123,11 +123,11 @@ Loading font is actually done by package **sysfonts**.
 The easy way to load font into **showtext** is by calling
 
 ```r
-font.add(family = "<font_name>", regular = "/path/to/font/file")
+font.add(family = "<family_name>", regular = "/path/to/font/file")
 ```
 
 where `family` is the name that you assign to that font (so that later you can
-call `par(family = "<font_name>")` to use this font in plotting),
+call `par(family = "<family_name>")` to use this font in plotting),
 and `regular` is the path to the font file.
 That is to say, only knowing the "font name" is not sufficient to identify the
 font, since the names are usually system dependent. On the contrary, font file
@@ -176,8 +176,8 @@ showtext.auto(FALSE)
 For other OS, you may not have the `simhei.ttf` font file, but there is no
 difficulty in using the alternatives.
 
-At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
-OpenType fonts(\*.otf), and adding new
+At present `font.add()` supports TrueType fonts(`.ttf`/`.ttc`) and
+OpenType fonts(`.otf`), and adding new
 font type is trivial as long as FreeType supports it.
 
 Note that **showtext** includes an open source CJK font
