@@ -17,9 +17,12 @@ Depends:
 Imports:
     showtextdb,
     grDevices
+Suggests:
+    prettydoc
 SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
-RoxygenNote: 5.0.0
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
