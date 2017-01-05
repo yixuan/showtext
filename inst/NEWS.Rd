@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-6}{
+  \itemize{
+    \item Fixed a UBSAN issue 
+    \item Added a cleanup script per CRAN's policy
+  }
+}
+
 \section{Changes in showtext version 0.4-5}{
   \itemize{
     \item Fixed the text() device function for string beginning with "\\n"
