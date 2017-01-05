@@ -47,10 +47,13 @@ static void WriteMatrix(const FT_Bitmap *bitmap, RasterData *mat, int mi, int mj
             unsigned char intensity = bitmap->buffer[p * bitmap->pitch + q];
             /* RasterData is also stored by row */
             if(intensity > 0)
-                mat->data[i * mat_ncol + j] = R_RGBA(R_RED(gc->col),
-                                                     R_GREEN(gc->col),
-                                                     R_BLUE(gc->col),
-                                                     (R_ALPHA(gc->col) * intensity) / 255);
+                mat->data[i * mat_ncol + j] = R_RGBA(
+                    R_RED(gc->col),
+                    R_GREEN(gc->col),
+                    R_BLUE(gc->col),
+                    /* Reference: https://lists.ffmpeg.org/pipermail/ffmpeg-cvslog/2015-December/096038.html */
+                    (unsigned)((R_ALPHA(gc->col) * intensity) / 255)
+                );
         }
     }
 }
