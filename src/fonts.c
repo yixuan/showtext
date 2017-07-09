@@ -4,13 +4,13 @@
 
 
 /* Convert a UTF-8 string to an array of Unicodes */
-int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
+int utf8_to_ucs4(unsigned int* ucs4, const char* utf8, int n)
 {
     int len = 0;
     int step = 0;
     int err;
-    unsigned int *p1;
-    const char * p2;
+    unsigned int* p1;
+    const char* p2;
     for(p1 = ucs4, p2 = utf8; ; p1++, p2 += step)
     {
         /* if we meet '\0' */
@@ -24,24 +24,26 @@ int utf8toucs4(unsigned int *ucs4, const char *utf8, int n)
         len++;
         if(len >= n) break;
     }
+    
     return len;
 }
 
 /* A small example */
 /*
-SEXP utf8toint(SEXP str)
+SEXP utf8_to_int(SEXP str)
 {
-    const char *s = CHAR(STRING_ELT(str, 0));
+    const char* s = CHAR(STRING_ELT(str, 0));
     int maxlen = strlen(s);
-    unsigned int *buf = calloc(maxlen + 1, sizeof(int));
-    int len = utf8toucs4(buf, s, maxlen);
+    unsigned int* buf = calloc(maxlen + 1, sizeof(int));
+    int len = utf8_to_ucs4(buf, s, maxlen);
     SEXP res;
     int i;
     PROTECT(res = allocVector(INTSXP, len));
     for(i = 0; i < len; i++)
         INTEGER(res)[i] = buf[i];
-    UNPROTECT(1);
     free(buf);
+ 
+    UNPROTECT(1);
     return res;
 }
 */

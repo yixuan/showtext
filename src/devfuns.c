@@ -42,7 +42,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
     int max_len = strlen(str);
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, max_len);
+    int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Face face = GetFTFace(gc);
     FT_Error err;
@@ -79,7 +79,7 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
     
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, max_len);
+    int len = utf8_to_ucs4(unicode, str, max_len);
 
     /* raster() rotates around the bottom-left corner,
        and text() rotates around the center indicated by hadj. */
@@ -109,7 +109,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
-    int len = utf8toucs4(unicode, str, max_len);
+    int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Outline_Funcs *funs = GetFTOutlineFuncs();
     FT_Face face = GetFTFace(gc);

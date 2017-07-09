@@ -17,11 +17,17 @@
 
 typedef struct fontDesc {
     FT_Library library;
-    FT_Face face;
+    FT_Face    face;
 } FontDesc;
 
-/* Convert UTF-8 string to Unicode array */
-int utf8toucs4(unsigned int *ucs4, const char *utf8, int n);
+/* Convert UTF-8 string to Unicode array
+ * utf8: input UTF-8 string
+ * n:    length of UTF-8 string (bytes)
+ * ucs4: output array of decoded characters
+ *
+ * Returns the length of output array
+ */
+int utf8_to_ucs4(unsigned int* ucs4, const char* utf8, int n);
 
 /* Get FreeType font face from description in R */
 FT_Face GetFTFace(const pGEcontext gc);
