@@ -4,7 +4,7 @@
     
     ## C structure stored in package environment. C function can access these
     ## data by looking up variable ".outline_funs" in the package environment.
-    .pkg.env$.outline_funs = .Call("showtextNewOutlineFuns", PACKAGE = "showtext")
+    .pkg.env$.outline_funs = .Call("showtext_new_outline_funs", PACKAGE = "showtext")
     
     ## Similar to above. The data can be set by R and accessed by C easily.
     .pkg.env$.nseg = 10L
@@ -33,7 +33,7 @@
 }
 
 .onUnload <- function(libpath) {
-    .Call("showtextFreeOutlineFuns", .pkg.env$.outline_funs, PACKAGE = "showtext")
+    .Call("showtext_free_outline_funs", .pkg.env$.outline_funs, PACKAGE = "showtext")
     .Call("showtextFreeDevDesc", .pkg.env$.dd_saved, PACKAGE = "showtext")
     library.dynam.unload("showtext", libpath)
 }

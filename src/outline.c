@@ -1,6 +1,6 @@
 #include "outline.h"
 
-void transformPoint(Point *before, Point *after, TransData *trans)
+void transform_point(Point* before, Point* after, TransData* trans)
 {
     /* degree to radian */
     double rad = trans->theta * DEG2RAD; /* from R_ext/GraphicsEngine.h */
@@ -11,104 +11,108 @@ void transformPoint(Point *before, Point *after, TransData *trans)
     after->y = trans->sign * before->x * sint + before->y * cost + trans->y;  
 }
 
-int outlineMoveTo(const FT_Vector* to, void* user)
+int outline_move_to(const FT_Vector* to, void* user)
 {
     /* Rprintf("move\n"); */
-    OutlineData *data = (OutlineData *) user;
-    double ratio_EM = data->ratio_EM;
+    OutlineData* data = (OutlineData*) user;
+    double ft_to_dev_ratio = data->ft_to_dev_ratio;
     
     Point to_dev, to_dev_trans;
     
     /* Calculate transformed coordinates */
-    to_dev.x = to->x * ratio_EM + data->deltax;
-    to_dev.y = data->trans.sign * to->y * ratio_EM;
-    transformPoint(&to_dev, &to_dev_trans, &(data->trans));
+    to_dev.x = to->x * ft_to_dev_ratio + data->offset_x;
+    to_dev.y = data->trans.sign * to->y * ft_to_dev_ratio;
+    transform_point(&to_dev, &to_dev_trans, &(data->trans));
     
     /* Add to the polygon data */
     Array_append(data->outline_x, to_dev_trans.x);
     Array_append(data->outline_y, to_dev_trans.y);
-    data->npoly++;
-    data->nper[data->npoly - 1] = 1;
+    
+    /* "Move to" opens a new polygon */
+    data->num_poly++;
+    data->points_in_poly[data->num_poly - 1] = 1;
     
     /* Update current position */
-    data->curr_dev_trans = to_dev_trans;
+    data->curr_pos = to_dev_trans;
     
     return 0;
 }
 
-int outlineLineTo(const FT_Vector* to, void* user)
+int outline_line_to(const FT_Vector* to, void* user)
 {
     /* Rprintf("line\n"); */
-    OutlineData *data = (OutlineData *) user;
-    double ratio_EM = data->ratio_EM;
+    OutlineData* data = (OutlineData*) user;
+    double ft_to_dev_ratio = data->ft_to_dev_ratio;
 
     Point to_dev, to_dev_trans;
     
     /* Calculate transformed coordinates */
-    to_dev.x = to->x * ratio_EM + data->deltax;
-    to_dev.y = data->trans.sign * to->y * ratio_EM;
-    transformPoint(&to_dev, &to_dev_trans, &(data->trans));
+    to_dev.x = to->x * ft_to_dev_ratio + data->offset_x;
+    to_dev.y = data->trans.sign * to->y * ft_to_dev_ratio;
+    transform_point(&to_dev, &to_dev_trans, &(data->trans));
     
     /* Add to the polygon data */
     Array_append(data->outline_x, to_dev_trans.x);
     Array_append(data->outline_y, to_dev_trans.y);
-    data->nper[data->npoly - 1]++;
+    
+    /* "Line to" adds a new point to the current polygon */
+    data->points_in_poly[data->num_poly - 1]++;
     
     /* Update current position */
-    data->curr_dev_trans = to_dev_trans;
+    data->curr_pos = to_dev_trans;
     
     return 0;
 }
 
-int outlineConicTo(const FT_Vector* control, const FT_Vector* to, void* user)
+int outline_conic_to(const FT_Vector* control, const FT_Vector* to, void* user)
 {
     /* Rprintf("conic\n"); */
-    OutlineData *data = (OutlineData *) user;
-    double ratio_EM = data->ratio_EM;
+    OutlineData* data = (OutlineData*) user;
+    double ft_to_dev_ratio = data->ft_to_dev_ratio;
     double lambda = 0.0, one_lambda = 1.0;
-    double delta = 1.0 / data->nseg;
+    double delta = 1.0 / data->num_segments;
 
     Point to_dev, to_dev_trans;
     Point control_dev, control_dev_trans;
     Point b;
 
     /* Calculate transformed coordinates */
-    to_dev.x = to->x * ratio_EM + data->deltax;
-    to_dev.y = data->trans.sign * to->y * ratio_EM;
-    transformPoint(&to_dev, &to_dev_trans, &(data->trans));
+    to_dev.x = to->x * ft_to_dev_ratio + data->offset_x;
+    to_dev.y = data->trans.sign * to->y * ft_to_dev_ratio;
+    transform_point(&to_dev, &to_dev_trans, &(data->trans));
     
-    control_dev.x = control->x * ratio_EM + data->deltax;
-    control_dev.y = data->trans.sign * control->y * ratio_EM;
-    transformPoint(&control_dev, &control_dev_trans, &(data->trans));
+    control_dev.x = control->x * ft_to_dev_ratio + data->offset_x;
+    control_dev.y = data->trans.sign * control->y * ft_to_dev_ratio;
+    transform_point(&control_dev, &control_dev_trans, &(data->trans));
     
     /* Calculate curve coordinates */
-    for (lambda = 0.0; lambda < 1; lambda += delta, one_lambda -= delta)
+    for(lambda = 0.0; lambda < 1; lambda += delta, one_lambda -= delta)
     {
-        b.x = one_lambda * one_lambda * data->curr_dev_trans.x +
+        b.x = one_lambda * one_lambda * data->curr_pos.x +
               2 * lambda * one_lambda * control_dev_trans.x +
               lambda * lambda * to_dev_trans.x;
-        b.y = one_lambda * one_lambda * data->curr_dev_trans.y +
+        b.y = one_lambda * one_lambda * data->curr_pos.y +
               2 * lambda * one_lambda * control_dev_trans.y +
               lambda * lambda * to_dev_trans.y;
         Array_append(data->outline_x, b.x);
         Array_append(data->outline_y, b.y);
-        data->nper[data->npoly - 1]++;
+        data->points_in_poly[data->num_poly - 1]++;
     }
 
     /* Update current position */
-    data->curr_dev_trans = to_dev_trans;
+    data->curr_pos = to_dev_trans;
     
     return 0;
 }
 
-int outlineCubicTo(const FT_Vector* control1, const FT_Vector* control2,
-                   const FT_Vector* to, void* user)
+int outline_cubic_to(const FT_Vector* control1, const FT_Vector* control2,
+                     const FT_Vector* to, void* user)
 {
     /* Rprintf("cubic\n") */
-    OutlineData *data = (OutlineData *) user;
-    double ratio_EM = data->ratio_EM;
+    OutlineData* data = (OutlineData*) user;
+    double ft_to_dev_ratio = data->ft_to_dev_ratio;
     double lambda = 0.0, one_lambda = 1.0;
-    double delta = 1.0 / data->nseg;
+    double delta = 1.0 / data->num_segments;
 
     Point to_dev, to_dev_trans;
     Point control1_dev, control1_dev_trans;
@@ -116,63 +120,63 @@ int outlineCubicTo(const FT_Vector* control1, const FT_Vector* control2,
     Point b;
 
     /* Calculate transformed coordinates */
-    to_dev.x = to->x * ratio_EM + data->deltax;
-    to_dev.y = data->trans.sign * to->y * ratio_EM;
-    transformPoint(&to_dev, &to_dev_trans, &(data->trans));
+    to_dev.x = to->x * ft_to_dev_ratio + data->offset_x;
+    to_dev.y = data->trans.sign * to->y * ft_to_dev_ratio;
+    transform_point(&to_dev, &to_dev_trans, &(data->trans));
     
-    control1_dev.x = control1->x * ratio_EM + data->deltax;
-    control1_dev.y = data->trans.sign * control1->y * ratio_EM;
-    transformPoint(&control1_dev, &control1_dev_trans, &(data->trans));
+    control1_dev.x = control1->x * ft_to_dev_ratio + data->offset_x;
+    control1_dev.y = data->trans.sign * control1->y * ft_to_dev_ratio;
+    transform_point(&control1_dev, &control1_dev_trans, &(data->trans));
     
-    control2_dev.x = control2->x * ratio_EM + data->deltax;
-    control2_dev.y = data->trans.sign * control2->y * ratio_EM;
-    transformPoint(&control2_dev, &control2_dev_trans, &(data->trans));
+    control2_dev.x = control2->x * ft_to_dev_ratio + data->offset_x;
+    control2_dev.y = data->trans.sign * control2->y * ft_to_dev_ratio;
+    transform_point(&control2_dev, &control2_dev_trans, &(data->trans));
     
     /* Calculate curve coordinates */
     for (lambda = 0.0; lambda < 1; lambda += delta, one_lambda -= delta)
     {
-        b.x = one_lambda * one_lambda * one_lambda * data->curr_dev_trans.x +
+        b.x = one_lambda * one_lambda * one_lambda * data->curr_pos.x +
               3 * lambda * one_lambda * one_lambda * control1_dev_trans.x +
               3 * lambda * lambda * one_lambda * control2_dev_trans.x +
               lambda * lambda * lambda * to_dev_trans.x;
-        b.y = one_lambda * one_lambda * one_lambda * data->curr_dev_trans.y +
+        b.y = one_lambda * one_lambda * one_lambda * data->curr_pos.y +
               3 * lambda * one_lambda * one_lambda * control1_dev_trans.y +
               3 * lambda * lambda * one_lambda * control2_dev_trans.y +
               lambda * lambda * lambda * to_dev_trans.y;
         Array_append(data->outline_x, b.x);
         Array_append(data->outline_y, b.y);
-        data->nper[data->npoly - 1]++;
+        data->points_in_poly[data->num_poly - 1]++;
     }
 
     /* Update current position */
-    data->curr_dev_trans = to_dev_trans;
+    data->curr_pos = to_dev_trans;
     
     return 0;
 }
 
 
 
-SEXP showtextNewOutlineFuns()
+SEXP showtext_new_outline_funs()
 {
-    FT_Outline_Funcs *funs = (FT_Outline_Funcs *) calloc(1, sizeof(FT_Outline_Funcs));
-    SEXP extPtr;
+    FT_Outline_Funcs* funs = (FT_Outline_Funcs*) calloc(1, sizeof(FT_Outline_Funcs));
+    SEXP ext_ptr;
 
-    funs->move_to = outlineMoveTo;
-    funs->line_to = outlineLineTo;
-    funs->conic_to = outlineConicTo;
-    funs->cubic_to = outlineCubicTo;
+    funs->move_to  = outline_move_to;
+    funs->line_to  = outline_line_to;
+    funs->conic_to = outline_conic_to;
+    funs->cubic_to = outline_cubic_to;
     funs->shift = 0;
     funs->delta = 0;
     
-    extPtr = PROTECT(R_MakeExternalPtr(funs, R_NilValue, R_NilValue));
+    ext_ptr = PROTECT(R_MakeExternalPtr(funs, R_NilValue, R_NilValue));
     UNPROTECT(1);
     
-    return extPtr;
+    return ext_ptr;
 }
 
-SEXP showtextFreeOutlineFuns(SEXP extPtr)
+SEXP showtext_free_outline_funs(SEXP ext_ptr)
 {
-    FT_Outline_Funcs *funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
+    FT_Outline_Funcs* funs = (FT_Outline_Funcs*) R_ExternalPtrAddr(ext_ptr);
     if(funs) free(funs);
     
     return R_NilValue;

@@ -125,18 +125,18 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     double strWidth = showtextStrWidthUTF8(str, gc, dd);
     double l = hadj * strWidth;
 
-    data.ratio_EM = fontSize / face->units_per_EM;
-    data.deltax = 0.0;
-    data.nseg = get_num_segments();
+    data.ft_to_dev_ratio = fontSize / face->units_per_EM;
+    data.offset_x = 0.0;
+    data.num_segments = get_num_segments();
     data.trans.sign = dd->bottom > dd->top ? -1: 1;
     data.trans.theta = rot;
     data.trans.x = x - l * cos(rot * DEG2RAD);
     data.trans.y = y - data.trans.sign * l * sin(rot * DEG2RAD);
-    data.curr_dev_trans.x = 0;
-    data.curr_dev_trans.y = 0;
+    data.curr_pos.x = 0;
+    data.curr_pos.y = 0;
     data.outline_x = Array_new(100);
     data.outline_y = Array_new(100);
-    data.npoly = 0;
+    data.num_poly = 0;
 
     gc_modify.fill = gc->col;
     gc_modify.col = R_RGBA(0xFF, 0xFF, 0xFF, 0x00);
@@ -167,8 +167,8 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
             {
                 dd->path(data.outline_x->data,
                          data.outline_y->data,
-                         data.npoly,
-                         data.nper,
+                         data.num_poly,
+                         data.points_in_poly,
                          FALSE,
                          &gc_modify, dd);
             } else if(dd->polygon) {
@@ -181,11 +181,11 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
                 double *x_ptr = data.outline_x->data;
                 double *y_ptr = data.outline_y->data;
                 double x_curr, y_curr, x0, y0;
-                for(p = 0; p < data.npoly; p++)
+                for(p = 0; p < data.num_poly; p++)
                 {
                     x0 = x_curr = *x_ptr;
                     y0 = y_curr = *y_ptr;
-                    for(l = 0; l < data.nper[p] - 1; l++)
+                    for(l = 0; l < data.points_in_poly[p] - 1; l++)
                     {
                         x_ptr++;
                         y_ptr++;
@@ -207,14 +207,14 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         Array_destroy(data.outline_y);
         data.outline_x = Array_new(100);
         data.outline_y = Array_new(100);
-        data.npoly = 0;
+        data.num_poly = 0;
         /*
            After we draw a character, we move the pen right to a distance
            of the advance.
            See the picture in
            http://www.freetype.org/freetype2/docs/tutorial/step2.html
         */
-        data.deltax += face->glyph->metrics.horiAdvance * data.ratio_EM;
+        data.offset_x += face->glyph->metrics.horiAdvance * data.ft_to_dev_ratio;
     }
     Array_destroy(data.outline_x);
     Array_destroy(data.outline_y);
