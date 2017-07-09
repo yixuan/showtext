@@ -63,10 +63,10 @@ FT_Face get_ft_face(const pGEcontext gc)
     
     /* Font list is sysfonts:::.pkg.env$.font.list,
        defined in sysfonts/R/font.R */    
-    font_list = get_var_from_pkg_env(".font.list", "sysfonts");
+    font_list = PROTECT(get_var_from_pkg_env(".font.list", "sysfonts"));
     
     /* Search the given family name */
-    font_names = GET_NAMES(font_list);
+    font_names = PROTECT(GET_NAMES(font_list));
     list_len = Rf_length(font_list);
     for(i = 0; i < list_len; i++)
     {
@@ -99,6 +99,7 @@ FT_Face get_ft_face(const pGEcontext gc)
     ext_ptr = VECTOR_ELT(VECTOR_ELT(font_list, i), font_face - 1);
     font = (FontDesc*) R_ExternalPtrAddr(ext_ptr);
     
+    UNPROTECT(2);
     return font->face;
 }
 
