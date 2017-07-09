@@ -51,10 +51,10 @@ SEXP utf8_to_int(SEXP str)
 
 
 /* Obtain the FT_Face structure given family name and font face */
-FT_Face GetFTFace(const pGEcontext gc)
+FT_Face get_ft_face(const pGEcontext gc)
 {
     int font_face = gc->fontface;
-    FontDesc *font;
+    FontDesc* font;
     
     SEXP font_list;
     SEXP font_names;
@@ -97,14 +97,14 @@ FT_Face GetFTFace(const pGEcontext gc)
     if(font_face < 1 || font_face > 5) font_face = 1;
     
     ext_ptr = VECTOR_ELT(VECTOR_ELT(font_list, i), font_face - 1);
-    font = (FontDesc *) R_ExternalPtrAddr(ext_ptr);
+    font = (FontDesc*) R_ExternalPtrAddr(ext_ptr);
     
     return font->face;
 }
 
 /* Errors that may occur in loading font characters.
    Here we just give warnings. */
-void FTError(FT_Error err)
+void forward_ft_error(FT_Error err)
 {
     switch(err)
     {
@@ -139,8 +139,8 @@ void FTError(FT_Error err)
 }
 
 /* Get the bounding box of a string, with a possible rotation */
-void GetStringBBox(FT_Face face, const unsigned int *str, int nchar, double rot,
-                   int *xmin, int *xmax, int *ymin, int *ymax)
+void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double rot,
+                     int* xmin, int* xmax, int* ymin, int* ymax)
 {
     int char_xmin, char_xmax, char_ymin, char_ymax;
     FT_GlyphSlot slot = face->glyph;
@@ -161,7 +161,7 @@ void GetStringBBox(FT_Face face, const unsigned int *str, int nchar, double rot,
     {
         FT_Set_Transform(face, &trans, &pen);
         err = FT_Load_Char(face, str[i], FT_LOAD_RENDER);
-        if(err)  FTError(err);
+        if(err)  forward_ft_error(err);
         char_xmin = slot->bitmap_left;
         char_xmax = char_xmin + slot->bitmap.width;
         char_ymax = slot->bitmap_top;

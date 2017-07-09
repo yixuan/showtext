@@ -63,7 +63,7 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
                                  double rad, double hadj, const pGEcontext gc,
                                  double *centerH, double *centerV)
 {
-    FT_Face face = GetFTFace(gc);
+    FT_Face face = get_ft_face(gc);
     FT_GlyphSlot slot = face->glyph;
     FT_Matrix trans;
     FT_Vector pen;
@@ -82,10 +82,10 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
     
     /* Set pixel size */
     err = FT_Set_Pixel_Sizes(face, psizeX, psizeY);
-    if(err)  FTError(err);
+    if(err)  forward_ft_error(err);
 
     /* Get bounding box when no transformation is applied */
-    GetStringBBox(face, unicode, nchar, 0.0, &xmin, &xmax, &ymin, &ymax);
+    get_string_bbox(face, unicode, nchar, 0.0, &xmin, &xmax, &ymin, &ymax);
     /* Calculate the alignment center before transformation */
     cx = hadj * xmax + (1 - hadj) * xmin;
     cy = 0.0;
@@ -96,7 +96,7 @@ RasterData* GetStringRasterImage(unsigned int *unicode, int nchar,
     cx = cx * cosr;
     
     /* Calculate bounding box when transformation is applied */
-    GetStringBBox(face, unicode, nchar, rad, &xmin, &xmax, &ymin, &ymax);
+    get_string_bbox(face, unicode, nchar, rad, &xmin, &xmax, &ymin, &ymax);
     /* Calculate the horizontal and vertical distance from the alignment center
        to the bottom-left corner of the (new) bounding box */
     *centerH = cx - xmin;

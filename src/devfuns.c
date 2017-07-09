@@ -5,7 +5,7 @@
 
 void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* descent, double* width, pDevDesc dd)
 {
-    FT_Face face = GetFTFace(gc);
+    FT_Face face = get_ft_face(gc);
     FT_Error err;
 
     /* Font size in points (1/72 inches) */
@@ -26,7 +26,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)
     {
-        FTError(err);
+        forward_ft_error(err);
         *ascent = *descent = *width = 0.0;
         return;
     }
@@ -44,7 +44,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
-    FT_Face face = GetFTFace(gc);
+    FT_Face face = get_ft_face(gc);
     FT_Error err;
 
     double font_size = gc->ps * gc->cex;
@@ -59,7 +59,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
         if(err)
         {
-            FTError(err);
+            forward_ft_error(err);
             continue;
         }
         width += face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
@@ -112,7 +112,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Outline_Funcs *funs = GetFTOutlineFuncs();
-    FT_Face face = GetFTFace(gc);
+    FT_Face face = get_ft_face(gc);
     double fontSize = gc->ps * gc->cex;
 
     R_GE_gcontext gc_modify = *gc;
@@ -147,14 +147,14 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
         if(err)
         {
-            FTError(err);
+            forward_ft_error(err);
             continue;
         }
         outline = face->glyph->outline;
         err = FT_Outline_Decompose(&outline, funs, &data);
         if(err)
         {
-            FTError(err);
+            forward_ft_error(err);
             Array_destroy(data.outline_x);
             Array_destroy(data.outline_y);
             data.outline_x = Array_new(100);

@@ -29,15 +29,15 @@ typedef struct fontDesc {
  */
 int utf8_to_ucs4(unsigned int* ucs4, const char* utf8, int n);
 
-/* Get FreeType font face from description in R */
-FT_Face GetFTFace(const pGEcontext gc);
+/* Get FreeType font face object from R graphics parameters */
+FT_Face get_ft_face(const pGEcontext gc);
 
-/* Warning/Error message of FreeType */
-void FTError(FT_Error err);
+/* Forward FreeType warning/error message to R */
+void forward_ft_error(FT_Error err);
 
 /* Get the bounding box of a string */
-void GetStringBBox(FT_Face face, const unsigned int *str, int nchar, double rot,
-                   int *xmin, int *xmax, int *ymin, int *ymax);
+void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double rot,
+                     int* xmin, int* xmax, int* ymin, int* ymax);
 
 
 #endif /* FONTS_H_INCLUDED */
