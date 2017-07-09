@@ -3,7 +3,7 @@
 #include "outline.h"
 #include "util.h"
 
-void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* descent, double* width, pDevDesc dd)
+void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* descent, double* width, pDevDesc dd)
 {
     FT_Face face = get_ft_face(gc);
     FT_Error err;
@@ -31,17 +31,17 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
         return;
     }
 
-    *ascent = face->glyph->metrics.horiBearingY * dev_units_per_EM_unit;
+    *ascent  = face->glyph->metrics.horiBearingY * dev_units_per_EM_unit;
     *descent = face->glyph->metrics.height * dev_units_per_EM_unit - *ascent;
-    *width = face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
+    *width   = face->glyph->metrics.horiAdvance * dev_units_per_EM_unit;
 }
 
-double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
+double showtext_str_width_utf8(const char* str, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
-    unsigned int *unicode =
-        (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
+    unsigned int* unicode =
+        (unsigned int*) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Face face = get_ft_face(gc);
@@ -70,7 +70,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
     return width;
 }
 
-void showtextTextUTF8Raster(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
+void showtext_text_utf8_raster(double x, double y, const char* str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
@@ -84,23 +84,23 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
     /* raster() rotates around the bottom-left corner,
        and text() rotates around the center indicated by hadj. */
     int trans_sign = dd->bottom > dd->top ? -1: 1;
-    double trans_X, trans_Y;
+    double trans_x, trans_y;
 
     /* Calculate pixel size */
     int px = (int) (gc->ps * gc->cex * get_dev_units_per_point() + 0.5);
 
     /* Get raster data */
-    RasterData *rd = GetStringRasterImage(unicode, len, px, px,
-        rot * DEG2RAD, hadj, gc, &trans_X, &trans_Y);
+    RasterData *rd = get_string_raster_image(unicode, len, px, px,
+        rot * DEG2RAD, hadj, gc, &trans_x, &trans_y);
 
     dd->raster(rd->data, rd->ncol, rd->nrow,
-               x - trans_X, y - trans_sign * trans_Y,
+               x - trans_x, y - trans_sign * trans_y,
                rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
-    FreeRasterData(rd);
+    RasterData_destroy(rd);
     free(unicode);
 }
 
-void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
+void showtext_text_utf8_polygon(double x, double y, const char* str, double rot, double hadj, const pGEcontext gc, pDevDesc dd)
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
@@ -122,8 +122,8 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     FT_Error err;
     int i;
 
-    double strWidth = showtextStrWidthUTF8(str, gc, dd);
-    double l = hadj * strWidth;
+    double str_width = showtext_str_width_utf8(str, gc, dd);
+    double l = hadj * str_width;
 
     data.ft_to_dev_ratio = fontSize / face->units_per_EM;
     data.offset_x = 0.0;

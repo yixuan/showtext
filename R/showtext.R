@@ -205,7 +205,7 @@ showtext.begin = function()
         .pkg.env$.dev_units_per_point = 1.0
     }
 
-    .Call("showtextBegin", PACKAGE = "showtext")
+    .Call("showtext_begin", PACKAGE = "showtext")
     invisible(NULL)
 }
 
@@ -227,7 +227,7 @@ showtext.end = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
     
-    .Call("showtextEnd", PACKAGE = "showtext")
+    .Call("showtext_end", PACKAGE = "showtext")
     invisible(NULL)
 }
 

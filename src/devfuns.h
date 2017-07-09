@@ -4,15 +4,15 @@
 #include "fonts.h"
 
 
-void showtextMetricInfo(int c, const pGEcontext gc, double* ascent,
+void showtext_metric_info(int c, const pGEcontext gc, double* ascent,
     double* descent, double* width, pDevDesc dd);
     
-double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd);
+double showtext_str_width_utf8(const char* str, const pGEcontext gc, pDevDesc dd);
 
-void showtextTextUTF8Raster(double x, double y, const char *str,
+void showtext_text_utf8_raster(double x, double y, const char* str,
     double rot, double hadj, const pGEcontext gc, pDevDesc dd);
 
-void showtextTextUTF8Polygon(double x, double y, const char *str,
+void showtext_text_utf8_polygon(double x, double y, const char* str,
     double rot, double hadj, const pGEcontext gc, pDevDesc dd);
 
 
