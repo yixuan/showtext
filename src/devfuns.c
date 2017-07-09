@@ -134,8 +134,8 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     data.trans.y = y - data.trans.sign * l * sin(rot * DEG2RAD);
     data.curr_dev_trans.x = 0;
     data.curr_dev_trans.y = 0;
-    data.outline_x = ArrayNew(100);
-    data.outline_y = ArrayNew(100);
+    data.outline_x = Array_new(100);
+    data.outline_y = Array_new(100);
     data.npoly = 0;
 
     gc_modify.fill = gc->col;
@@ -155,10 +155,10 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         if(err)
         {
             FTError(err);
-            ArrayDestroy(data.outline_x);
-            ArrayDestroy(data.outline_y);
-            data.outline_x = ArrayNew(100);
-            data.outline_y = ArrayNew(100);
+            Array_destroy(data.outline_x);
+            Array_destroy(data.outline_y);
+            data.outline_x = Array_new(100);
+            data.outline_y = Array_new(100);
             continue;
         }
         if(data.outline_x->len > 0)
@@ -203,10 +203,10 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
                 Rf_error("device should be capable of path(), polygon() or line()");
             }
         }
-        ArrayDestroy(data.outline_x);
-        ArrayDestroy(data.outline_y);
-        data.outline_x = ArrayNew(100);
-        data.outline_y = ArrayNew(100);
+        Array_destroy(data.outline_x);
+        Array_destroy(data.outline_y);
+        data.outline_x = Array_new(100);
+        data.outline_y = Array_new(100);
         data.npoly = 0;
         /*
            After we draw a character, we move the pen right to a distance
@@ -216,7 +216,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         */
         data.deltax += face->glyph->metrics.horiAdvance * data.ratio_EM;
     }
-    ArrayDestroy(data.outline_x);
-    ArrayDestroy(data.outline_y);
+    Array_destroy(data.outline_x);
+    Array_destroy(data.outline_y);
     free(unicode);
 }

@@ -25,8 +25,8 @@ int outlineMoveTo(const FT_Vector* to, void* user)
     transformPoint(&to_dev, &to_dev_trans, &(data->trans));
     
     /* Add to the polygon data */
-    ArrayAppend(data->outline_x, to_dev_trans.x);
-    ArrayAppend(data->outline_y, to_dev_trans.y);
+    Array_append(data->outline_x, to_dev_trans.x);
+    Array_append(data->outline_y, to_dev_trans.y);
     data->npoly++;
     data->nper[data->npoly - 1] = 1;
     
@@ -50,8 +50,8 @@ int outlineLineTo(const FT_Vector* to, void* user)
     transformPoint(&to_dev, &to_dev_trans, &(data->trans));
     
     /* Add to the polygon data */
-    ArrayAppend(data->outline_x, to_dev_trans.x);
-    ArrayAppend(data->outline_y, to_dev_trans.y);
+    Array_append(data->outline_x, to_dev_trans.x);
+    Array_append(data->outline_y, to_dev_trans.y);
     data->nper[data->npoly - 1]++;
     
     /* Update current position */
@@ -90,8 +90,8 @@ int outlineConicTo(const FT_Vector* control, const FT_Vector* to, void* user)
         b.y = one_lambda * one_lambda * data->curr_dev_trans.y +
               2 * lambda * one_lambda * control_dev_trans.y +
               lambda * lambda * to_dev_trans.y;
-        ArrayAppend(data->outline_x, b.x);
-        ArrayAppend(data->outline_y, b.y);
+        Array_append(data->outline_x, b.x);
+        Array_append(data->outline_y, b.y);
         data->nper[data->npoly - 1]++;
     }
 
@@ -139,8 +139,8 @@ int outlineCubicTo(const FT_Vector* control1, const FT_Vector* control2,
               3 * lambda * one_lambda * one_lambda * control1_dev_trans.y +
               3 * lambda * lambda * one_lambda * control2_dev_trans.y +
               lambda * lambda * lambda * to_dev_trans.y;
-        ArrayAppend(data->outline_x, b.x);
-        ArrayAppend(data->outline_y, b.y);
+        Array_append(data->outline_x, b.x);
+        Array_append(data->outline_y, b.y);
         data->nper[data->npoly - 1]++;
     }
 

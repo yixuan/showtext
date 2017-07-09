@@ -11,15 +11,15 @@
 #include <Rinternals.h>
 
 struct Array_s {
-    double *data;
-    int len;
-    int alloc_len;
+    double* data;
+    int     len;
+    int     alloc_len;
 };
 
 typedef struct Array_s* Array;
 
-Array ArrayNew(int initialSize);
-void ArrayAppend(Array array, double val);
-void ArrayDestroy(Array array);
+Array Array_new(int initial_size);
+void  Array_append(Array array, double val);
+void  Array_destroy(Array array);
 
 #endif /* ARRAY_H_INCLUDED */
