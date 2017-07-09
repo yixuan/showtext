@@ -45,8 +45,8 @@ typedef struct {
     TransData trans;            /* transformation data */
     Array     outline_x;        /* array to record the x coordinates of the outline */
     Array     outline_y;        /* array to record the y coordinates of the outline */
-    int       num_poly;            /* number of polygons in the outline */
-    int       points_in_poly[200]; /* number of points in each polygon */
+    int       num_poly;         /* number of polygons in the outline */
+    IntArray  points_in_poly;   /* number of points in each polygon */
 } OutlineData;
 
 

@@ -30,7 +30,7 @@ int outline_move_to(const FT_Vector* to, void* user)
     
     /* "Move to" opens a new polygon */
     data->num_poly++;
-    data->points_in_poly[data->num_poly - 1] = 1;
+    IntArray_append(data->points_in_poly, 1);
     
     /* Update current position */
     data->curr_pos = to_dev_trans;
@@ -56,7 +56,8 @@ int outline_line_to(const FT_Vector* to, void* user)
     Array_append(data->outline_y, to_dev_trans.y);
     
     /* "Line to" adds a new point to the current polygon */
-    data->points_in_poly[data->num_poly - 1]++;
+    if(data->points_in_poly->len > 0)
+        (*(data->points_in_poly->data + data->points_in_poly->len - 1))++;
     
     /* Update current position */
     data->curr_pos = to_dev_trans;
@@ -96,7 +97,8 @@ int outline_conic_to(const FT_Vector* control, const FT_Vector* to, void* user)
               lambda * lambda * to_dev_trans.y;
         Array_append(data->outline_x, b.x);
         Array_append(data->outline_y, b.y);
-        data->points_in_poly[data->num_poly - 1]++;
+        if(data->points_in_poly->len > 0)
+            (*(data->points_in_poly->data + data->points_in_poly->len - 1))++;
     }
 
     /* Update current position */
@@ -145,7 +147,8 @@ int outline_cubic_to(const FT_Vector* control1, const FT_Vector* control2,
               lambda * lambda * lambda * to_dev_trans.y;
         Array_append(data->outline_x, b.x);
         Array_append(data->outline_y, b.y);
-        data->points_in_poly[data->num_poly - 1]++;
+        if(data->points_in_poly->len > 0)
+            (*(data->points_in_poly->data + data->points_in_poly->len - 1))++;
     }
 
     /* Update current position */
@@ -181,4 +184,3 @@ SEXP showtext_free_outline_funs(SEXP ext_ptr)
     
     return R_NilValue;
 }
-

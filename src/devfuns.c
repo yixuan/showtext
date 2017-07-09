@@ -137,6 +137,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     data.outline_x = Array_new(100);
     data.outline_y = Array_new(100);
     data.num_poly = 0;
+    data.points_in_poly = IntArray_new(10);
 
     gc_modify.fill = gc->col;
     gc_modify.col = R_RGBA(0xFF, 0xFF, 0xFF, 0x00);
@@ -157,8 +158,10 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
             forward_ft_error(err);
             Array_destroy(data.outline_x);
             Array_destroy(data.outline_y);
+            IntArray_destroy(data.points_in_poly);
             data.outline_x = Array_new(100);
             data.outline_y = Array_new(100);
+            data.points_in_poly = IntArray_new(10);
             continue;
         }
         if(data.outline_x->len > 0)
@@ -168,7 +171,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
                 dd->path(data.outline_x->data,
                          data.outline_y->data,
                          data.num_poly,
-                         data.points_in_poly,
+                         data.points_in_poly->data,
                          FALSE,
                          &gc_modify, dd);
             } else if(dd->polygon) {
@@ -185,12 +188,11 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
                 {
                     x0 = x_curr = *x_ptr;
                     y0 = y_curr = *y_ptr;
-                    for(l = 0; l < data.points_in_poly[p] - 1; l++)
+                    for(l = 0; l < data.points_in_poly->data[p] - 1; l++)
                     {
                         x_ptr++;
                         y_ptr++;
-                        dd->line(x_curr, y_curr, *x_ptr, *y_ptr,
-                                 gc, dd);
+                        dd->line(x_curr, y_curr, *x_ptr, *y_ptr, gc, dd);
                         x_curr = *x_ptr;
                         y_curr = *y_ptr;
                     }
@@ -205,8 +207,10 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         }
         Array_destroy(data.outline_x);
         Array_destroy(data.outline_y);
+        IntArray_destroy(data.points_in_poly);
         data.outline_x = Array_new(100);
         data.outline_y = Array_new(100);
+        data.points_in_poly = IntArray_new(10);
         data.num_poly = 0;
         /*
            After we draw a character, we move the pen right to a distance
@@ -218,5 +222,6 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
     }
     Array_destroy(data.outline_x);
     Array_destroy(data.outline_y);
+    IntArray_destroy(data.points_in_poly);
     free(unicode);
 }
