@@ -57,13 +57,13 @@ SEXP showtextBegin()
     
     /* Save the current dd */
     dd = gdd->dev;
-    *(GetSavedDevDesc()) = *dd;
+    *(get_saved_dev_desc()) = *dd;
     
     /* Replace the text functions */
     dd->canHAdj = 2;
     dd->metricInfo = showtextMetricInfo;
     dd->hasTextUTF8 = TRUE;
-    if(UseRaster())
+    if(use_raster())
     {
         dd->text = showtextTextUTF8Raster;
         dd->textUTF8 = showtextTextUTF8Raster;
@@ -89,14 +89,14 @@ SEXP showtextEnd()
         Rf_error("no active graphics device");
         
     gdd = GEgetDevice(currDev);
-    if(gdd != GetSavedDeviceID())
+    if(gdd != get_saved_device_id())
     {
         Rf_error("current device does not match the one that uses showtext.begin()");
     }
     
     /* Restore dd */
     dd = gdd->dev;
-    dd_saved = GetSavedDevDesc();
+    dd_saved = get_saved_dev_desc();
     
     dd->canHAdj        = dd_saved->canHAdj;
     dd->metricInfo     = dd_saved->metricInfo;

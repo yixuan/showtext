@@ -17,7 +17,7 @@ void showtextMetricInfo(int c, const pGEcontext gc, double* ascent, double* desc
     /* Then we further convert points to device units.
        Device unit can be in points (usually vector graphics),
        or in pixels (usually bitmap graphics). */
-    double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
+    double dev_units_per_EM_unit = pts_per_EM_unit * get_dev_units_per_point();
 
     if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)  c = -c;
@@ -49,7 +49,7 @@ double showtextStrWidthUTF8(const char *str, const pGEcontext gc, pDevDesc dd)
 
     double font_size = gc->ps * gc->cex;
     double pts_per_EM_unit = font_size / face->units_per_EM;
-    double dev_units_per_EM_unit = pts_per_EM_unit * GetDevUnitsPerPoint();
+    double dev_units_per_EM_unit = pts_per_EM_unit * get_dev_units_per_point();
 
     double width = 0.0;
     int i;
@@ -87,7 +87,7 @@ void showtextTextUTF8Raster(double x, double y, const char *str, double rot, dou
     double trans_X, trans_Y;
 
     /* Calculate pixel size */
-    int px = (int) (gc->ps * gc->cex * GetDevUnitsPerPoint() + 0.5);
+    int px = (int) (gc->ps * gc->cex * get_dev_units_per_point() + 0.5);
 
     /* Get raster data */
     RasterData *rd = GetStringRasterImage(unicode, len, px, px,
@@ -111,7 +111,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
-    FT_Outline_Funcs *funs = GetFTOutlineFuncs();
+    FT_Outline_Funcs* funs = get_ft_outline_funcs();
     FT_Face face = get_ft_face(gc);
     double fontSize = gc->ps * gc->cex;
 
@@ -127,7 +127,7 @@ void showtextTextUTF8Polygon(double x, double y, const char *str, double rot, do
 
     data.ratio_EM = fontSize / face->units_per_EM;
     data.deltax = 0.0;
-    data.nseg = GetNseg();
+    data.nseg = get_num_segments();
     data.trans.sign = dd->bottom > dd->top ? -1: 1;
     data.trans.theta = rot;
     data.trans.x = x - l * cos(rot * DEG2RAD);

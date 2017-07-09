@@ -30,48 +30,48 @@ SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name)
     return var;
 }
 
-FT_Outline_Funcs* GetFTOutlineFuncs()
+FT_Outline_Funcs* get_ft_outline_funcs()
 {
-    FT_Outline_Funcs *funs;
-    SEXP extPtr = get_var_from_pkg_env(".outline_funs", "showtext");
-    funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
+    FT_Outline_Funcs* funs;
+    SEXP ext_ptr = get_var_from_pkg_env(".outline_funs", "showtext");
+    funs = (FT_Outline_Funcs*) R_ExternalPtrAddr(ext_ptr);
 
     return funs;
 }
 
-int GetNseg()
+int get_num_segments()
 {
     SEXP nseg = get_var_from_pkg_env(".nseg", "showtext");
 
     return INTEGER(nseg)[0];
 }
 
-double GetDevUnitsPerPoint()
+double get_dev_units_per_point()
 {
     SEXP dev_units_per_point = get_var_from_pkg_env(".dev_units_per_point", "showtext");
 
     return REAL(dev_units_per_point)[0];
 }
 
-pDevDesc GetSavedDevDesc()
+pDevDesc get_saved_dev_desc()
 {
     pDevDesc dd_save;
-    SEXP extPtr = get_var_from_pkg_env(".dd_saved", "showtext");
-    dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
+    SEXP ext_ptr = get_var_from_pkg_env(".dd_saved", "showtext");
+    dd_save = (pDevDesc) R_ExternalPtrAddr(ext_ptr);
 
     return dd_save;
 }
 
-pGEDevDesc GetSavedDeviceID()
+pGEDevDesc get_saved_device_id()
 {
     pGEDevDesc gdd_saved;
-    SEXP extPtr = get_var_from_pkg_env(".device_id", "showtext");
-    gdd_saved = (pGEDevDesc) R_ExternalPtrAddr(extPtr);
+    SEXP ext_ptr = get_var_from_pkg_env(".device_id", "showtext");
+    gdd_saved = (pGEDevDesc) R_ExternalPtrAddr(ext_ptr);
 
     return gdd_saved;
 }
 
-Rboolean UseRaster()
+Rboolean use_raster()
 {
     SEXP use_raster = get_var_from_pkg_env(".use_raster", "showtext");
 
