@@ -63,7 +63,7 @@ FT_Face get_ft_face(const pGEcontext gc)
     
     /* Font list is sysfonts:::.pkg.env$.font.list,
        defined in sysfonts/R/font.R */    
-    font_list = GetVarFromPkgEnv(".font.list", "sysfonts");
+    font_list = get_var_from_pkg_env(".font.list", "sysfonts");
     
     /* Search the given family name */
     font_names = GET_NAMES(font_list);

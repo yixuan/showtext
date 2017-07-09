@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.4-7}{
+  \itemize{
+    \item Fixed PROTECT errors detected by CRAN
+  }
+}
+
 \section{Changes in showtext version 0.4-6}{
   \itemize{
     \item Fixed a UBSAN issue 

@@ -21,12 +21,12 @@
 #include <R_ext/GraphicsDevice.h>
 
 
-/* Get the .pkg.env variable (an environment) defined in the package */
-/* The sysfonts and showtext packages are using this way to store variables */
-SEXP GetPkgEnv(const char *pkgName);
+/* Get the .pkg.env variable (an environment) defined in one package */
+/* The sysfonts and showtext packages use this way to store variables */
+SEXP get_pkg_env(const char* pkg_name);
 
 /* Get a variable from .pkg.env */
-SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName);
+SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name);
 
 /* Get .pkg.env$.outline_funs */
 FT_Outline_Funcs* GetFTOutlineFuncs();

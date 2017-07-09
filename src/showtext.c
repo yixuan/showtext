@@ -52,7 +52,7 @@ SEXP showtextBegin()
     /* Save the current gdd to showtext:::.pkg.env */
     gdd = GEgetDevice(currDev);
     extPtr = PROTECT(R_MakeExternalPtr(gdd, R_NilValue, R_NilValue));
-    Rf_setVar(install(".device_id"), extPtr, GetPkgEnv("showtext"));
+    Rf_setVar(install(".device_id"), extPtr, get_pkg_env("showtext"));
     UNPROTECT(1);
     
     /* Save the current dd */

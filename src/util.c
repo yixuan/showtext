@@ -1,34 +1,31 @@
 #include "util.h"
 
 
-SEXP GetPkgEnv(const char *pkgName)
+SEXP get_pkg_env(const char* pkg_name)
 {
-    SEXP pkgNS, pkgEnv;
-    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
-    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
-    if(TYPEOF(pkgEnv) == PROMSXP) {
-        PROTECT(pkgEnv);
-        pkgEnv = eval(pkgEnv, pkgNS);
+    /* See grDevices/src/devPS getFontDB() */
+    SEXP pkg_namespace, pkg_env;
+    PROTECT(pkg_namespace = R_FindNamespace(Rf_ScalarString(Rf_mkChar(pkg_name))));
+    PROTECT(pkg_env = Rf_findVar(Rf_install(".pkg.env"), pkg_namespace));
+    if(TYPEOF(pkg_env) == PROMSXP) {
+        pkg_env = Rf_eval(pkg_env, pkg_namespace);
+        /* Unprotect the old pkg_env */
         UNPROTECT(1);
+        /* Protect the new pkg_env */
+        PROTECT(pkg_env);
     }
     UNPROTECT(2);
     
-    return pkgEnv;
+    return pkg_env;
 }
 
-SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
+SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name)
 {
-    /* See grDevices/src/devPS getFontDB() */
-    SEXP pkgNS, pkgEnv, var;
-    PROTECT(pkgNS = R_FindNamespace(ScalarString(mkChar(pkgName))));
-    PROTECT(pkgEnv = Rf_findVar(install(".pkg.env"), pkgNS));
-    if(TYPEOF(pkgEnv) == PROMSXP) {
-        PROTECT(pkgEnv);
-        pkgEnv = eval(pkgEnv, pkgNS);
-        UNPROTECT(1);
-    }
-    PROTECT(var = Rf_findVar(install(varName), pkgEnv));
-    UNPROTECT(3);
+    SEXP pkg_env, var;
+    
+    pkg_env = PROTECT(get_pkg_env(pkg_name));
+    var = PROTECT(Rf_findVar(Rf_install(var_name), pkg_env));
+    UNPROTECT(2);
     
     return var;
 }
@@ -36,7 +33,7 @@ SEXP GetVarFromPkgEnv(const char *varName, const char *pkgName)
 FT_Outline_Funcs* GetFTOutlineFuncs()
 {
     FT_Outline_Funcs *funs;
-    SEXP extPtr = GetVarFromPkgEnv(".outline_funs", "showtext");
+    SEXP extPtr = get_var_from_pkg_env(".outline_funs", "showtext");
     funs = (FT_Outline_Funcs *) R_ExternalPtrAddr(extPtr);
 
     return funs;
@@ -44,14 +41,14 @@ FT_Outline_Funcs* GetFTOutlineFuncs()
 
 int GetNseg()
 {
-    SEXP nseg = GetVarFromPkgEnv(".nseg", "showtext");
+    SEXP nseg = get_var_from_pkg_env(".nseg", "showtext");
 
     return INTEGER(nseg)[0];
 }
 
 double GetDevUnitsPerPoint()
 {
-    SEXP dev_units_per_point = GetVarFromPkgEnv(".dev_units_per_point", "showtext");
+    SEXP dev_units_per_point = get_var_from_pkg_env(".dev_units_per_point", "showtext");
 
     return REAL(dev_units_per_point)[0];
 }
@@ -59,7 +56,7 @@ double GetDevUnitsPerPoint()
 pDevDesc GetSavedDevDesc()
 {
     pDevDesc dd_save;
-    SEXP extPtr = GetVarFromPkgEnv(".dd_saved", "showtext");
+    SEXP extPtr = get_var_from_pkg_env(".dd_saved", "showtext");
     dd_save = (pDevDesc) R_ExternalPtrAddr(extPtr);
 
     return dd_save;
@@ -68,7 +65,7 @@ pDevDesc GetSavedDevDesc()
 pGEDevDesc GetSavedDeviceID()
 {
     pGEDevDesc gdd_saved;
-    SEXP extPtr = GetVarFromPkgEnv(".device_id", "showtext");
+    SEXP extPtr = get_var_from_pkg_env(".device_id", "showtext");
     gdd_saved = (pGEDevDesc) R_ExternalPtrAddr(extPtr);
 
     return gdd_saved;
@@ -76,7 +73,7 @@ pGEDevDesc GetSavedDeviceID()
 
 Rboolean UseRaster()
 {
-    SEXP use_raster = GetVarFromPkgEnv(".use_raster", "showtext");
+    SEXP use_raster = get_var_from_pkg_env(".use_raster", "showtext");
 
     return LOGICAL(use_raster)[0];
 }
