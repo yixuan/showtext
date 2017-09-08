@@ -1,3 +1,7 @@
+# Environment to store several important variables
+.pkg.env = new.env()
+
+
 #' Setting Options for 'showtext' package
 #' 
 #' This function sets parameters that will affect the apprearance of the
