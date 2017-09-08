@@ -41,11 +41,11 @@ in original R console, or use other graphics devices such as `x11()` and
 ```{r message = FALSE, fig.align='center', fig.showtext=TRUE}
 library(showtext)
 ## Loading Google fonts (http://www.google.com/fonts)
-font.add.google("Gochi Hand", "gochi")
-font.add.google("Schoolbell", "bell")
+font_add_google("Gochi Hand", "gochi")
+font_add_google("Schoolbell", "bell")
 
 ## Automatically use showtext to render text
-showtext.auto()
+showtext_auto()
 
 set.seed(123)
 ## Manually open a graphics device if you run this code in RStudio
@@ -59,7 +59,7 @@ text(2, 70, "N = 1000", family = "bell", cex = 2.5)
 
 In this example we first load fonts that are available online
 through [Google Fonts](http://www.google.com/fonts), and then tell R
-to render text using **showtext** by calling the `showtext.auto()`
+to render text using **showtext** by calling the `showtext_auto()`
 function. All the remaining part is exactly the same as the usual plotting
 commands.
 
@@ -89,7 +89,7 @@ and others not. For example, to change the title font only, we can do:
 
 ```r
 library(showtext)
-font.add.google("Schoolbell", "bell")
+font_add_google("Schoolbell", "bell")
 
 set.seed(123)
 ## Manually open a graphics device if you run this code in RStudio
@@ -97,23 +97,23 @@ set.seed(123)
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
      main = "Histogram of Normal Random Numbers", xlab = "", ylab = "Frequency")
 
-showtext.begin()
+showtext_begin()
 text(2, 70, "N = 1000", family = "bell", cex = 2.5)
-showtext.end()
+showtext_end()
 ```
 
-```{r echo=FALSE, fig.align='center', fig.showtext=TRUE}
+```{r echo=FALSE, message=FALSE, fig.align='center', fig.showtext=TRUE}
 showtext.end()
 
 set.seed(123)
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
      main = "Histogram of Normal Random Numbers", xlab = "", ylab = "Frequency")
 
-showtext.begin()
+showtext_begin()
 text(2, 70, "N = 1000", family = "bell", cex = 2.5)
-showtext.end()
+showtext_end()
 
-showtext.begin()
+showtext_begin()
 ```
 
 ## Loading Fonts
@@ -123,7 +123,7 @@ Loading font is actually done by package **sysfonts**.
 The easy way to load font into **showtext** is by calling
 
 ```r
-font.add(family = "<family_name>", regular = "/path/to/font/file")
+font_add(family = "<family_name>", regular = "/path/to/font/file")
 ```
 
 where `family` is the name that you assign to that font (so that later you can
@@ -135,8 +135,8 @@ is the entity that actually provides the character glyphs.
 
 Usually the font files are located in some "standard" directories in the system 
 (for example on Windows it is typically `C:\Windows\Fonts`).
-You can use `font.paths()` to check the current search path or add a new one,
-and use `font.files()` to list available font files in the search path.
+You can use `font_paths()` to check the current search path or add a new one,
+and use `font_files()` to list available font files in the search path.
 
 Below is an example to load system fonts on Windows:
 
@@ -144,11 +144,11 @@ Below is an example to load system fonts on Windows:
 library(showtext)
 
 ## HeiTi font for Chinese characters
-font.add("heiti", "simhei.ttf")
+font_add("heiti", "simhei.ttf")
 ## Constantia font with regular and italic font faces
-font.add("constan", regular = "constan.ttf", italic = "constani.ttf")
+font_add("constan", regular = "constan.ttf", italic = "constani.ttf")
 
-showtext.auto()
+showtext_auto()
 
 library(ggplot2)
 p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
@@ -166,17 +166,17 @@ print(p)
 ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)
 
 ## turn off if no longer needed
-showtext.auto(FALSE)
+showtext_auto(FALSE)
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/Z3r9sg2.png" alt="example1" />
+  <img src="https://i.imgur.com/Z3r9sg2.png" alt="example1" />
 </div>
 
 For other OS, you may not have the `simhei.ttf` font file, but there is no
 difficulty in using the alternatives.
 
-At present `font.add()` supports TrueType fonts(`.ttf`/`.ttc`) and
+At present `font_add()` supports TrueType fonts(`.ttf`/`.ttc`) and
 OpenType fonts(`.otf`), and adding new
 font type is trivial as long as FreeType supports it.
 

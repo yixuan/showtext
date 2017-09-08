@@ -1,9 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
-\section{Changes in showtext version 0.4-7}{
+\section{Changes in showtext version 0.5}{
   \itemize{
+    \item All previous API functions now have aliases replacing the dots
+          with underscores in the function names, for example \code{showtext_auto()}
+          is equivalent to \code{showtext.auto()}. The "underscore" naming is
+          preferred, and the "dot" version will be gradually \strong{deprecated}
     \item Fixed PROTECT errors detected by CRAN
+    \item Registered native routines per CRAN's policy
   }
 }
 

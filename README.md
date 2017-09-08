@@ -23,17 +23,17 @@ and avoids using external software such as Ghostscript.
 ```r
 library(showtext)
 ## Loading Google fonts (http://www.google.com/fonts)
-font.add.google("Gochi Hand", "gochi")
-font.add.google("Schoolbell", "bell")
-font.add.google("Covered By Your Grace", "grace")
-font.add.google("Rock Salt", "rock")
+font_add_google("Gochi Hand", "gochi")
+font_add_google("Schoolbell", "bell")
+font_add_google("Covered By Your Grace", "grace")
+font_add_google("Rock Salt", "rock")
 
 ## Automatically use showtext to render text for future devices
-showtext.auto()
+showtext_auto()
 
 ## Tell showtext the resolution of the device,
 ## only needed for bitmap graphics. Default is 96
-## showtext.opts(dpi = 96)
+## showtext_opts(dpi = 96)
 
 set.seed(123)
 x = rnorm(10)
@@ -126,13 +126,13 @@ and others not. For example, to change the title font only, we can do:
 
 ```r
 library(showtext)
-font.add.google("Schoolbell", "bell")
+font_add_google("Schoolbell", "bell")
 
 ## By default the automatic call of showtext is disabled
 ## You can manually turn it off using the line below
-## showtext.auto(enable = FALSE)
+## showtext_auto(enable = FALSE)
 
-## To use showtext.begin() and showtext.end() you need to
+## To use showtext_begin() and showtext_end() you need to
 ## explicitly open a graphics device
 png("demo.png", 700, 600, res = 96)
 set.seed(123)
@@ -147,9 +147,9 @@ plot(x, y, pch = 16, col = "steelblue",
 grid()
 
 ## Use showtext only for this part
-showtext.begin()
+showtext_begin()
 title("Draw Plots Before You Fit A Regression", family = "bell")
-showtext.end()
+showtext_end()
 
 text(-0.5, 4.5, "This is the outlier", cex = 2, col = "steelblue")
 abline(coef(mod))
@@ -189,8 +189,8 @@ Below is an example to load system fonts on Windows:
 ```r
 library(showtext)
 ## Add fonts that are available on Windows
-font.add("heiti", "simhei.ttf")
-font.add("constan", "constan.ttf", italic = "constani.ttf")
+font_add("heiti", "simhei.ttf")
+font_add("constan", "constan.ttf", italic = "constani.ttf")
 
 library(ggplot2)
 p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
@@ -201,7 +201,7 @@ p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
     annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
              family = "constan", fontface = "italic", size = 12)
 
-showtext.auto()  ## automatically use showtext for new devices
+showtext_auto()  ## automatically use showtext for new devices
 
 print(p)  ## on-screen device
 
@@ -211,7 +211,7 @@ dev.off()
 
 ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)  ## PNG device
 
-showtext.auto(FALSE)  ## turn off if no longer needed
+showtext_auto(FALSE)  ## turn off if no longer needed
 ```
 
 <div align="center">
@@ -233,13 +233,13 @@ extra font at all.
 Also, there are many free fonts available and accessible on the web, for instance
 the Google Fonts project ([https://www.google.com/fonts](https://www.google.com/fonts)).
 **sysfonts** provides an interface to automatically download and register those fonts
-through the function `font.add.google()`, as the example below shows.
+through the function `font_add_google()`, as the example below shows.
 
 ```r
 library(showtext)
-font.add.google("Lobster", "lobster")
+font_add_google("Lobster", "lobster")
 
-showtext.auto()
+showtext_auto()
 
 plot(1, pch = 16, cex = 3)
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
