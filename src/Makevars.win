@@ -10,7 +10,7 @@ deps: sysfonts-dep-win-biarch.tar.gz
 	tar xzf sysfonts-dep-win-biarch.tar.gz
 
 sysfonts-dep-win-biarch.tar.gz:
-	${R_HOME}/bin/R --vanilla --slave -e "download.file('http://statr.me/files/sysfonts-dep-win-biarch.tar.gz', 'sysfonts-dep-win-biarch.tar.gz', mode = 'wb')"
+	${R_HOME}/bin/R --vanilla --slave -e "download.file('https://statr.me/files/sysfonts-dep-win-biarch.tar.gz', 'sysfonts-dep-win-biarch.tar.gz', method = 'wininet', mode = 'wb')"
 
 clean:
 	$(RM) *.o
