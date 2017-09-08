@@ -2,5 +2,8 @@ import(sysfonts)
 import(showtextdb)
 importFrom("grDevices", "dev.cur")
 
+export(showtext_opts, showtext_begin, showtext_end, showtext_auto)
+
+# Backward compatibility
 export(showtext.opts, showtext.begin, showtext.end, showtext.auto)
 

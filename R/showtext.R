@@ -9,7 +9,7 @@
 #' 
 #' @param \dots Options to be set, expressed in \code{name = value} pairs.
 #'              It can also be a list containing these pairs (for example,
-#'              the list returned by a previous call of \code{showtext.opts()}).
+#'              the list returned by a previous call of \code{showtext_opts()}).
 #'              Currently accepted parameters are \code{nseg} and \code{dpi}.
 #'              See the \strong{Options Used} section.
 #' 
@@ -37,32 +37,32 @@
 #' 
 #' @examples \dontrun{
 #' ## Set dpi to 200
-#' op = showtext.opts(dpi = 200)
+#' op = showtext_opts(dpi = 200)
 #' 
 #' png("dpi_200.png", 800, 800, res = 200)
 #' par(family = "sans")
-#' showtext.begin()
+#' showtext_begin()
 #' 
 #' set.seed(123)
 #' plot(density(rnorm(100)))
 #' 
-#' showtext.end()
+#' showtext_end()
 #' dev.off()
 #' 
 #' ## Restore old options
-#' showtext.opts(op)
+#' showtext_opts(op)
 #' 
 #' png("dpi_96.png", 800, 800, res = 96)
 #' par(family = "sans")
-#' showtext.begin()
+#' showtext_begin()
 #' 
 #' set.seed(123)
 #' plot(density(rnorm(100)))
 #' 
-#' showtext.end()
+#' showtext_end()
 #' dev.off()
 #' }
-showtext.opts = function(...)
+showtext_opts = function(...)
 {
     old_opts = list(nseg = .pkg.env$.nseg, dpi = .pkg.env$.dpi)
     
@@ -87,6 +87,14 @@ showtext.opts = function(...)
     invisible(old_opts)
 }
 
+#' @rdname showtext_opts
+#' @export
+showtext.opts = function(...)
+{
+    deprecate_message_once("showtext.opts()", "showtext_opts()")
+    showtext_opts(...)
+}
+
 
 #' Rendering Text for R Graphics Devices
 #' 
@@ -105,11 +113,11 @@ showtext.opts = function(...)
 #' 
 #' @details This package uses FreeType to load font files and render
 #'          text characters. The font loading part is done by function
-#'          \code{\link[sysfonts]{font.add}()} in the \pkg{sysfonts}
+#'          \code{\link[sysfonts]{font_add}()} in the \pkg{sysfonts}
 #'          package. Users could read the help page of
-#'          \code{\link[sysfonts]{font.paths}()},
-#'          \code{\link[sysfonts]{font.files}()} and
-#'          \code{\link[sysfonts]{font.add}()} to learn how to load
+#'          \code{\link[sysfonts]{font_paths}()},
+#'          \code{\link[sysfonts]{font_files}()} and
+#'          \code{\link[sysfonts]{font_add}()} to learn how to load
 #'          a font file into R. \pkg{showtext} package
 #'          has a built-in font file of the WenQuanYi Micro Hei
 #'          family, and it will be loaded automatically, so users can
@@ -131,7 +139,7 @@ showtext.opts = function(...)
 #'          functions like \code{\link[grDevices]{png}()},
 #'          \code{\link[grDevices]{pdf}()}, etc.).
 #'          
-#'          To switch back, users can call \code{\link{showtext.end}()}
+#'          To switch back, users can call \code{\link{showtext_end}()}
 #'          to restore the original device functions. See examples
 #'          below for the usage of these functions.
 #'
@@ -139,8 +147,8 @@ showtext.opts = function(...)
 #' 
 #' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
-#' @seealso \code{\link{showtext.opts}()}, \code{\link{showtext.auto}()},
-#'          \code{\link{showtext.end}()}
+#' @seealso \code{\link{showtext_opts}()}, \code{\link{showtext_auto}()},
+#'          \code{\link{showtext_end}()}
 #' 
 #' @examples \dontrun{
 #' old = setwd(tempdir())
@@ -156,16 +164,16 @@ showtext.opts = function(...)
 #' plot(1, type = "n")
 #' 
 #' ## Then turn showtext on and draw some characters
-#' showtext.begin()
+#' showtext_begin()
 #' text(1, 1.2, intToUtf8(c(21315, 31179, 19975, 36733)), cex = 5)
 #' 
 #' ## Use another font
-#' if("simkai.ttf" %in% font.files()) font.add("kaishu", "simkai.ttf")
+#' if("simkai.ttf" %in% font.files()) font_add("kaishu", "simkai.ttf")
 #' text(1, 0.8, intToUtf8(c(19968, 32479, 27743, 28246)),
 #'      cex = 5, family = "kaishu")
 #'      
 #' ## Turn showtext off
-#' showtext.end()
+#' showtext_end()
 #' 
 #' ## Also turn off the device
 #' dev.off()
@@ -178,21 +186,21 @@ showtext.opts = function(...)
 #' download.file("http://fontpro.com/download-family.php?file=35128",
 #'               "cutetumblr.ttf", mode ="wb")
 #' 
-#' font.add("newrocker", "newrocker.ttf")
-#' font.add("cutetumblr", "cutetumblr.ttf")
+#' font_add("newrocker", "newrocker.ttf")
+#' font_add("cutetumblr", "cutetumblr.ttf")
 #' 
 #' png("showtext-ex2.png", 800, 500)
 #' plot(1, type = "n")
-#' showtext.begin()
+#' showtext_begin()
 #' text(1, 1.2, "Let me tell you a story", cex = 4, family = "newrocker")
 #' text(1, 0.8, "Long long ago...", cex = 4, family = "cutetumblr")
-#' showtext.end()
+#' showtext_end()
 #' dev.off()
 #' 
 #' setwd(old)
 #' 
 #' }
-showtext.begin = function()
+showtext_begin = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
     
@@ -213,26 +221,42 @@ showtext.begin = function()
     invisible(NULL)
 }
 
+#' @rdname showtext_begin
+#' @export
+showtext.begin = function()
+{
+    deprecate_message_once("showtext.begin()", "showtext_begin()")
+    showtext_begin()
+}
+
 
 #' Turning Off 'showtext' Text Rendering
 #' 
 #' This function will turn off the \pkg{showtext} functionality
 #' of rendering text. When you call this function, the current
 #' active device should be the same as the one when you call
-#' \code{\link{showtext.begin}()}, or an error will be issued.
-#' See the example in \code{\link{showtext.begin}()}.
+#' \code{\link{showtext_begin}()}, or an error will be issued.
+#' See the example in \code{\link{showtext_begin}()}.
 #'
 #' @export
 #' 
 #' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
-#' @seealso \code{\link{showtext.begin}()}
-showtext.end = function()
+#' @seealso \code{\link{showtext_begin}()}
+showtext_end = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
     
     .Call("showtext_end", PACKAGE = "showtext")
     invisible(NULL)
+}
+
+#' @rdname showtext_end
+#' @export
+showtext.end = function()
+{
+    deprecate_message_once("showtext.end()", "showtext_end()")
+    showtext_end()
 }
 
 
@@ -241,7 +265,7 @@ showtext.end = function()
 #' This function could turn on/off the automatic use of \pkg{showtext}
 #' functionality. If turned on, any newly opened graphics devices will use
 #' \pkg{showtext} to draw text. This helps to avoid the repeated calls of
-#' \code{\link{showtext.begin}()} and \code{\link{showtext.end}()}.
+#' \code{\link{showtext_begin}()} and \code{\link{showtext_end}()}.
 #' 
 #' @param enable \code{TRUE} to turn on and \code{FALSE} to turn off
 #'
@@ -249,7 +273,7 @@ showtext.end = function()
 #' 
 #' @author Yixuan Qiu <\url{http://statr.me/}>
 #' 
-#' @seealso \code{\link{showtext.begin}()}, \code{\link{showtext.end}()}
+#' @seealso \code{\link{showtext_begin}()}, \code{\link{showtext_end}()}
 #' 
 #' @examples \dontrun{
 #' pdf("test1.pdf")
@@ -257,7 +281,7 @@ showtext.end = function()
 #' dev.off()
 #' 
 #' ## Automatically use showtext for future devices
-#' showtext.auto()
+#' showtext_auto()
 #' plot(1, main = "\u6b22\u8fce", family = "wqy-microhei")
 #' 
 #' pdf("test2.pdf")
@@ -265,19 +289,19 @@ showtext.end = function()
 #' dev.off()
 #' 
 #' ## Turn off if needed
-#' showtext.auto(FALSE)
+#' showtext_auto(FALSE)
 #' }
-showtext.auto = function(enable = TRUE)
+showtext_auto = function(enable = TRUE)
 {
     enable = as.logical(enable)
     
     has_hook = length(getHook("before.plot.new")) > 0
     is_showtext_hook = sapply(getHook("before.plot.new"), identical,
-                              y = showtext::showtext.begin)
+                              y = showtext::showtext_begin)
     
     has_hook_grid = length(getHook("grid.newpage")) > 0
     is_showtext_hook_grid = sapply(getHook("grid.newpage"), identical,
-                                   y = showtext::showtext.begin)
+                                   y = showtext::showtext_begin)
 
     already_hooked = has_hook && any(is_showtext_hook)
     already_hooked_grid = has_hook_grid && any(is_showtext_hook_grid)
@@ -285,9 +309,9 @@ showtext.auto = function(enable = TRUE)
     if(enable)
     {
         if(!already_hooked)
-            setHook("before.plot.new", showtext::showtext.begin)
+            setHook("before.plot.new", showtext::showtext_begin)
         if(!already_hooked_grid)
-            setHook("grid.newpage", showtext::showtext.begin)
+            setHook("grid.newpage", showtext::showtext_begin)
     } else {
         if(already_hooked)
         {
@@ -302,4 +326,12 @@ showtext.auto = function(enable = TRUE)
             setHook("grid.newpage", new_hooks, "replace")
         }
     }
+}
+
+#' @rdname showtext_auto
+#' @export
+showtext.auto = function()
+{
+    deprecate_message_once("showtext.auto()", "showtext_auto()")
+    showtext_auto()
 }
