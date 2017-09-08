@@ -13,9 +13,9 @@ Description: Making it easy to use various types of fonts ('TrueType',
     longer relies on the font files. No external software such as 'Ghostscript' is
     needed to use this package.
 Depends:
-    sysfonts
+    sysfonts (>= 0.7),
+    showtextdb (>= 2.0)
 Imports:
-    showtextdb,
     grDevices
 Suggests:
     knitr,

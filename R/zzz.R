@@ -1,6 +1,6 @@
 .onLoad <- function(libname, pkgname) {
     library.dynam("showtext", pkgname, libname)
-    .add.default.font()
+    showtextdb::load_showtext_fonts()
     
     ## C structure stored in package environment. C function can access these
     ## data by looking up variable ".outline_funs" in the package environment.
