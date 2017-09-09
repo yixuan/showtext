@@ -78,12 +78,12 @@ To create a graph using **showtext**, you simply do the following:
 - Close the device
 
 Only the steps marked with (\*) are newly added. If you want to use
-**showtext** globally, you can call the function `showtext.auto()`
+**showtext** globally, you can call the function `showtext_auto()`
 once, and then all the devices after that will automatically use
 **showtext** to render text, as the example in the beginning shows.
 
 If you want to have finer control on which part of the code should use
-**showtext**, functions `showtext.begin()` and `showtext.end()` will help.
+**showtext**, functions `showtext_begin()` and `showtext_end()` will help.
 Only plotting functions enclosed by this pair of calls will use **showtext**,
 and others not. For example, to change the title font only, we can do:
 

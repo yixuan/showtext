@@ -18,7 +18,7 @@
     ## This number is used in calculating metric information of characters.
     .pkg.env$.dev_units_per_point = 1.0
     
-    ## The identifier of the device on which showtext.begin() is called.
+    ## The identifier of the device on which showtext_begin() is called.
     ## Initialized to be a null pointer.
     .pkg.env$.device_id = .Call("showtext_null_pointer", PACKAGE = "showtext")
     

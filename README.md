@@ -70,7 +70,7 @@ par(op)
 
 In this example we first load some fonts that are available online
 through [Google Fonts](http://www.google.com/fonts), and then tell R
-to render text using **showtext** by calling the `showtext.auto()`
+to render text using **showtext** by calling the `showtext_auto()`
 function. All the remaining part is exactly the same as the usual plotting
 commands.
 
@@ -115,12 +115,12 @@ To create a graph using a specified font, you simply do the following:
 - Close the device
 
 Only the steps marked with (\*) are newly added. If you want to use
-**showtext** globally, you can call the function `showtext.auto()`
+**showtext** globally, you can call the function `showtext_auto()`
 once, and then all the devices after that will automatically use
 **showtext** to render text, as the example in the beginning shows.
 
 If you want to have finer control on which part of the code should use
-**showtext**, functions `showtext.begin()` and `showtext.end()` will help.
+**showtext**, functions `showtext_begin()` and `showtext_end()` will help.
 Only plotting functions enclosed by this pair of calls will use **showtext**,
 and others not. For example, to change the title font only, we can do:
 
@@ -258,6 +258,6 @@ is to override their own text rendering functions and replace them by hooks
 provided in **showtext** that will further call the device's `path()` or `raster()`
 functions to draw the character glyphs.
 
-This action is done only when you call `showtext.begin()` and won't modify the
-graphics device if you call `showtext.end()` to restore the original device functions back.
+This action is done only when you call `showtext_begin()` and won't modify the
+graphics device if you call `showtext_end()` to restore the original device functions back.
 

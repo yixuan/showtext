@@ -4,6 +4,9 @@
 
 #' Setting Options for 'showtext' package
 #' 
+#' @description The two versions of this function are equivalent, but the
+#' "underscore" naming is preferred.
+#' 
 #' This function sets parameters that will affect the apprearance of the
 #' graphs created with \pkg{showtext}.
 #' 
@@ -68,7 +71,7 @@ showtext_opts = function(...)
     
     opts = list(...)
     ## If ... is a list containing the parameter components
-    ## (usually returned by a previous showtext.opts() call)
+    ## (usually returned by a previous showtext_opts() call)
     if(length(opts) == 1 && is.list(opts[[1]]))
         opts = opts[[1]]
     if("nseg" %in% names(opts))  nseg = opts$nseg  else  nseg = old_opts$nseg
@@ -97,6 +100,9 @@ showtext.opts = function(...)
 
 
 #' Rendering Text for R Graphics Devices
+#' 
+#' @description The two versions of this function are equivalent, but the
+#' "underscore" naming is preferred.
 #' 
 #' Calling this function will use \pkg{showtext} to render text
 #' for the current graphics device. The main advantage of
@@ -232,6 +238,9 @@ showtext.begin = function()
 
 #' Turning Off 'showtext' Text Rendering
 #' 
+#' @description The two versions of this function are equivalent, but the
+#' "underscore" naming is preferred.
+#' 
 #' This function will turn off the \pkg{showtext} functionality
 #' of rendering text. When you call this function, the current
 #' active device should be the same as the one when you call
@@ -261,6 +270,9 @@ showtext.end = function()
 
 
 #' Automatically Using 'showtext' for New Graphics Devices
+#' 
+#' @description The two versions of this function are equivalent, but the
+#' "underscore" naming is preferred.
 #' 
 #' This function could turn on/off the automatic use of \pkg{showtext}
 #' functionality. If turned on, any newly opened graphics devices will use
