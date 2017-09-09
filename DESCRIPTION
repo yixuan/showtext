@@ -1,8 +1,8 @@
 Package: showtext
 Type: Package
 Title: Using Fonts More Easily in R Graphs
-Version: 0.4-6
-Date: 2017-01-05
+Version: 0.5
+Date: 2017-09-09
 Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
@@ -13,7 +13,7 @@ Description: Making it easy to use various types of fonts ('TrueType',
     longer relies on the font files. No external software such as 'Ghostscript' is
     needed to use this package.
 Depends:
-    sysfonts (>= 0.7),
+    sysfonts (>= 0.7.1),
     showtextdb (>= 2.0)
 Imports:
     grDevices
@@ -26,4 +26,4 @@ BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
