@@ -13,7 +13,7 @@ deprecate_message_once = function(old_fun, new_fun)
 The old version still works, but consider using the new function in future code",
                   old_fun, new_fun)
     
-    warned = exists(old_fun, envir = .warned_list)
+    warned = exists(old_fun, envir = .warned_list, inherits = FALSE)
     if(!warned)
     {
         message(msg)
