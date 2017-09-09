@@ -330,8 +330,8 @@ showtext_auto = function(enable = TRUE)
 
 #' @rdname showtext_auto
 #' @export
-showtext.auto = function()
+showtext.auto = function(enable = TRUE)
 {
     deprecate_message_once("showtext.auto()", "showtext_auto()")
-    showtext_auto()
+    showtext_auto(enable)
 }
