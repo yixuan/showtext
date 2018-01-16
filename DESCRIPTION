@@ -1,8 +1,8 @@
 Package: showtext
 Type: Package
 Title: Using Fonts More Easily in R Graphs
-Version: 0.5
-Date: 2017-09-22
+Version: 0.5-1
+Date: 2018-01-15
 Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
@@ -19,7 +19,9 @@ Imports:
     grDevices
 Suggests:
     knitr,
-    prettydoc
+    prettydoc,
+    curl,
+    jsonlite
 SystemRequirements: zlib, libpng, FreeType
 URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues

@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.5-1}{
+  \itemize{
+    \item Fixed errors in building the vignette
+    \item Fixed installation problems on Windows
+  }
+}
+
 \section{Changes in showtext version 0.5}{
   \itemize{
     \item All previous API functions now have aliases replacing the dots

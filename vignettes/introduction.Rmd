@@ -176,8 +176,8 @@ showtext_auto(FALSE)
 For other OS, you may not have the `simhei.ttf` font file, but there is no
 difficulty in using the alternatives.
 
-At present `font_add()` supports TrueType fonts(`.ttf`/`.ttc`) and
-OpenType fonts(`.otf`), and adding new
+At present `font_add()` supports TrueType fonts (`.ttf`/`.ttc`) and
+OpenType fonts (`.otf`), and adding new
 font type is trivial as long as FreeType supports it.
 
 Note that **showtext** includes an open source CJK font
