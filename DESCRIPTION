@@ -19,6 +19,7 @@ Imports:
     grDevices
 Suggests:
     knitr,
+    rmarkdown,
     prettydoc,
     curl,
     jsonlite
@@ -27,5 +28,5 @@ URL: https://github.com/yixuan/showtext
 BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown, prettydoc
 RoxygenNote: 6.0.1

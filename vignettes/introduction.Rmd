@@ -103,7 +103,7 @@ showtext_end()
 ```
 
 ```{r echo=FALSE, message=FALSE, fig.align='center', fig.showtext=TRUE}
-showtext.end()
+showtext_end()
 
 set.seed(123)
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
