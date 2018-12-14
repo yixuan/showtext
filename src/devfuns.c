@@ -93,9 +93,12 @@ void showtext_text_utf8_raster(double x, double y, const char* str, double rot, 
     RasterData *rd = get_string_raster_image(unicode, len, px, px,
         rot * DEG2RAD, hadj, gc, &trans_x, &trans_y);
 
-    dd->raster(rd->data, rd->ncol, rd->nrow,
-               x - trans_x, y - trans_sign * trans_y,
-               rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
+    /* Only plot if we have data, so spaces are excluded. */
+    if((rd->ncol > 0) && (rd->nrow > 0))
+        dd->raster(rd->data, rd->ncol, rd->nrow,
+                   x - trans_x, y - trans_sign * trans_y,
+                   rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
+    
     RasterData_destroy(rd);
     free(unicode);
 }
