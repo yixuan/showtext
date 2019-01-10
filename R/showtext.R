@@ -36,7 +36,7 @@
 #' }
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' @author Yixuan Qiu <\url{https://statr.me/}>
 #' 
 #' @examples \dontrun{
 #' ## Set dpi to 200
@@ -151,7 +151,7 @@ showtext.opts = function(...)
 #'
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' @author Yixuan Qiu <\url{https://statr.me/}>
 #' 
 #' @seealso \code{\link{showtext_opts}()}, \code{\link{showtext_auto}()},
 #'          \code{\link{showtext_end}()}
@@ -249,7 +249,7 @@ showtext.begin = function()
 #'
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' @author Yixuan Qiu <\url{https://statr.me/}>
 #' 
 #' @seealso \code{\link{showtext_begin}()}
 showtext_end = function()
@@ -283,7 +283,7 @@ showtext.end = function()
 #'
 #' @export
 #' 
-#' @author Yixuan Qiu <\url{http://statr.me/}>
+#' @author Yixuan Qiu <\url{https://statr.me/}>
 #' 
 #' @seealso \code{\link{showtext_begin}()}, \code{\link{showtext_end}()}
 #' 
