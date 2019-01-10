@@ -44,6 +44,10 @@ mod = lm(y ~ x)
 ## Plotting functions as usual
 ## Open a graphics device if you want, e.g.
 ## png("demo.png", 700, 600, res = 96)
+## If you want to show the graph in a window device,
+## remember to manually open one in RStudio
+## See the "Known Issues" section
+x11()
 
 op = par(cex.lab = 2, cex.axis = 1.5, cex.main = 2)
 plot(x, y, pch = 16, col = "steelblue",
@@ -65,11 +69,11 @@ par(op)
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/7dmcchI.png" alt="quick_example" />
+  <img src="https://i.imgur.com/7dmcchI.png" alt="quick_example" />
 </div>
 
 In this example we first load some fonts that are available online
-through [Google Fonts](http://www.google.com/fonts), and then tell R
+through [Google Fonts](https://fonts.google.com/), and then tell R
 to render text using **showtext** by calling the `showtext_auto()`
 function. All the remaining part is exactly the same as the usual plotting
 commands.
@@ -165,14 +169,14 @@ dev.off()
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/uZAJafE.png" alt="demo-2" />
+  <img src="https://i.imgur.com/uZAJafE.png" alt="demo-2" />
 </div>
 
 ### Loading Fonts
 
 Loading font is actually done by package **sysfonts**.
 
-The easy way to load font into **showtext** is by calling `font.add(family, regular)`,
+The easy way to load font into **showtext** is by calling `font_add(family, regular)`,
 where `family` is the name that you assign to that font (so that later you can
 call `par(family = ...)` to use this font in plotting), and `regular` is the
 path to the font file. That is to say, only knowing the "font name" is not
@@ -181,8 +185,8 @@ is the entity that actually provides the character glyphs.
 
 Usually the font files are located in some "standard" directories in the system 
 (for example on Windows it is typically `C:\Windows\Fonts`).
-You can use `font.paths()` to check the current search path or add a new one,
-and use `font.files()` to list available font files in the search path.
+You can use `font_paths()` to check the current search path or add a new one,
+and use `font_files()` to list available font files in the search path.
 
 Below is an example to load system fonts on Windows:
 
@@ -203,35 +207,34 @@ p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
 
 showtext_auto()  ## automatically use showtext for new devices
 
-print(p)  ## on-screen device
-
-pdf("showtext-example-3.pdf", 7, 4)  ## PDF device
+## on-screen device
+x11()
 print(p)
 dev.off()
 
-ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)  ## PNG device
+## PDF device
+pdf("showtext-example-3.pdf", 7, 4)
+print(p)
+dev.off()
 
-showtext_auto(FALSE)  ## turn off if no longer needed
+## PNG device
+ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)
+
+## turn off if no longer needed
+showtext_auto(FALSE)
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/Z3r9sg2.png" alt="example1" />
+  <img src="https://i.imgur.com/Z3r9sg2.png" alt="example1" />
 </div>
 
 For other OS, you may not have the `simhei.ttf` font file, but there is no
-difficulty in using something else.
-
-At present `font.add()` supports TrueType fonts(\*.ttf/\*.ttc) and
-OpenType fonts(\*.otf), and adding new
+difficulty in using something else. At present `font_add()` supports TrueType
+fonts(\*.ttf/\*.ttc) and OpenType fonts(\*.otf), and adding new
 font type is trivial as long as FreeType supports it.
 
-Note that **showtext** includes an open source CJK font
-[WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
-If you just want to show CJK text in your graph, you do not need to add any
-extra font at all.
-
 Also, there are many free fonts available and accessible on the web, for instance
-the Google Fonts project ([https://www.google.com/fonts](https://www.google.com/fonts)).
+the Google Fonts project ([https://fonts.google.com/](https://fonts.google.com/)).
 **sysfonts** provides an interface to automatically download and register those fonts
 through the function `font_add_google()`, as the example below shows.
 
@@ -241,12 +244,37 @@ font_add_google("Lobster", "lobster")
 
 showtext_auto()
 
+x11()
 plot(1, pch = 16, cex = 3)
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
 ```
 
 <div align="center">
-  <img src="http://i.imgur.com/pO87LFy.png" alt="example2" />
+  <img src="https://i.imgur.com/pO87LFy.png" alt="example2" />
+</div>
+
+### CJK Fonts
+
+**showtext** includes an open source CJK font
+[WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
+If you just want to show CJK text in your graph, simply specify the `wqy-microhei`
+family name in plotting functions.
+
+Another option is to install the Source Han Sans/Serif fonts locally
+using the following code:
+
+```r
+library(showtext)
+font_install(source_han_serif())
+font_families()
+[1] "sans"                "serif"               "mono"                "wqy-microhei"       
+[5] "source-han-serif-cn"
+```
+
+See `?font_install` and `?source_han` for more details.
+
+<div align="center">
+  <img src="https://i.imgur.com/oOejBrI.png" alt="source han" />
 </div>
 
 ### The Internals of **showtext**
@@ -261,3 +289,9 @@ functions to draw the character glyphs.
 This action is done only when you call `showtext_begin()` and won't modify the
 graphics device if you call `showtext_end()` to restore the original device functions back.
 
+### Known Issues
+
+**showtext** does not work well with the RStudio graphics device (RStudioGD).
+Therefore, if you want to display graphs on a window device in RStudio,
+you need to manually open one, e.g., `x11()` on Linux, `windows()` on
+Windows, and `quartz()` on Mac OS.
