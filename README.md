@@ -14,7 +14,7 @@ Chinese character glyphs, and users could hardly use system fonts in R.
 
 The [extrafont](https://github.com/wch/extrafont) package developed by
 [Winston Chang](https://github.com/wch) is one nice solution to this problem,
-which mainly focuses on using TrueType fonts(`.ttf`) in PDF graphics device.
+which mainly focuses on using TrueType fonts (`.ttf`) in PDF graphics device.
 Now **showtext** is able to support more font formats and more graphics devices,
 and avoids using external software such as Ghostscript.
 
