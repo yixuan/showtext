@@ -5,7 +5,7 @@
   \itemize{
     \item Fixed a device crash when labels are blank
           (\href{https://github.com/yixuan/showtext/issues/20}{#20})
-    \item Updated the README and vignette
+    \item Updated the README and vignette to introduce some new features
   }
 }
 

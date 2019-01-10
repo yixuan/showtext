@@ -184,7 +184,36 @@ the Google Fonts project ([https://fonts.google.com/](https://fonts.google.com/)
 **sysfonts** provides an interface to automatically download and register those fonts
 through the function `font_add_google()`, as the example below shows.
 
-### CJK Fonts
+## Working with Rmarkdown
+
+**showtext** can work with Rmarkdown/knitr nicely if you take care of the following
+two points:
+
+1. Add a `fig.showtext = TRUE` option to the block where you use **showtext** for graphs.
+2. Add a `fig_retina = 1` option to the document header if you use HTML output. Without
+this option you may see figures with very small fonts.
+
+Below is a minimal example of using **showtext** in Rmarkdown:
+
+``````
+---
+output:
+    html_document:
+        fig_retina: 1
+---
+
+```{r fig.showtext=TRUE}`r ''`
+library(showtext)
+font_add_google("Lobster", "lobster")
+showtext_auto()
+
+
+plot(1, pch = 16, cex = 3)
+text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
+```
+``````
+
+## CJK Fonts
 
 **showtext** includes an open source CJK (Chinese, Japanese, and Korean) font
 [WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
@@ -226,7 +255,7 @@ The idea above can be better explained by the diagram below.
 A more detailed introduction to the **showtext** package can be found in the
 [R Journal article](https://journal.r-project.org/archive/2015-1/qiu.pdf).
 
-### Known Issues
+## Known Issues
 
 **showtext** does not work well with the RStudio graphics device (RStudioGD).
 Therefore, if you want to display graphs on a window device in RStudio,
