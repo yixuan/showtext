@@ -43,5 +43,5 @@ showtext_auto(FALSE)
 \code{\link{showtext_begin}()}, \code{\link{showtext_end}()}
 }
 \author{
-Yixuan Qiu <\url{http://statr.me/}>
+Yixuan Qiu <\url{https://statr.me/}>
 }

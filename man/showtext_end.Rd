@@ -23,5 +23,5 @@ See the example in \code{\link{showtext_begin}()}.
 \code{\link{showtext_begin}()}
 }
 \author{
-Yixuan Qiu <\url{http://statr.me/}>
+Yixuan Qiu <\url{https://statr.me/}>
 }

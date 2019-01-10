@@ -78,7 +78,7 @@ showtext_begin()
 text(1, 1.2, intToUtf8(c(21315, 31179, 19975, 36733)), cex = 5)
 
 ## Use another font
-if("simkai.ttf" \%in\% font.files()) font_add("kaishu", "simkai.ttf")
+if("simkai.ttf" \%in\% font_files()) font_add("kaishu", "simkai.ttf")
 text(1, 0.8, intToUtf8(c(19968, 32479, 27743, 28246)),
      cex = 5, family = "kaishu")
      
@@ -116,5 +116,5 @@ setwd(old)
          \code{\link{showtext_end}()}
 }
 \author{
-Yixuan Qiu <\url{http://statr.me/}>
+Yixuan Qiu <\url{https://statr.me/}>
 }
