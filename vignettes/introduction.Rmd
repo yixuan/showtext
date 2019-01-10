@@ -58,7 +58,7 @@ text(2, 70, "N = 1000", family = "bell", cex = 2.5)
 ```
 
 In this example we first load fonts that are available online
-through [Google Fonts](http://www.google.com/fonts), and then tell R
+through [Google Fonts](https://fonts.google.com/), and then tell R
 to render text using **showtext** by calling the `showtext_auto()`
 function. All the remaining part is exactly the same as the usual plotting
 commands.
@@ -159,7 +159,8 @@ p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
     annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
              family = "constan", fontface = "italic", size = 12)
 
-## on-screen device
+## On-screen device
+x11()
 print(p)
 
 ## PNG device
@@ -174,21 +175,39 @@ showtext_auto(FALSE)
 </div>
 
 For other OS, you may not have the `simhei.ttf` font file, but there is no
-difficulty in using the alternatives.
-
-At present `font_add()` supports TrueType fonts (`.ttf`/`.ttc`) and
-OpenType fonts (`.otf`), and adding new
+difficulty in using the alternatives. At present `font_add()` supports TrueType
+fonts (`.ttf`/`.ttc`) and OpenType fonts (`.otf`), and adding new
 font type is trivial as long as FreeType supports it.
 
-Note that **showtext** includes an open source CJK font
-[WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
-If you just want to show CJK text in your graph, you do not need to add any
-extra font at all.
-
 Also, there are many free fonts available and accessible on the web, for instance
-the Google Fonts project ([https://www.google.com/fonts](https://www.google.com/fonts)).
+the Google Fonts project ([https://fonts.google.com/](https://fonts.google.com/)).
 **sysfonts** provides an interface to automatically download and register those fonts
-through the function `font.add.google()`, as the first example shows.
+through the function `font_add_google()`, as the example below shows.
+
+### CJK Fonts
+
+**showtext** includes an open source CJK (Chinese, Japanese, and Korean) font
+[WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
+If you just want to show CJK text in your graph, simply specify the `wqy-microhei`
+family name in plotting functions.
+
+Another option is to install the
+[Source Han Sans](https://github.com/adobe-fonts/source-han-sans)/[Serif](https://github.com/adobe-fonts/source-han-serif)
+fonts locally using the following code:
+
+```r
+library(showtext)
+font_install(source_han_serif())
+font_families()
+[1] "sans"                "serif"               "mono"                "wqy-microhei"       
+[5] "source-han-serif-cn"
+```
+
+See `?font_install` and `?source_han` for more details.
+
+<div align="center">
+  <img src="https://i.imgur.com/oOejBrI.png" alt="source han" />
+</div>
 
 ## How showtext Works
 
@@ -206,3 +225,10 @@ The idea above can be better explained by the diagram below.
 
 A more detailed introduction to the **showtext** package can be found in the
 [R Journal article](https://journal.r-project.org/archive/2015-1/qiu.pdf).
+
+### Known Issues
+
+**showtext** does not work well with the RStudio graphics device (RStudioGD).
+Therefore, if you want to display graphs on a window device in RStudio,
+you need to manually open one, e.g., `x11()` on Linux, `windows()` on
+Windows, and `quartz()` on Mac OS.

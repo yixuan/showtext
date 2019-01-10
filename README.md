@@ -255,13 +255,14 @@ text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
 
 ### CJK Fonts
 
-**showtext** includes an open source CJK font
+**showtext** includes an open source CJK (Chinese, Japanese, and Korean) font
 [WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
 If you just want to show CJK text in your graph, simply specify the `wqy-microhei`
 family name in plotting functions.
 
-Another option is to install the Source Han Sans/Serif fonts locally
-using the following code:
+Another option is to install the
+[Source Han Sans](https://github.com/adobe-fonts/source-han-sans)/[Serif](https://github.com/adobe-fonts/source-han-serif)
+fonts locally using the following code:
 
 ```r
 library(showtext)
