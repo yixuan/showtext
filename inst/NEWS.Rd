@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.6}{
+  \itemize{
+    \item Fixed a device crash when labels are blank
+          (\href{https://github.com/yixuan/showtext/issues/20}{#20})
+    \item Updated the README and vignette
+  }
+}
+
 \section{Changes in showtext version 0.5-1}{
   \itemize{
     \item Fixed errors in building the vignette
