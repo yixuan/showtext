@@ -64,7 +64,7 @@ RasterData* get_string_raster_image(unsigned int* unicode, int nchar,
                                     double rad, double hadj, const pGEcontext gc,
                                     double* center_horiz, double* center_vert)
 {
-    FT_Face face = get_ft_face(gc);
+    FT_Face face = get_ft_face(gc, all_smaller_than_1024(unicode, nchar) ? "sans" : "wqy-microhei");
     FT_GlyphSlot slot = face->glyph;
     FT_Matrix trans;
     FT_Vector pen;

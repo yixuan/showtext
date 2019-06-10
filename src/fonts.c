@@ -50,8 +50,20 @@ SEXP utf8_to_int(SEXP str)
 
 
 
+/* Test whether all characters in the array are smaller than 1024 in Unicode */
+int all_smaller_than_1024(unsigned int* unicode, int nchar)
+{
+    int i;
+    for(i = 0; i < nchar; i++)
+    {
+        if(unicode[i] >= 1024)
+            return 0;
+    }
+    return 1;
+}
+
 /* Obtain the FT_Face structure given family name and font face */
-FT_Face get_ft_face(const pGEcontext gc)
+FT_Face get_ft_face(const pGEcontext gc, const char* default_family)
 {
     int font_face = gc->fontface;
     FontDesc* font;
@@ -75,14 +87,14 @@ FT_Face get_ft_face(const pGEcontext gc)
             break;
         }
     }
-    /* If not found, search "wqy-microhei" */
+    /* If not found, search the default family */
     if(i == list_len)
     {
         if(gc->fontfamily[0] != '\0')
-            Rf_warning("font family '%s' not found, will use 'wqy-microhei' instead", gc->fontfamily);
+            Rf_warning("font family '%s' not found, will use '%s' instead", gc->fontfamily, default_family);
         for(i = 0; i < list_len; i++)
         {
-            if(strcmp("wqy-microhei", CHAR(STRING_ELT(font_names, i))) == 0)
+            if(strcmp(default_family, CHAR(STRING_ELT(font_names, i))) == 0)
             {
                 break;
             }
@@ -91,7 +103,7 @@ FT_Face get_ft_face(const pGEcontext gc)
     /* If still not found, use "sans" */
     if(i == list_len)
     {
-        Rf_warning("font family 'wqy-microhei' not found, will use 'sans' instead");
+        Rf_warning("font family '%s' not found, will use 'sans' instead", default_family);
         i = 0;
     }
     if(font_face < 1 || font_face > 5) font_face = 1;

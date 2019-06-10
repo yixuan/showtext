@@ -5,24 +5,25 @@
 
 void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* descent, double* width, pDevDesc dd)
 {
-    FT_Face face = get_ft_face(gc);
+    FT_Face face;
     FT_Error err;
 
     /* Font size in points (1/72 inches) */
-    double font_size = gc->ps * gc->cex;
+    double font_size;
     /* Metrics given by FreeType are represented in EM units when
        we set FT_LOAD_NO_SCALE.
        Therefore, we first transform EM units into points. */
-    double pts_per_EM_unit = font_size / face->units_per_EM;
+    double pts_per_EM_unit;
     /* Then we further convert points to device units.
        Device unit can be in points (usually vector graphics),
        or in pixels (usually bitmap graphics). */
-    double dev_units_per_EM_unit = pts_per_EM_unit * get_dev_units_per_point();
+    double dev_units_per_EM_unit;
 
     if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)  c = -c;
 
     /* c is the unicode of the character */
+    face = get_ft_face(gc, (c < 1024) ? "sans" : "wqy-microhei");
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)
     {
@@ -30,6 +31,10 @@ void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* de
         *ascent = *descent = *width = 0.0;
         return;
     }
+    
+    font_size = gc->ps * gc->cex;
+    pts_per_EM_unit = font_size / face->units_per_EM;
+    dev_units_per_EM_unit = pts_per_EM_unit * get_dev_units_per_point();
 
     *ascent  = face->glyph->metrics.horiBearingY * dev_units_per_EM_unit;
     *descent = face->glyph->metrics.height * dev_units_per_EM_unit - *ascent;
@@ -44,7 +49,7 @@ double showtext_str_width_utf8(const char* str, const pGEcontext gc, pDevDesc dd
         (unsigned int*) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
-    FT_Face face = get_ft_face(gc);
+    FT_Face face = get_ft_face(gc, all_smaller_than_1024(unicode, len) ? "sans" : "wqy-microhei");
     FT_Error err;
 
     double font_size = gc->ps * gc->cex;
@@ -115,7 +120,7 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
     int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Outline_Funcs* funs = get_ft_outline_funcs();
-    FT_Face face = get_ft_face(gc);
+    FT_Face face = get_ft_face(gc, all_smaller_than_1024(unicode, len) ? "sans" : "wqy-microhei");
     double fontSize = gc->ps * gc->cex;
 
     R_GE_gcontext gc_modify = *gc;

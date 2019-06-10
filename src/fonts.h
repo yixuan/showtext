@@ -29,8 +29,14 @@ typedef struct fontDesc {
  */
 int utf8_to_ucs4(unsigned int* ucs4, const char* utf8, int n);
 
+/* Test whether all characters in the array are smaller than 1024 in Unicode.
+ * If yes, we use "sans" as the default font family in get_ft_face();
+ * otherwise choose "wqy-microhei".
+ */
+int all_smaller_than_1024(unsigned int* unicode, int nchar);
+
 /* Get FreeType font face object from R graphics parameters */
-FT_Face get_ft_face(const pGEcontext gc);
+FT_Face get_ft_face(const pGEcontext gc, const char* default_family);
 
 /* Forward FreeType warning/error message to R */
 void forward_ft_error(FT_Error err);
