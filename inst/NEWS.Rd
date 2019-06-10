@@ -1,6 +1,17 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.7}{
+  \itemize{
+    \item Now a new rule for the default font family is made: if the user does not
+          specify a font family, then the default one will be used to
+          render the text. If all characters in the string have Unicodes smaller than 1024,
+          then the default font family is "sans"; otherwise "wqy-microhei" is used
+    \item Fixed the \code{VignetteBuilder} entry in the \code{DESCRIPTION} file
+          according to CRAN's policy
+  }
+}
+
 \section{Changes in showtext version 0.6}{
   \itemize{
     \item Fixed a device crash when labels are blank
