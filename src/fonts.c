@@ -173,8 +173,14 @@ void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double ro
     for(i = 0; i < nchar; i++)
     {
         FT_Set_Transform(face, &trans, &pen);
-        err = FT_Load_Char(face, str[i], FT_LOAD_RENDER);
+
+        /* See raster.c for the explanation */
+        /* err = FT_Load_Char(face, str[i], FT_LOAD_RENDER); */
+        err = FT_Load_Char(face, str[i], FT_LOAD_NO_BITMAP);
         if(err)  forward_ft_error(err);
+        err = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
+        if(err)  forward_ft_error(err);
+        
         char_xmin = slot->bitmap_left;
         char_xmax = char_xmin + slot->bitmap.width;
         char_ymax = slot->bitmap_top;

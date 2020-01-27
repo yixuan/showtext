@@ -114,7 +114,16 @@ RasterData* get_string_raster_image(unsigned int* unicode, int nchar,
     for(i = 0; i < nchar; i++)
     {
         FT_Set_Transform(face, &trans, &pen);
-        FT_Load_Char(face, unicode[i], FT_LOAD_RENDER);
+        
+        /* There is an issue about FT_LOAD_RENDER, see
+         * https://github.com/yixuan/showtext/issues/29.
+         * I guess it is due to the bitmap glyph contained in the MS Gothic font,
+         * so we force not to load the bitmap glyph.
+         */
+        /* FT_Load_Char(face, unicode[i], FT_LOAD_RENDER); */
+        FT_Load_Char(face, unicode[i], FT_LOAD_NO_BITMAP);
+        FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
+
         mi = ymax - slot->bitmap_top;
         mj = slot->bitmap_left - xmin;
         write_matrix(&(slot->bitmap), rd, mi, mj, gc);
