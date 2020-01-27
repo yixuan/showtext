@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.7-1}{
+  \itemize{
+    \item Fixed an issue for the MS Gothic font
+          (\href{https://github.com/yixuan/showtext/issues/29}{#29})
+  }
+}
+
 \section{Changes in showtext version 0.7}{
   \itemize{
     \item Now a new rule for the default font family is made: if the user does not

@@ -24,15 +24,15 @@ functionality. If turned on, any newly opened graphics devices will use
 \examples{
 \dontrun{
 pdf("test1.pdf")
-plot(1, main = "\\u6b22\\u8fce")  ## may not render properly
+plot(1, main = "\u6b22\u8fce")  ## may not render properly
 dev.off()
 
 ## Automatically use showtext for future devices
 showtext_auto()
-plot(1, main = "\\u6b22\\u8fce", family = "wqy-microhei")
+plot(1, main = "\u6b22\u8fce", family = "wqy-microhei")
 
 pdf("test2.pdf")
-plot(1, main = "\\u6b22\\u8fce", family = "wqy-microhei")
+plot(1, main = "\u6b22\u8fce", family = "wqy-microhei")
 dev.off()
 
 ## Turn off if needed
