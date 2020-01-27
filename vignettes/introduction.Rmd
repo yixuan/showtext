@@ -40,7 +40,7 @@ in original R console, or use other graphics devices such as `x11()` and
 
 ```{r message = FALSE, fig.align='center', fig.showtext=TRUE}
 library(showtext)
-## Loading Google fonts (http://www.google.com/fonts)
+## Loading Google fonts (https://fonts.google.com/)
 font_add_google("Gochi Hand", "gochi")
 font_add_google("Schoolbell", "bell")
 

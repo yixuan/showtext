@@ -22,7 +22,7 @@ and avoids using external software such as Ghostscript.
 
 ```r
 library(showtext)
-## Loading Google fonts (http://www.google.com/fonts)
+## Loading Google fonts (https://fonts.google.com/)
 font_add_google("Gochi Hand", "gochi")
 font_add_google("Schoolbell", "bell")
 font_add_google("Covered By Your Grace", "grace")
