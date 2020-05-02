@@ -36,12 +36,12 @@ SEXP showtext_begin()
     int curr_dev = curDevice();
     SEXP ext_ptr, showtext_env;
     /* gdd serves as the identifier of a graphics device. We need an id
-       for each device since showtext.begin() and showtext.end() must
+       for each device since showtext_begin() and showtext_end() must
        work on the same graphics device.
     
-       When calling showtext.begin(), we save the gdd of the current device
+       When calling showtext_begin(), we save the gdd of the current device
        to the package database (showtext:::.pkg.env), and in the call of
-       showtext.end(), we compare it with the active device at that time. */
+       showtext_end(), we compare it with the active device at that time. */
     pGEDevDesc gdd;
     /* The device structure that we want to modify */
     pDevDesc dd;
@@ -92,7 +92,7 @@ SEXP showtext_end()
     gdd = GEgetDevice(curr_dev);
     if(gdd != get_saved_device_id())
     {
-        Rf_error("current device does not match the one that uses showtext.begin()");
+        Rf_error("current device does not match the one that uses showtext_begin()");
     }
     
     /* Restore dd */
