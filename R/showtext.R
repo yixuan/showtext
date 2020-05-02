@@ -209,12 +209,32 @@ showtext.opts = function(...)
 showtext_begin = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
-    
+    current_device = names(dev.cur())
+
     ## For some bitmap and on-screen devices, we use raster image
     ## instead of polygon to draw text
-    device_using_raster = c("png", "PNG", "jpeg", "tiff", "bmp",
-                            "X11", "X11cairo", "windows")
-    if(names(dev.cur()) %in% device_using_raster)
+    devices_using_raster = c(
+        # From grDevices package
+        "bmp", "BMP", "jpeg", "JPEG", "png", "PNG", "tiff", "TIFF",
+
+        # Interactive devices defined in grDevices/R/device.R
+        "X11", "X11cairo", "quartz", "windows", "JavaGD", "CairoWin", "CairoX11",
+
+        # From ragg package
+        "agg_png", "agg_ppm", "agg_tiff"
+    )
+
+    ## All the devices in the Cairo package and cairoDevice package
+    ## use the same device name "Cairo", so we have to investigate their
+    ## internal structures to see whether a specific device is bitmap-based
+    ## or vector-based. Right now we only test devices in the Cairo package
+    use_raster = if(current_device == "Cairo") {
+        .Call("showtext_cairo_device_bitmap", PACKAGE = "showtext")
+    } else {
+        current_device %in% devices_using_raster
+    }
+
+    if(use_raster)
     {
         .pkg.env$.use_raster = TRUE
         .pkg.env$.dev_units_per_point = as.numeric(.pkg.env$.dpi / 72.0)
