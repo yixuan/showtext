@@ -221,7 +221,7 @@ showtext_begin = function()
         "X11", "X11cairo", "quartz", "windows", "JavaGD", "CairoWin", "CairoX11",
 
         # From ragg package
-        "agg_png", "agg_ppm", "agg_tiff"
+        "agg_png", "agg_ppm", "agg_tiff", "agg_jpeg"
     )
 
     ## All the devices in the Cairo package and cairoDevice package
