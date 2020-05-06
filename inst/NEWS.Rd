@@ -6,8 +6,8 @@
     \item Fixed a resolution issue for bitmap graphics devices in the \pkg{Cairo} package
           (\href{https://github.com/yixuan/showtext/issues/33}{#33})
     \item Updated the list of supported bitmap graphics devices
-    \item Updated the README file to introduce a workaround for the RStudioGD issue
-          (\href{https://github.com/yixuan/showtext/issues/7}{#7})
+    \item Updated the vignette and the README file to introduce a workaround for the
+          RStudioGD issue (\href{https://github.com/yixuan/showtext/issues/7}{#7})
   }
 }
 

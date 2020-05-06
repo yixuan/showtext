@@ -77,7 +77,7 @@ To create a graph using **showtext**, you simply do the following:
 - Plot
 - Close the device
 
-Only the steps marked with (\*) are newly added. If you want to use
+Only the steps marked with (\*) are new. If you want to use
 **showtext** globally, you can call the function `showtext_auto()`
 once, and then all the devices after that will automatically use
 **showtext** to render text, as the example in the beginning shows.
@@ -258,6 +258,20 @@ A more detailed introduction to the **showtext** package can be found in the
 ## Known Issues
 
 **showtext** does not work well with the RStudio graphics device (RStudioGD).
-Therefore, if you want to display graphs on a window device in RStudio,
-you need to manually open one, e.g., `x11()` on Linux, `windows()` on
-Windows, and `quartz()` on Mac OS.
+There are two main workarounds to use **showtext** in RStudio:
+
+1. Manually open a window device, e.g., `x11()` on Linux, `windows()` on
+   Windows, and `quartz()` on Mac OS. Plots are then displayed in these
+   windows instead of RStudioGD.
+2. Or, at the beginning of the R session, run the following code in RStudio:
+```r
+trace(grDevices::png, exit = quote({
+    showtext::showtext_begin()
+}), print = FALSE)
+```
+   And then call plotting functions as usual. Note that this will enable
+   **showtext** for RStudioGD even if you have not called `showtext_auto()`.
+   To turn off **showtext**, run
+```r
+untrace(grDevices::png)
+```

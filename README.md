@@ -325,7 +325,7 @@ trace(grDevices::png, exit = quote({
 }), print = FALSE)
 ```
    And then call plotting functions as usual. Note that this will enable
-   **showtext** for RStudioGD even if you haven't called ``showtext_auto()``.
+   **showtext** for RStudioGD even if you haven't called `showtext_auto()`.
    To turn off **showtext**, run
 ```r
 untrace(grDevices::png)
