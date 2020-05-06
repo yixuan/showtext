@@ -1,6 +1,16 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.8}{
+  \itemize{
+    \item Fixed a resolution issue for bitmap graphics devices in the \pkg{Cairo} package
+          (\href{https://github.com/yixuan/showtext/issues/33}{#33})
+    \item Updated the list of supported bitmap graphics devices
+    \item Updated the README file to introduce a workaround for the RStudioGD issue
+          (\href{https://github.com/yixuan/showtext/issues/7}{#7})
+  }
+}
+
 \section{Changes in showtext version 0.7-1}{
   \itemize{
     \item Fixed an issue for the MS Gothic font

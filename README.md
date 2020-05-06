@@ -1,14 +1,11 @@
-### What's This Package All About?
+## showtext<img src="https://statr.me/images/sticker-showtext.png" alt="showtext" height="150px" align="right" />
+
+### What's this package all about?
 
 **showtext** makes it easy to use various types of fonts (TrueType, OpenType,
-Type 1, web fonts, etc.) in R graphs. It tries to do the following two things:
-
-- Let R know about these fonts
-- Use these fonts to draw text
-
-The motivation to develop this package is that using non-standard
-fonts in R graphs (especially for PDF device) is not straightforward,
-for example, to create PDF graphs with Chinese characters.
+Type 1, web fonts, etc.) in R plots. The motivation to develop this package
+is that using non-standard fonts in R plots (especially for PDF device)
+is not straightforward, for example, when creating PDF with Chinese characters.
 This is because most of the standard fonts used by `pdf()` do not contain
 Chinese character glyphs, and users could hardly use system fonts in R.
 
@@ -18,7 +15,7 @@ which mainly focuses on using TrueType fonts (`.ttf`) in PDF graphics device.
 Now **showtext** is able to support more font formats and more graphics devices,
 and avoids using external software such as Ghostscript.
 
-### A Quick Example
+### A quick example
 
 ```r
 library(showtext)
@@ -33,7 +30,7 @@ showtext_auto()
 
 ## Tell showtext the resolution of the device,
 ## only needed for bitmap graphics. Default is 96
-## showtext_opts(dpi = 96)
+showtext_opts(dpi = 96)
 
 set.seed(123)
 x = rnorm(10)
@@ -46,7 +43,7 @@ mod = lm(y ~ x)
 ## png("demo.png", 700, 600, res = 96)
 ## If you want to show the graph in a window device,
 ## remember to manually open one in RStudio
-## See the "Known Issues" section
+## See the "Known issues" section
 x11()
 
 op = par(cex.lab = 2, cex.axis = 1.5, cex.main = 2)
@@ -82,7 +79,7 @@ This example should work on most graphics devices, including `pdf()`,
 `png()`, `postscript()`, and on-screen devices such as `windows()` on
 Windows and `x11()` on Linux.
 
-### How **showtext** Works
+### How **showtext** works
 
 Let me first explain a little bit how `pdf()` works.
 
@@ -106,19 +103,19 @@ both graph makers and graph viewers.
 
 More importantly, **showtext** can use system font files, so you can
 show text in the graph with your favourite font face, as long as it
-is supported by FreeType. See section **Loading Fonts** below.
+is supported by FreeType. See section **Loading fonts** below.
 
-### The Usage
+### The usage
 
 To create a graph using a specified font, you simply do the following:
 
-- (\*) Load the font
+- (\*) Load the font to be used by **showtext**
 - Open the graphics device
 - (\*) Claim that you want to use **showtext** to draw the text
 - Plot
 - Close the device
 
-Only the steps marked with (\*) are newly added. If you want to use
+Only the steps marked with (\*) are new. If you want to use
 **showtext** globally, you can call the function `showtext_auto()`
 once, and then all the devices after that will automatically use
 **showtext** to render text, as the example in the beginning shows.
@@ -172,7 +169,7 @@ dev.off()
   <img src="https://i.imgur.com/uZAJafE.png" alt="demo-2" />
 </div>
 
-### Loading Fonts
+### Loading fonts
 
 Loading font is actually done by package **sysfonts**.
 
@@ -187,8 +184,31 @@ Usually the font files are located in some "standard" directories in the system
 (for example on Windows it is typically `C:\Windows\Fonts`).
 You can use `font_paths()` to check the current search path or add a new one,
 and use `font_files()` to list available font files in the search path.
+`font_files()` also lists some other useful information, for example the family
+name that you usually use to specify a font, and the font face for different
+variants. Below is an example to show the results on my machine:
 
-Below is an example to load system fonts on Windows:
+```r
+head(font_files())
+
+##                     path                           file               family
+## 1 ***/.local/share/fonts            Flavors-Regular.ttf              Flavors
+## 2 ***/.local/share/fonts FrederickatheGreat-Regular.ttf Fredericka the Great
+## 3 ***/.local/share/fonts           GandhiSerif-Bold.otf         Gandhi Serif
+## 4 ***/.local/share/fonts     GandhiSerif-BoldItalic.otf         Gandhi Serif
+## 5 ***/.local/share/fonts         GandhiSerif-Italic.otf         Gandhi Serif
+## 6 ***/.local/share/fonts        GandhiSerif-Regular.otf         Gandhi Serif
+##
+##          face       version                    ps_name
+## 1     Regular Version 1.001            Flavors-Regular
+## 2     Regular Version 1.001 FrederickatheGreat-Regular
+## 3        Bold Version 1.001           GandhiSerif-Bold
+## 4 Bold Italic Version 1.001     GandhiSerif-BoldItalic
+## 5      Italic Version 1.001         GandhiSerif-Italic
+## 6     Regular Version 1.001        GandhiSerif-Regular
+```
+
+And the code below demonstrates how to load and use system fonts on Windows:
 
 ```r
 library(showtext)
@@ -253,7 +273,7 @@ text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
   <img src="https://i.imgur.com/pO87LFy.png" alt="example2" />
 </div>
 
-### CJK Fonts
+### CJK fonts
 
 **showtext** includes an open source CJK (Chinese, Japanese, and Korean) font
 [WenQuanYi Micro Hei](http://wenq.org/wqy2/index.cgi?MicroHei%28en%29).
@@ -268,8 +288,8 @@ fonts locally using the following code:
 library(showtext)
 font_install(source_han_serif())
 font_families()
-[1] "sans"                "serif"               "mono"                "wqy-microhei"       
-[5] "source-han-serif-cn"
+## [1] "sans"                "serif"               "mono"                "wqy-microhei"       
+## [5] "source-han-serif-cn"
 ```
 
 See `?font_install` and `?source_han` for more details.
@@ -278,7 +298,7 @@ See `?font_install` and `?source_han` for more details.
   <img src="https://i.imgur.com/oOejBrI.png" alt="source han" />
 </div>
 
-### The Internals of **showtext**
+### The internals of **showtext**
 
 Every graphics device in R implements some functions to draw specific graphical
 elements, e.g., `path()` and `polygon()` to draw polygons, `raster()` to display
@@ -290,9 +310,23 @@ functions to draw the character glyphs.
 This action is done only when you call `showtext_begin()` and won't modify the
 graphics device if you call `showtext_end()` to restore the original device functions back.
 
-### Known Issues
+### Known issues
 
 **showtext** does not work well with the RStudio graphics device (RStudioGD).
-Therefore, if you want to display graphs on a window device in RStudio,
-you need to manually open one, e.g., `x11()` on Linux, `windows()` on
-Windows, and `quartz()` on Mac OS.
+There are two main workarounds to use **showtext** in RStudio:
+
+1. Manually open a window device, e.g., `x11()` on Linux, `windows()` on
+   Windows, and `quartz()` on Mac OS. Plots are then displayed in these
+   windows instead of RStudioGD.
+2. Or, at the beginning of the R session, run the following code in RStudio:
+```r
+trace(grDevices::png, exit = quote({
+    showtext::showtext_begin()
+}), print = FALSE)
+```
+   And then call plotting functions as usual. Note that this will enable
+   **showtext** for RStudioGD even if you haven't called ``showtext_auto()``.
+   To turn off **showtext**, run
+```r
+untrace(grDevices::png)
+```
