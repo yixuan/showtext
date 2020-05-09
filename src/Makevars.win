@@ -10,7 +10,7 @@ deps: sysfonts-dep-win-biarch.tar.gz
 	tar xzf sysfonts-dep-win-biarch.tar.gz
 
 sysfonts-dep-win-biarch.tar.gz:
-	${R_HOME}/bin$(R_ARCH_BIN)/Rscript -e "library(utils);download.file('https://statr.me/files/sysfonts-dep-win-biarch.tar.gz', 'sysfonts-dep-win-biarch.tar.gz', method = 'wininet', mode = 'wb')"
+	${R_HOME}/bin$(R_ARCH_BIN)/Rscript -e "u = 'https://raw.githubusercontent.com/yixuan/sysfonts-dep/master/sysfonts-dep-win-biarch.tar.gz'; utils::download.file(u, basename(u), mode = 'wb')"
 
 clean:
 	$(RM) *.o
