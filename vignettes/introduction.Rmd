@@ -12,6 +12,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+```
+
 ## Introduction
 
 In many cases, using non-standard fonts in R graphs is not an easy task,
