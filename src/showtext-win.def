@@ -5,5 +5,6 @@ EXPORTS
  showtext_null_pointer
  showtext_new_dev_desc
  showtext_free_dev_desc
+ showtext_cairo_device_bitmap
  showtext_begin
  showtext_end
