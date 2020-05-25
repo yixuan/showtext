@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.8-1}{
+  \itemize{
+    \item Fixed a bug that the C function \code{showtext_cairo_device_bitmap()}
+          was not exported on Windows
+          (\href{https://github.com/yixuan/showtext/issues/35}{#35})
+  }
+}
+
 \section{Changes in showtext version 0.8}{
   \itemize{
     \item Fixed a resolution issue for bitmap graphics devices in the \pkg{Cairo} package
