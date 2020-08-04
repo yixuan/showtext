@@ -334,8 +334,8 @@ showtext_auto = function(enable = TRUE)
 {
     enable = as.logical(enable)
     
-    has_hook = length(getHook("before.plot.new")) > 0
-    is_showtext_hook = sapply(getHook("before.plot.new"), identical,
+    has_hook = length(getHook("plot.new")) > 0
+    is_showtext_hook = sapply(getHook("plot.new"), identical,
                               y = showtext::showtext_begin)
     
     has_hook_grid = length(getHook("grid.newpage")) > 0
@@ -348,15 +348,15 @@ showtext_auto = function(enable = TRUE)
     if(enable)
     {
         if(!already_hooked)
-            setHook("before.plot.new", showtext::showtext_begin)
+            setHook("plot.new", showtext::showtext_begin)
         if(!already_hooked_grid)
             setHook("grid.newpage", showtext::showtext_begin)
     } else {
         if(already_hooked)
         {
-            old_hooks = getHook("before.plot.new")
+            old_hooks = getHook("plot.new")
             new_hooks = old_hooks[!is_showtext_hook]
-            setHook("before.plot.new", new_hooks, "replace")
+            setHook("plot.new", new_hooks, "replace")
         }
         if(already_hooked_grid)
         {
