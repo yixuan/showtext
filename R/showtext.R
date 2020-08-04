@@ -242,9 +242,16 @@ showtext_begin = function()
         .pkg.env$.use_raster = FALSE
         .pkg.env$.dev_units_per_point = 1.0
     }
-
-    .Call("showtext_begin", PACKAGE = "showtext")
+    
+    grDevices::recordGraphics(
+      showtext_begin_(), as.list(.pkg.env), getNamespace("showtext")
+    )
+    
     invisible(NULL)
+}
+
+showtext_begin_ <- function() {
+  .Call("showtext_begin", PACKAGE = "showtext")
 }
 
 #' @rdname showtext_begin
