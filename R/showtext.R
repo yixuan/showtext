@@ -367,3 +367,14 @@ showtext.auto = function(enable = TRUE)
     deprecate_message_once("showtext.auto()", "showtext_auto()")
     showtext_auto(enable)
 }
+
+#' @rdname showtext_auto
+#' @export
+is_auto_enabled = function() 
+{
+    any(vapply(
+        getHook("before.plot.new"), 
+        function(x) identical(x, showtext::showtext_begin),
+        logical(1)
+    ))
+}
