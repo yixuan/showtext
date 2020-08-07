@@ -20,7 +20,7 @@ See the \strong{Options Used} section.}
 The two versions of this function are equivalent, but the
 "underscore" naming is preferred.
 
-This function sets parameters that will affect the apprearance of the
+This function sets parameters that will affect the appearance of the
 graphs created with \pkg{showtext}.
 }
 \section{Options Used}{
