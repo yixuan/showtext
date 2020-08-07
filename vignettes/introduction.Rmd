@@ -168,14 +168,14 @@ x11()
 print(p)
 
 ## PNG device
-ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)
+ggsave("load_fonts.png", width = 7, height = 4, dpi = 96)
 
 ## turn off if no longer needed
 showtext_auto(FALSE)
 ```
 
 <div align="center">
-  <img src="https://i.imgur.com/Z3r9sg2.png" alt="example1" />
+  <img src="load_fonts.png" alt="Load fonts" />
 </div>
 
 For other OS, you may not have the `simhei.ttf` font file, but there is no
@@ -239,7 +239,7 @@ font_families()
 See `?font_install` and `?source_han` for more details.
 
 <div align="center">
-  <img src="https://i.imgur.com/oOejBrI.png" alt="source han" />
+  <img src="source_han.png" alt="Source Han fonts" />
 </div>
 
 ## How showtext Works
