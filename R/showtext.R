@@ -7,7 +7,7 @@
 #' @description The two versions of this function are equivalent, but the
 #' "underscore" naming is preferred.
 #' 
-#' This function sets parameters that will affect the appearance of the
+#' This function sets parameters that will affect the apprearance of the
 #' graphs created with \pkg{showtext}.
 #' 
 #' @param \dots Options to be set, expressed in \code{name = value} pairs.
@@ -149,6 +149,11 @@ showtext.opts = function(...)
 #'          to restore the original device functions. See examples
 #'          below for the usage of these functions.
 #'
+#' @param record if `TRUE`, then this function is added to the displaylist
+#'  of the current graphics device (via [grDevices::recordGraphics()]), 
+#'  so that it may be "replayed" at a later time point (via 
+#'  [grDevices::replayPlot()]).
+#' 
 #' @export
 #' 
 #' @author Yixuan Qiu <\url{https://statr.me/}>
@@ -206,7 +211,7 @@ showtext.opts = function(...)
 #' setwd(old)
 #' 
 #' }
-showtext_begin = function()
+showtext_begin = function(record = FALSE)
 {
     if(dev.cur() == 1) stop("no active graphics device")
     current_device = names(dev.cur())
@@ -242,25 +247,29 @@ showtext_begin = function()
         .pkg.env$.use_raster = FALSE
         .pkg.env$.dev_units_per_point = 1.0
     }
-
-    grDevices::recordGraphics(
-        showtext_begin_(), as.list(.pkg.env), getNamespace("showtext")
-    )
-
+    
+    if (record) {
+      grDevices::recordGraphics(
+        showtext_begin_c(), as.list(.pkg.env), getNamespace("showtext")
+      )
+    } else {
+      showtext_begin_c()
+    }
+    
+    
     invisible(NULL)
 }
 
-showtext_begin_ = function()
-{
-    .Call("showtext_begin", PACKAGE = "showtext")
+showtext_begin_c <- function() {
+  .Call("showtext_begin", PACKAGE = "showtext")
 }
 
 #' @rdname showtext_begin
 #' @export
-showtext.begin = function()
+showtext.begin = function(record = FALSE)
 {
     deprecate_message_once("showtext.begin()", "showtext_begin()")
-    showtext_begin()
+    showtext_begin(record)
 }
 
 
@@ -308,6 +317,7 @@ showtext.end = function()
 #' \code{\link{showtext_begin}()} and \code{\link{showtext_end}()}.
 #' 
 #' @param enable \code{TRUE} to turn on and \code{FALSE} to turn off
+#' @inheritParams showtext_begin
 #'
 #' @export
 #' 
@@ -331,40 +341,25 @@ showtext.end = function()
 #' ## Turn off if needed
 #' showtext_auto(FALSE)
 #' }
-showtext_auto = function(enable = TRUE)
+showtext_auto = function(enable = TRUE, record = TRUE)
 {
-    enable = as.logical(enable)
+    showtext_hook = structure(
+      function() showtext_begin(record),
+      class = "showtext_hook"
+    )
     
-    has_hook = length(getHook("plot.new")) > 0
-    is_showtext_hook = sapply(getHook("plot.new"), identical,
-                              y = showtext::showtext_begin)
+    remove_hook = function(name) {
+      hooks = getHook(name)
+      is_showtext_hook = vapply(hooks, inherits, logical(1), "showtext_hook")
+      setHook(name, hooks[!is_showtext_hook], "replace")
+    }
     
-    has_hook_grid = length(getHook("grid.newpage")) > 0
-    is_showtext_hook_grid = sapply(getHook("grid.newpage"), identical,
-                                   y = showtext::showtext_begin)
-
-    already_hooked = has_hook && any(is_showtext_hook)
-    already_hooked_grid = has_hook_grid && any(is_showtext_hook_grid)
+    remove_hook("plot.new")
+    remove_hook("grid.newpage")
     
-    if(enable)
-    {
-        if(!already_hooked)
-            setHook("plot.new", showtext::showtext_begin)
-        if(!already_hooked_grid)
-            setHook("grid.newpage", showtext::showtext_begin)
-    } else {
-        if(already_hooked)
-        {
-            old_hooks = getHook("plot.new")
-            new_hooks = old_hooks[!is_showtext_hook]
-            setHook("plot.new", new_hooks, "replace")
-        }
-        if(already_hooked_grid)
-        {
-            old_hooks = getHook("grid.newpage")
-            new_hooks = old_hooks[!is_showtext_hook_grid]
-            setHook("grid.newpage", new_hooks, "replace")
-        }
+    if (isTRUE(enable)) {
+      setHook("plot.new", showtext_hook, "append")
+      setHook("grid.newpage", showtext_hook, "append")
     }
 }
 
