@@ -7,7 +7,7 @@
 #' @description The two versions of this function are equivalent, but the
 #' "underscore" naming is preferred.
 #' 
-#' This function sets parameters that will affect the apprearance of the
+#' This function sets parameters that will affect the appearance of the
 #' graphs created with \pkg{showtext}.
 #' 
 #' @param \dots Options to be set, expressed in \code{name = value} pairs.
