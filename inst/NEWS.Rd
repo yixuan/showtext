@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9}{
+  \itemize{
+    \item Now supports replaying a recorded plot using \pkg{showtext} fonts,
+          thanks to Carson Sievert
+          (\href{https://github.com/yixuan/showtext/issues/40}{#40})
+  }
+}
+
 \section{Changes in showtext version 0.8-1}{
   \itemize{
     \item Fixed a bug that the C function \code{showtext_cairo_device_bitmap()}
