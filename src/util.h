@@ -21,6 +21,15 @@
 #include <R_ext/GraphicsDevice.h>
 
 
+enum {
+    DEV_DATA_USE_RASTER = 0,
+    DEV_DATA_DEV_UNITS_PER_POINT = 1,
+    DEV_DATA_DD_SAVED = 2
+};
+
+/* Get a variable by name from an environment */
+SEXP get_var_from_env(const char* var_name, SEXP env);
+
 /* Get the .pkg.env variable (an environment) defined in one package */
 /* The sysfonts and showtext packages use this way to store variables */
 SEXP get_pkg_env(const char* pkg_name);
@@ -31,20 +40,11 @@ SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name);
 /* Get .pkg.env$.outline_funs */
 FT_Outline_Funcs* get_ft_outline_funcs();
 
-/* Get pkg.env$.nseg */
+/* Get .pkg.env$.nseg */
 int get_num_segments();
 
-/* Get .pkg.env$.dev_units_per_point */
-double get_dev_units_per_point();
-
-/* Get .pkg.env$.dd_saved */
-pDevDesc get_saved_dev_desc();
-
-/* Get .pkg.env$.device_id */
-pGEDevDesc get_saved_device_id();
-
-/* Get .pkg.env$.use_raster */
-Rboolean use_raster();
+/* Get device data from .pkg.env$.devs */
+SEXP get_device_data(pGEDevDesc gdd);
 
 
 #endif /* UTIL_H_INCLUDED */
