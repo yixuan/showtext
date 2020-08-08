@@ -159,6 +159,13 @@ int outline_cubic_to(const FT_Vector* control1, const FT_Vector* control2,
 
 
 
+/* Finalizer of the external pointer */
+static void outline_funs_finalizer(SEXP ext_ptr)
+{
+    FT_Outline_Funcs* funs = (FT_Outline_Funcs*) R_ExternalPtrAddr(ext_ptr);
+    if(funs) free(funs);
+}
+
 SEXP showtext_new_outline_funs()
 {
     FT_Outline_Funcs* funs = (FT_Outline_Funcs*) calloc(1, sizeof(FT_Outline_Funcs));
@@ -172,15 +179,8 @@ SEXP showtext_new_outline_funs()
     funs->delta = 0;
     
     ext_ptr = PROTECT(R_MakeExternalPtr(funs, R_NilValue, R_NilValue));
+    R_RegisterCFinalizerEx(ext_ptr, outline_funs_finalizer, TRUE);
     UNPROTECT(1);
     
     return ext_ptr;
-}
-
-SEXP showtext_free_outline_funs(SEXP ext_ptr)
-{
-    FT_Outline_Funcs* funs = (FT_Outline_Funcs*) R_ExternalPtrAddr(ext_ptr);
-    if(funs) free(funs);
-    
-    return R_NilValue;
 }

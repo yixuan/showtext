@@ -33,8 +33,11 @@
 }
 
 .onUnload <- function(libpath) {
-    .Call("showtext_free_outline_funs", .pkg.env$.outline_funs, PACKAGE = "showtext")
     .Call("showtext_free_dev_desc", .pkg.env$.dd_saved, PACKAGE = "showtext")
+    ## Free memory of .pkg.env$.outline_funs
+    rm(.outline_funs, envir = .pkg.env)
+    gc()
+
     library.dynam.unload("showtext", libpath)
 }
 
