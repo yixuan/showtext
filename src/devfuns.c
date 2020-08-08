@@ -33,7 +33,7 @@ void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* de
     if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)  c = -c;
 
-    /* c is the unicode of the character */
+    /* c is the Unicode of the character */
     face = get_ft_face(gc, (c < 1024) ? "sans" : "wqy-microhei");
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
     if(err)

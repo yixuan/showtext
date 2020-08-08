@@ -21,6 +21,9 @@
 #include <R_ext/GraphicsDevice.h>
 
 
+/* This enum is used to index the fields of the device data:
+       list(use_raster, dev_units_per_point, dd_saved)
+   The device data are first created in R, and then passed to C. */
 enum {
     DEV_DATA_USE_RASTER = 0,
     DEV_DATA_DEV_UNITS_PER_POINT = 1,
@@ -30,8 +33,8 @@ enum {
 /* Get a variable by name from an environment */
 SEXP get_var_from_env(const char* var_name, SEXP env);
 
-/* Get the .pkg.env variable (an environment) defined in one package */
-/* The sysfonts and showtext packages use this way to store variables */
+/* Get the .pkg.env variable (an environment) defined in one package
+   The sysfonts and showtext packages use this way to store variables */
 SEXP get_pkg_env(const char* pkg_name);
 
 /* Get a variable from .pkg.env */

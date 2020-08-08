@@ -3,6 +3,26 @@
 
 \section{Changes in showtext version 0.9}{
   \itemize{
+    \item Refactored internal code for cleaner organization of device data
+    \item Fixed the bug that device would not be properly restored by \code{showtext_end()}
+          if \code{showtext_begin()} was called more than once
+    \item \pkg{showtext} can now properly handle multiple graphics devices. For example,
+          the following code gives error in previous versions:
+          \preformatted{
+          library(showtext)
+
+          png("~/1.png")
+          showtext_begin()
+          
+          pdf("~/2.pdf")
+          showtext_begin()
+          showtext_end()
+          dev.off()
+          
+          showtext_end()  # gives error in previous version
+          dev.off()}
+          The situation above is not common in using \pkg{showtext}, but this version
+          has fixed this potential bug
     \item Now supports replaying a recorded plot using \pkg{showtext} fonts,
           thanks to Carson Sievert
           (\href{https://github.com/yixuan/showtext/issues/40}{#40})
