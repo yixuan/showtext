@@ -234,18 +234,18 @@ showtext_begin = function()
         current_device %in% devices_using_raster
     }
 
-    if(use_raster)
-    {
-        .pkg.env$.use_raster = TRUE
-        .pkg.env$.dev_units_per_point = as.numeric(.pkg.env$.dpi / 72.0)
-    } else {
-        .pkg.env$.use_raster = FALSE
-        .pkg.env$.dev_units_per_point = 1.0
-    }
+    ## See the explanation in zzz.R
+    dev_units_per_point = if(use_raster) as.numeric(.pkg.env$.dpi / 72.0) else 1.0
 
-    grDevices::recordGraphics(
-        showtext_begin_(), as.list(.pkg.env), getNamespace("showtext")
+    ## Device data that are computed by R. Will be passed to C, get updated, and
+    ## added to the .pkg.env$.devs environment
+    dev_data = list(
+        use_raster = use_raster,
+        dev_units_per_point = dev_units_per_point,
+        dd_saved = NULL
     )
+
+    .Call("showtext_begin", dev_data, PACKAGE = "showtext")
 
     invisible(NULL)
 }
