@@ -13,7 +13,7 @@ static void dev_desc_finalizer(SEXP ext_ptr)
 static void get_device_id(pGEDevDesc gdd, char* id)
 {
     strcpy(id, "dev_");
-    snprintf(id + 4, 20, "%p", gdd);
+    snprintf(id + 4, 20, "%p", (void*) gdd);
 }
 
 /* Add a device to the showtext list by creating an object in the 

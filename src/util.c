@@ -64,7 +64,7 @@ SEXP get_device_data(pGEDevDesc gdd)
     SEXP devs_env, dev_data;
     char dev_id[32];
     strcpy(dev_id, "dev_");
-    snprintf(dev_id + 4, 20, "%p", gdd);
+    snprintf(dev_id + 4, 20, "%p", (void*) gdd);
 
     devs_env = PROTECT(get_var_from_pkg_env(".devs", "showtext"));
     dev_data = PROTECT(get_var_from_env(dev_id, devs_env));
