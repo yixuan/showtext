@@ -5,12 +5,18 @@
 \alias{showtext.auto}
 \title{Automatically Using 'showtext' for New Graphics Devices}
 \usage{
-showtext_auto(enable = TRUE)
+showtext_auto(enable = TRUE, record = FALSE)
 
-showtext.auto(enable = TRUE)
+showtext.auto(enable = TRUE, record = FALSE)
 }
 \arguments{
-\item{enable}{\code{TRUE} to turn on and \code{FALSE} to turn off}
+\item{enable}{\code{TRUE} to turn on and \code{FALSE} to turn off.}
+
+\item{record}{If \code{TRUE}, then \code{\link{showtext_begin}()} is added
+to the display list of the current graphics device
+(via \code{\link[grDevices]{recordGraphics}()}),
+so that it may be "replayed" at a later time point
+(via \code{\link[grDevices]{replayPlot}()}).}
 }
 \description{
 The two versions of this function are equivalent, but the
