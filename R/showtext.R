@@ -225,6 +225,9 @@ showtext_begin_internal = function(record = FALSE)
         # Interactive devices defined in grDevices/R/device.R
         "X11", "X11cairo", "quartz", "windows", "JavaGD", "CairoWin", "CairoX11",
 
+        # RStudio
+        "RStudioGD",
+
         # From ragg package
         "agg_png", "agg_ppm", "agg_tiff", "agg_jpeg"
     )
