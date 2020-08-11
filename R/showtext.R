@@ -351,7 +351,7 @@ showtext.end = function()
 #' ## Turn off if needed
 #' showtext_auto(FALSE)
 #' }
-showtext_auto = function(enable = TRUE, record = FALSE)
+showtext_auto = function(enable = TRUE, record = TRUE)
 {
     showtext_hook = structure(
         function() showtext_begin_internal(record),
@@ -375,7 +375,7 @@ showtext_auto = function(enable = TRUE, record = FALSE)
 
 #' @rdname showtext_auto
 #' @export
-showtext.auto = function(enable = TRUE, record = FALSE)
+showtext.auto = function(enable = TRUE, record = TRUE)
 {
     deprecate_message_once("showtext.auto()", "showtext_auto()")
     showtext_auto(enable, record)
