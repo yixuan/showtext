@@ -6,6 +6,7 @@ output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
+    toc: true
 vignette: >
   %\VignetteIndexEntry{showtext: Using Fonts More Easily in R Graphs}
   %\VignetteEngine{knitr::rmarkdown}
@@ -52,8 +53,6 @@ font_add_google("Schoolbell", "bell")
 showtext_auto()
 
 set.seed(123)
-## Manually open a graphics device if you run this code in RStudio
-## x11()
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
      main = "", xlab = "", ylab = "")
 title("Histogram of Normal Random Numbers", family = "bell", cex.main = 2)
@@ -96,8 +95,6 @@ library(showtext)
 font_add_google("Schoolbell", "bell")
 
 set.seed(123)
-## Manually open a graphics device if you run this code in RStudio
-## x11()
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
      main = "Histogram of Normal Random Numbers", xlab = "", ylab = "Frequency")
 
@@ -188,7 +185,7 @@ the Google Fonts project ([https://fonts.google.com/](https://fonts.google.com/)
 **sysfonts** provides an interface to automatically download and register those fonts
 through the function `font_add_google()`, as the example below shows.
 
-## Working with Rmarkdown
+## Working with R Markdown
 
 **showtext** can work with Rmarkdown/knitr nicely if you take care of the following
 two points:
@@ -259,23 +256,8 @@ The idea above can be better explained by the diagram below.
 A more detailed introduction to the **showtext** package can be found in the
 [R Journal article](https://journal.r-project.org/archive/2015-1/qiu.pdf).
 
-## Known Issues
+## Compatibility with RStudio
 
-**showtext** does not work well with the RStudio graphics device (RStudioGD).
-There are two main workarounds to use **showtext** in RStudio:
-
-1. Manually open a window device, e.g., `x11()` on Linux, `windows()` on
-   Windows, and `quartz()` on Mac OS. Plots are then displayed in these
-   windows instead of RStudioGD.
-2. Or, at the beginning of the R session, run the following code in RStudio:
-```r
-trace(grDevices::png, exit = quote({
-    showtext::showtext_begin()
-}), print = FALSE)
-```
-   And then call plotting functions as usual. Note that this will enable
-   **showtext** for RStudioGD even if you have not called `showtext_auto()`.
-   To turn off **showtext**, run
-```r
-untrace(grDevices::png)
-```
+Starting from version 0.9, **showtext** can work well with the RStudio graphics
+device (RStudioGD). Simply call `showtext_auto()` in the RStudio session and then
+the plots will be displayed correctly.

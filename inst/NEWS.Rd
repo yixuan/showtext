@@ -23,9 +23,14 @@
           dev.off()}
           The situation above is not common in using \pkg{showtext}, but this version
           has fixed this potential bug
-    \item Now supports replaying a recorded plot using \pkg{showtext} fonts,
-          thanks to Carson Sievert
-          (\href{https://github.com/yixuan/showtext/issues/40}{#40})
+    \item \pkg{showtext} now supports replaying a recorded plot via \code{recordPlot()}
+          and \code{replayPlot()}, thanks to Carson Sievert
+          (\href{https://github.com/yixuan/showtext/pull/40}{#40},
+          \href{https://github.com/yixuan/showtext/pull/42}{#42})
+    \item As a consequence of the previous point, \pkg{showtext} now works well with
+          the RStudio graphics device
+          (\href{https://github.com/yixuan/showtext/issues/7}{#7},
+          \href{https://github.com/yixuan/showtext/issues/31}{#31})
   }
 }
 

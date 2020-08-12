@@ -38,14 +38,6 @@ y = 1 + x + rnorm(10, sd = 0.2)
 y[1] = 5
 mod = lm(y ~ x)
 
-## Plotting functions as usual
-## Open a graphics device if you want, e.g.
-## png("demo.png", 700, 600, res = 96)
-## If you want to show the graph in a window device,
-## remember to manually open one in RStudio
-## See the "Known issues" section
-x11()
-
 op = par(cex.lab = 2, cex.axis = 1.5, cex.main = 2)
 plot(x, y, pch = 16, col = "steelblue",
      xlab = "X variable", ylab = "Y variable", family = "gochi")
@@ -225,9 +217,10 @@ p = ggplot(NULL, aes(x = 1, y = 1)) + ylim(0.8, 1.2) +
     annotate("text", 1, 0.9, label = 'Chinese for "Hello, world!"',
              family = "constan", fontface = "italic", size = 12)
 
-showtext_auto()  ## automatically use showtext for new devices
+## Automatically use showtext for new devices
+showtext_auto()
 
-## on-screen device
+## On-screen device
 x11()
 print(p)
 dev.off()
@@ -240,7 +233,7 @@ dev.off()
 ## PNG device
 ggsave("showtext-example-4.png", width = 7, height = 4, dpi = 96)
 
-## turn off if no longer needed
+## Turn off if no longer needed
 showtext_auto(FALSE)
 ```
 
@@ -264,7 +257,6 @@ font_add_google("Lobster", "lobster")
 
 showtext_auto()
 
-x11()
 plot(1, pch = 16, cex = 3)
 text(1, 1.1, "A fancy dot", family = "lobster", col = "steelblue", cex = 3)
 ```
@@ -310,23 +302,8 @@ functions to draw the character glyphs.
 This action is done only when you call `showtext_begin()` and won't modify the
 graphics device if you call `showtext_end()` to restore the original device functions back.
 
-### Known issues
+### Compatibility with RStudio
 
-**showtext** does not work well with the RStudio graphics device (RStudioGD).
-There are two main workarounds to use **showtext** in RStudio:
-
-1. Manually open a window device, e.g., `x11()` on Linux, `windows()` on
-   Windows, and `quartz()` on Mac OS. Plots are then displayed in these
-   windows instead of RStudioGD.
-2. Or, at the beginning of the R session, run the following code in RStudio:
-```r
-trace(grDevices::png, exit = quote({
-    showtext::showtext_begin()
-}), print = FALSE)
-```
-   And then call plotting functions as usual. Note that this will enable
-   **showtext** for RStudioGD even if you haven't called `showtext_auto()`.
-   To turn off **showtext**, run
-```r
-untrace(grDevices::png)
-```
+Starting from version 0.9, **showtext** can work well with the RStudio graphics
+device (RStudioGD). Simply call `showtext_auto()` in the RStudio session and then
+the plots will be displayed correctly.
