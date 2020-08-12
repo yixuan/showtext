@@ -8,14 +8,6 @@ static void dev_desc_finalizer(SEXP ext_ptr)
     if(dd_saved) free(dd_saved);
 }
 
-/* Generate an ID for the given device.
-   id is assumed to be pre-allocated with 32 bytes. */
-static void get_device_id(pGEDevDesc gdd, char* id)
-{
-    strcpy(id, "dev_");
-    snprintf(id + 4, 20, "%p", (void*) gdd);
-}
-
 /* Add a device to the showtext list by creating an object in the 
    showtext:::.pkg.env$.devs environment. The object name is the ID
    of the device, and the content is a list:
@@ -60,13 +52,13 @@ SEXP showtext_begin(SEXP dev_data)
     /* gdd serves as the identifier of a graphics device. We need an ID
        for each device since showtext_begin() and showtext_end() must
        work on the same graphics device.
-    
+
        When calling showtext_begin(), we save an object to the package database
        (showtext:::.pkg.env$.devs), with a variable name generated from gdd.
        In the call of showtext_end(), we then remove this object from the database. */
     pGEDevDesc gdd;
     /* gdd is a pointer, and we convert it into a string that is used as an ID. */
-    char dev_id[32];
+    char dev_id[60];
     /* The device structure containing all the plotting functions.
        Before turning on showtext we save the original structure to dd_save. */
     pDevDesc dd, dd_save;
@@ -81,11 +73,11 @@ SEXP showtext_begin(SEXP dev_data)
     /* Get the current device and generate an ID. */
     gdd = GEgetDevice(curr_dev);
     get_device_id(gdd, dev_id);
-    
+
     /* Check whether the device already has showtext turned on. */
     if(device_exists(dev_id))
         return R_NilValue;
-    
+
     /* Save the current dd */
     dd = gdd->dev;
     dd_save = (pDevDesc) calloc(1, sizeof(DevDesc));
@@ -94,7 +86,7 @@ SEXP showtext_begin(SEXP dev_data)
     R_RegisterCFinalizerEx(ext_ptr, dev_desc_finalizer, TRUE);
     SET_VECTOR_ELT(dev_data, DEV_DATA_DD_SAVED, ext_ptr);
     UNPROTECT(1);  /* ext_ptr */
-    
+
     /* Save device data to showtext:::.pkg.env$.devs.
        Use dev_id as the variable name. */
     add_device(dev_id, dev_data);
@@ -125,10 +117,10 @@ SEXP showtext_end()
     char dev_id[32];
     pDevDesc dd, dd_saved;
     SEXP ext_ptr, dev_data;
-    
+
     if(curr_dev == 0)
         Rf_error("no active graphics device");
-        
+
     gdd = GEgetDevice(curr_dev);
     get_device_id(gdd, dev_id);
     if(!device_exists(dev_id))
@@ -137,10 +129,10 @@ SEXP showtext_end()
     dev_data = PROTECT(get_device_data(gdd));
     ext_ptr = VECTOR_ELT(dev_data, DEV_DATA_DD_SAVED);
     dd_saved = (pDevDesc) R_ExternalPtrAddr(ext_ptr);
-    
+
     /* Restore dd */
     dd = gdd->dev;
-    
+
     dd->canHAdj        = dd_saved->canHAdj;
     dd->metricInfo     = dd_saved->metricInfo;
     dd->hasTextUTF8    = dd_saved->hasTextUTF8;
@@ -149,7 +141,7 @@ SEXP showtext_end()
     dd->strWidth       = dd_saved->strWidth;
     dd->strWidthUTF8   = dd_saved->strWidthUTF8;
     dd->wantSymbolUTF8 = dd_saved->wantSymbolUTF8;
-    
+
     /* Remove device data from showtext:::.pkg.env$.devs */
     UNPROTECT(1); /* dev_data */
     remove_device(dev_id);

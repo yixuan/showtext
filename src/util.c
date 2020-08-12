@@ -14,7 +14,7 @@ SEXP get_var_from_env(const char* var_name, SEXP env)
         PROTECT(var);
     }
     UNPROTECT(1);
-    
+
     return var;
 }
 
@@ -32,7 +32,7 @@ SEXP get_pkg_env(const char* pkg_name)
 SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name)
 {
     SEXP pkg_env, var;
-    
+
     pkg_env = PROTECT(get_pkg_env(pkg_name));
     var = PROTECT(get_var_from_env(var_name, pkg_env));
     UNPROTECT(2);
@@ -59,12 +59,25 @@ int get_num_segments()
     return res;
 }
 
+void get_device_id(pGEDevDesc gdd, char* id)
+{
+    /* Theoretically we can just use the pointer address of gdd as the ID,
+       but sometimes the address will be reused after the current device
+       is closed and destroyed. To reduce the possibility of duplication,
+       we also add addresses of some fields of gdd. */
+    strcpy(id, "dev_");
+    snprintf(id + 4, 16, "%p", (void*) gdd);
+    id[20] = '_';
+    snprintf(id + 21, 16, "%p", (void*) gdd->dev);
+    id[37] = '_';
+    snprintf(id + 38, 20, "%p", (void*) gdd->gesd);
+}
+
 SEXP get_device_data(pGEDevDesc gdd)
 {
     SEXP devs_env, dev_data;
-    char dev_id[32];
-    strcpy(dev_id, "dev_");
-    snprintf(dev_id + 4, 20, "%p", (void*) gdd);
+    char dev_id[60];
+    get_device_id(gdd, dev_id);
 
     devs_env = PROTECT(get_var_from_pkg_env(".devs", "showtext"));
     dev_data = PROTECT(get_var_from_env(dev_id, devs_env));

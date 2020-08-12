@@ -46,6 +46,10 @@ FT_Outline_Funcs* get_ft_outline_funcs();
 /* Get .pkg.env$.nseg */
 int get_num_segments();
 
+/* Generate an ID for the given device
+   id is assumed to be pre-allocated with 60 bytes. */
+void get_device_id(pGEDevDesc gdd, char* id);
+
 /* Get device data from .pkg.env$.devs */
 SEXP get_device_data(pGEDevDesc gdd);
 
