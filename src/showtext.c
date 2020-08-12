@@ -58,7 +58,7 @@ SEXP showtext_begin(SEXP dev_data)
        In the call of showtext_end(), we then remove this object from the database. */
     pGEDevDesc gdd;
     /* gdd is a pointer, and we convert it into a string that is used as an ID. */
-    char dev_id[60];
+    char dev_id[50];
     /* The device structure containing all the plotting functions.
        Before turning on showtext we save the original structure to dd_save. */
     pDevDesc dd, dd_save;
@@ -114,7 +114,7 @@ SEXP showtext_end()
 {
     int curr_dev = curDevice();
     pGEDevDesc gdd;
-    char dev_id[32];
+    char dev_id[50];
     pDevDesc dd, dd_saved;
     SEXP ext_ptr, dev_data;
 

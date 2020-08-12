@@ -65,18 +65,19 @@ void get_device_id(pGEDevDesc gdd, char* id)
        but sometimes the address will be reused after the current device
        is closed and destroyed. To reduce the possibility of duplication,
        we also add addresses of some fields of gdd. */
+    char pointer_str[20];
     strcpy(id, "dev_");
-    snprintf(id + 4, 16, "%p", (void*) gdd);
-    id[20] = '_';
-    snprintf(id + 21, 16, "%p", (void*) gdd->dev);
-    id[37] = '_';
-    snprintf(id + 38, 20, "%p", (void*) gdd->gesd);
+    snprintf(pointer_str, 20, "%p", (void*) gdd);
+    strncat(id, pointer_str, 20);
+    strncat(id, "_", 2);
+    snprintf(pointer_str, 20, "%p", (void*) gdd->dev);
+    strncat(id, pointer_str, 20);
 }
 
 SEXP get_device_data(pGEDevDesc gdd)
 {
     SEXP devs_env, dev_data;
-    char dev_id[60];
+    char dev_id[50];
     get_device_id(gdd, dev_id);
 
     devs_env = PROTECT(get_var_from_pkg_env(".devs", "showtext"));
