@@ -213,6 +213,13 @@ showtext_begin = function()
 
 showtext_begin_internal = function(record = FALSE)
 {
+    if(isTRUE(record)) {
+        grDevices::recordGraphics(
+            showtext_begin_internal(FALSE), list(), getNamespace("showtext")
+        )
+        return(invisible(NULL))
+    }
+
     if(dev.cur() == 1) stop("no active graphics device")
     current_device = names(dev.cur())
 
@@ -252,15 +259,7 @@ showtext_begin_internal = function(record = FALSE)
         dev_units_per_point = dev_units_per_point,
         dd_saved = NULL
     )
-
-    if(record) {
-        grDevices::recordGraphics(
-            showtext_begin_c(dev_data), list(dev_data = dev_data),
-            getNamespace("showtext")
-        )
-    } else {
-        showtext_begin_c(dev_data)
-    }
+    showtext_begin_c(dev_data)
 
     invisible(NULL)
 }
