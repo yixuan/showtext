@@ -326,7 +326,7 @@ showtext.end = function()
 #'               to the display list of the current graphics device
 #'               (via \code{\link[grDevices]{recordGraphics}()}),
 #'               so that it may be "replayed" at a later time point
-#'               (via \code{\link[grDevices]{replayPlot}()}).
+#'               (via \code{\link[grDevices:recordPlot]{replayPlot}()}).
 #' 
 #' @export
 #' 
