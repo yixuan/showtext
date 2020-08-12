@@ -37,7 +37,7 @@
 
 .onUnload <- function(libpath) {
     ## Free memory of .pkg.env$.outline_funs
-    rm(.outline_funs, envir = .pkg.env)
+    rm(list = ".outline_funs", envir = .pkg.env)
     ## Free memory of objects in .pkg.env$.devs
     rm(list = ls(.pkg.env$.devs), envir = .pkg.env$.devs)
     gc()
