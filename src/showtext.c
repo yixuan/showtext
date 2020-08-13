@@ -20,15 +20,6 @@ static void add_device(const char* dev_id, SEXP dev_data)
     UNPROTECT(1);  /* devs_env */
 }
 
-/* Remove a device from the showtext list. */
-static void remove_device(const char* dev_id)
-{
-    /* showtext:::.pkg.env$.devs */
-    SEXP devs_env = PROTECT(get_var_from_pkg_env(".devs", "showtext"));
-    R_removeVarFromFrame(Rf_install(dev_id), devs_env);
-    UNPROTECT(1);  /* devs_env */
-}
-
 /* Check whether a device has already been added. */
 static Rboolean device_exists(const char* dev_id)
 {
@@ -110,6 +101,8 @@ SEXP showtext_begin(SEXP dev_data)
     return R_NilValue;
 }
 
+/* Restore device data and return the ID of the device.
+   We will remove the device from showtext:::.pkg.env$.devs in R. */
 SEXP showtext_end()
 {
     int curr_dev = curDevice();
@@ -142,9 +135,7 @@ SEXP showtext_end()
     dd->strWidthUTF8   = dd_saved->strWidthUTF8;
     dd->wantSymbolUTF8 = dd_saved->wantSymbolUTF8;
 
-    /* Remove device data from showtext:::.pkg.env$.devs */
     UNPROTECT(1); /* dev_data */
-    remove_device(dev_id);
 
-    return R_NilValue;
+    return Rf_mkString(dev_id);
 }

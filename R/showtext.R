@@ -298,7 +298,9 @@ showtext_end = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
     
-    .Call("showtext_end", PACKAGE = "showtext")
+    dev_id = .Call("showtext_end", PACKAGE = "showtext")
+    rm(list = dev_id, envir = .pkg.env$.devs)
+    gc()
     invisible(NULL)
 }
 
