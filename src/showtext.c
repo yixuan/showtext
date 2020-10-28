@@ -45,7 +45,7 @@ SEXP showtext_begin(SEXP dev_data)
        work on the same graphics device.
 
        When calling showtext_begin(), we save an object to the package database
-       (showtext:::.pkg.env$.devs), with a variable name generated from gdd.
+       (showtext:::.pkg.env$.devs), with the gdd ID as the variable name.
        In the call of showtext_end(), we then remove this object from the database. */
     pGEDevDesc gdd;
     /* gdd is a pointer, and we convert it into a string that is used as an ID. */
@@ -63,14 +63,16 @@ SEXP showtext_begin(SEXP dev_data)
 
     /* Get the current device and generate an ID. */
     gdd = GEgetDevice(curr_dev);
+    dd = gdd->dev;
     get_device_id(gdd, dev_id);
 
-    /* Check whether the device already has showtext turned on. */
-    if(device_exists(dev_id))
+    /* Check whether the device already has showtext turned on.
+       Every showtext-enabled device has a field (dd->reserved) overwritten by
+       the string "showtext". */
+    if(strcmp(dd->reserved, "showtext") == 0)
         return R_NilValue;
 
     /* Save the current dd */
-    dd = gdd->dev;
     dd_save = (pDevDesc) calloc(1, sizeof(DevDesc));
     *dd_save = *dd;
     ext_ptr = PROTECT(R_MakeExternalPtr(dd_save, R_NilValue, R_NilValue));
@@ -97,6 +99,9 @@ SEXP showtext_begin(SEXP dev_data)
     dd->strWidth = showtext_str_width_utf8;
     dd->strWidthUTF8 = showtext_str_width_utf8;
     dd->wantSymbolUTF8 = TRUE;
+    /* Overwrite the `reserved` field to indicate that this device has been
+       modified by showtext. */
+    strcpy(dd->reserved, "showtext");
 
     return R_NilValue;
 }
@@ -115,8 +120,9 @@ SEXP showtext_end()
         Rf_error("no active graphics device");
 
     gdd = GEgetDevice(curr_dev);
+    dd = gdd->dev;
     get_device_id(gdd, dev_id);
-    if(!device_exists(dev_id))
+    if(!device_exists(dev_id) || strcmp(dd->reserved, "showtext") != 0)
         Rf_error("current device did not turn on showtext");
 
     dev_data = PROTECT(get_device_data(gdd));
@@ -124,8 +130,6 @@ SEXP showtext_end()
     dd_saved = (pDevDesc) R_ExternalPtrAddr(ext_ptr);
 
     /* Restore dd */
-    dd = gdd->dev;
-
     dd->canHAdj        = dd_saved->canHAdj;
     dd->metricInfo     = dd_saved->metricInfo;
     dd->hasTextUTF8    = dd_saved->hasTextUTF8;
@@ -134,6 +138,7 @@ SEXP showtext_end()
     dd->strWidth       = dd_saved->strWidth;
     dd->strWidthUTF8   = dd_saved->strWidthUTF8;
     dd->wantSymbolUTF8 = dd_saved->wantSymbolUTF8;
+    memset(dd->reserved, 0, 8);
 
     UNPROTECT(1); /* dev_data */
 

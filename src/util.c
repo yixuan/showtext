@@ -61,16 +61,10 @@ int get_num_segments()
 
 void get_device_id(pGEDevDesc gdd, char* id)
 {
-    /* Theoretically we can just use the pointer address of gdd as the ID,
-       but sometimes the address will be reused after the current device
-       is closed and destroyed. To reduce the possibility of duplication,
-       we also add addresses of some fields of gdd. */
+    /* We take the pointer address of gdd as the ID */
     char pointer_str[20];
     strcpy(id, "dev_");
     snprintf(pointer_str, 20, "%p", (void*) gdd);
-    strncat(id, pointer_str, 20);
-    strncat(id, "_", 2);
-    snprintf(pointer_str, 20, "%p", (void*) gdd->dev);
     strncat(id, pointer_str, 20);
 }
 
