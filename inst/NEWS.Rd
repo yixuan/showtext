@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-1}{
+  \itemize{
+    \item Fixed a bug that introduced random font rendering failures,
+          reported by Carson Sievert
+          (\href{https://github.com/yixuan/showtext/issues/43}{#43})
+  }
+}
+
 \section{Changes in showtext version 0.9}{
   \itemize{
     \item Refactored internal code for cleaner organization of device data
