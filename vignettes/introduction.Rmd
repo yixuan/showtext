@@ -39,11 +39,6 @@ various types of fonts (TrueType, OpenType, Type 1, web fonts, etc.) in R graphs
 
 Below is a quick example to show the functionality of the **showtext** package.
 
-**NOTE:** Currently **showtext** does not work with the built-in graphics
-device of RStudio, hence to try the code below, it is suggested to run the code
-in original R console, or use other graphics devices such as `x11()` and
-`windows()`.
-
 ```{r message = FALSE, fig.align='center', fig.showtext=TRUE}
 library(showtext)
 ## Loading Google fonts (https://fonts.google.com/)
@@ -259,6 +254,6 @@ A more detailed introduction to the **showtext** package can be found in the
 
 ## Compatibility with RStudio
 
-Starting from version 0.9, **showtext** can work well with the RStudio graphics
-device (RStudioGD). Simply call `showtext_auto()` in the RStudio session and then
-the plots will be displayed correctly.
+Previously **showtext** did not work well with the RStudio graphics device (RStudioGD),
+but starting from version 0.9, this issue has been fixed. Simply call `showtext_auto()`
+in the RStudio session and then the plots will be displayed correctly.
