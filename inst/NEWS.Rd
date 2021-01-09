@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-2}{
+  \itemize{
+    \item Test the availability of Cairo-based devices before setting \code{type = "cairo"}
+          in the vignette, thanks to Prof. Brian Ripley
+  }
+}
+
 \section{Changes in showtext version 0.9-1}{
   \itemize{
     \item Fixed a bug that introduced random font rendering failures,
