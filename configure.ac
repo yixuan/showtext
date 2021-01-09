@@ -1,4 +1,4 @@
-AC_INIT(SHOWTEXT, 0.3, yixuan.qiu@cos.name)
+AC_INIT(SHOWTEXT, 0.9, yixuan.qiu@cos.name)
 
 # Find R_HOME and set CC/CFLAGS/CPPFLAGS
 : ${R_HOME=`R RHOME`}
@@ -14,7 +14,7 @@ CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_PROG_CC
 
 # Checks for pkg-config
-AC_PATH_PROG([PKGCONF], [pkg-config], [], [$PATH:/usr/local/bin:ext/bin:ext:/sw/bin:/opt/bin])
+AC_PATH_PROG([PKGCONF], [pkg-config], [], [$PATH:/usr/bin:/usr/local/bin:/opt/bin])
 
 # If pkg-config is available, use it to find needed libraries
 if test -n "${PKGCONF}"; then
@@ -97,7 +97,7 @@ fi
 ## Check freetype
 if test -z "${FT_LIBS}"; then
     AC_CHECK_PROG([HAVE_FREETYPE_CONFIG], [freetype-config], [yes], [no])
-    if test "x$HAVE_FREETYPE_CONFIG" == "xyes"; then
+    if test [ "x$HAVE_FREETYPE_CONFIG" = "xyes" ]; then
         FT_CPPFLAGS="`freetype-config --cflags`"
         FT_LIBS="`freetype-config --libs`"
     else
