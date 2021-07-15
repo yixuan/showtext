@@ -191,7 +191,7 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
                          data.outline_y->data,
                          data.num_poly,
                          data.points_in_poly->data,
-                         FALSE,
+                         TRUE,
                          &gc_modify, dd);
             } else if(dd->polygon) {
                 dd->polygon(data.outline_x->len,
