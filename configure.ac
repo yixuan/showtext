@@ -14,7 +14,7 @@ CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 AC_PROG_CC
 
 # Checks for pkg-config
-AC_PATH_PROG([PKGCONF], [pkg-config], [], [$PATH:/usr/bin:/usr/local/bin:/opt/bin])
+AC_PATH_PROG([PKGCONF], [pkg-config], [], [$PATH:/usr/bin:/usr/local/bin:/opt/bin:/opt/homebrew/bin])
 
 # If pkg-config is available, use it to find needed libraries
 if test -n "${PKGCONF}"; then

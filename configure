@@ -2592,7 +2592,7 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-as_dummy="$PATH:/usr/bin:/usr/local/bin:/opt/bin"
+as_dummy="$PATH:/usr/bin:/usr/local/bin:/opt/bin:/opt/homebrew/bin"
 for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
