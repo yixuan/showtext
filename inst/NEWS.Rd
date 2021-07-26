@@ -1,6 +1,15 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-3}{
+  \itemize{
+    \item Added a new search path in the configure script
+          (\href{https://github.com/yixuan/sysfonts/issues/17}{sysfonts#17}).
+    \item Fixed a font rendering bug
+          (\href{https://github.com/yixuan/showtext/issues/52}{#52}).
+  }
+}
+
 \section{Changes in showtext version 0.9-2}{
   \itemize{
     \item Test the availability of Cairo-based devices before setting \code{type = "cairo"}
