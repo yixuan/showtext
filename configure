@@ -2854,6 +2854,76 @@ fi
     fi
 fi
 
+# Additional check for linking
+CPPFLAGS="$CPPFLAGS ${FT_CPPFLAGS}"
+LIBS0="$LIBS"
+LIBS="$LIBS0 ${FT_LIBS}"
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether freetype2 flags work" >&5
+$as_echo_n "checking whether freetype2 flags work... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char FT_Init_FreeType ();
+int
+main ()
+{
+return FT_Init_FreeType ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether --static helps" >&5
+$as_echo_n "checking whether --static helps... " >&6; }
+    FT_LIBS=`"${PKGCONF}" --libs --static freetype2`
+    LIBS="$LIBS0 ${FT_LIBS}"
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char FT_Init_FreeType ();
+int
+main ()
+{
+return FT_Init_FreeType ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+        as_fn_error $? "Cannot get FreeType to work, check config.log for details." "$LINENO" 5
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
 SHOWTEXT_CPPFLAGS="${FT_CPPFLAGS} ${LIBPNG_CPPFLAGS} ${ZLIB_CPPFLAGS}"
 SHOWTEXT_LIBS="${FT_LIBS} ${LIBPNG_LIBS} ${ZLIB_LIBS}"
 

@@ -120,6 +120,22 @@ if test -z "${FT_LIBS}"; then
     fi
 fi
 
+# Additional check for linking
+CPPFLAGS="$CPPFLAGS ${FT_CPPFLAGS}"
+LIBS0="$LIBS"
+LIBS="$LIBS0 ${FT_LIBS}"
+AC_MSG_CHECKING([whether freetype2 flags work])
+AC_LINK_IFELSE([AC_LANG_CALL([], [FT_Init_FreeType])], AC_MSG_RESULT([yes]), [
+    AC_MSG_RESULT([no])
+    AC_MSG_CHECKING([whether --static helps])
+    FT_LIBS=`"${PKGCONF}" --libs --static freetype2`
+    LIBS="$LIBS0 ${FT_LIBS}"
+    AC_LINK_IFELSE([AC_LANG_CALL([], [FT_Init_FreeType])], AC_MSG_RESULT([yes]), [
+        AC_MSG_RESULT([no])
+        AC_MSG_ERROR([Cannot get FreeType to work, check config.log for details.])
+    ])
+])
+
 SHOWTEXT_CPPFLAGS="${FT_CPPFLAGS} ${LIBPNG_CPPFLAGS} ${ZLIB_CPPFLAGS}"
 SHOWTEXT_LIBS="${FT_LIBS} ${LIBPNG_LIBS} ${ZLIB_LIBS}"
 
