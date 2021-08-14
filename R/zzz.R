@@ -1,10 +1,10 @@
 .onLoad <- function(libname, pkgname) {
-    library.dynam("showtext", pkgname, libname)
+    # library.dynam("showtext", pkgname, libname)
     showtextdb::load_showtext_fonts()
     
     ## C structure stored in package environment. C function can access these
     ## data by looking up variable ".outline_funs" in the package environment.
-    .pkg.env$.outline_funs = .Call("showtext_new_outline_funs", PACKAGE = "showtext")
+    .pkg.env$.outline_funs = .Call(showtext_new_outline_funs)
     
     ## Similar to above. The data can be set by R and accessed by C easily.
     .pkg.env$.nseg = 10L

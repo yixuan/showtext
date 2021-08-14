@@ -244,7 +244,7 @@ showtext_begin_internal = function(record = FALSE)
     ## internal structures to see whether a specific device is bitmap-based
     ## or vector-based. Right now we only test devices in the Cairo package
     use_raster = if(current_device == "Cairo") {
-        .Call("showtext_cairo_device_bitmap", PACKAGE = "showtext")
+        .Call(showtext_cairo_device_bitmap)
     } else {
         current_device %in% devices_using_raster
     }
@@ -259,14 +259,10 @@ showtext_begin_internal = function(record = FALSE)
         dev_units_per_point = dev_units_per_point,
         dd_saved = NULL
     )
-    showtext_begin_c(dev_data)
+    # Call C code
+    .Call(showtext_begin_c, dev_data)
 
     invisible(NULL)
-}
-
-showtext_begin_c = function(dev_data)
-{
-    .Call("showtext_begin", dev_data, PACKAGE = "showtext")
 }
 
 #' @rdname showtext_begin
@@ -298,7 +294,7 @@ showtext_end = function()
 {
     if(dev.cur() == 1) stop("no active graphics device")
     
-    dev_id = .Call("showtext_end", PACKAGE = "showtext")
+    dev_id = .Call(showtext_end_c)
     rm(list = dev_id, envir = .pkg.env$.devs)
     gc()
     invisible(NULL)
