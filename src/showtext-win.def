@@ -4,3 +4,4 @@ EXPORTS
  showtext_cairo_device_bitmap
  showtext_begin
  showtext_end
+ R_init_showtext
