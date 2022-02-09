@@ -1,0 +1,2 @@
+PKG_CPPFLAGS = -I$(R_TOOLS_SOFT)/include/freetype2
+PKG_LIBS = -lfreetype -lharfbuzz -lfreetype -lpng -lz -lbz2

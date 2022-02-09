@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-5}{
+  \itemize{
+    \item Supported UCRT on Windows, thanks to Tomas Kalibera and Uwe Ligges.
+  }
+}
+
 \section{Changes in showtext version 0.9-4}{
   \itemize{
     \item Fixed the configure script, thanks to Prof. Brian Ripley.
