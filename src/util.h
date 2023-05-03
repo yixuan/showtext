@@ -41,10 +41,10 @@ SEXP get_pkg_env(const char* pkg_name);
 SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name);
 
 /* Get .pkg.env$.outline_funs */
-FT_Outline_Funcs* get_ft_outline_funcs();
+FT_Outline_Funcs* get_ft_outline_funcs(void);
 
 /* Get .pkg.env$.nseg */
-int get_num_segments();
+int get_num_segments(void);
 
 /* Generate an ID for the given device
    id is assumed to be pre-allocated with 50 bytes. */

@@ -83,6 +83,6 @@ typedef struct {
  * Returns TRUE if the current Cairo device is bitmap-based
  * (e.g. png, screen window, etc.)
  */
-SEXP showtext_cairo_device_bitmap();
+SEXP showtext_cairo_device_bitmap(void);
 
 #endif /* CAIRODEV_H_INCLUDED */

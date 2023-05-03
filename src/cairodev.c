@@ -8,7 +8,7 @@
  * or from the cairoDevice package, but we only test the devices in the
  * Cairo package
  */
-SEXP showtext_cairo_device_bitmap()
+SEXP showtext_cairo_device_bitmap(void)
 {
     /* curr_dev is an integer assigned to the current graphics device.
      If curr_dev == 0 (in R it is 1), then there is no active device, since the null

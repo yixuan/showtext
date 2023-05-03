@@ -108,7 +108,7 @@ SEXP showtext_begin(SEXP dev_data)
 
 /* Restore device data and return the ID of the device.
    We will remove the device from showtext:::.pkg.env$.devs in R. */
-SEXP showtext_end()
+SEXP showtext_end(void)
 {
     int curr_dev = curDevice();
     pGEDevDesc gdd;

@@ -5,7 +5,7 @@
 #include "cairodev.h"
 
 SEXP showtext_begin(SEXP dev_data);
-SEXP showtext_end();
+SEXP showtext_end(void);
 
 static R_CallMethodDef call_methods[] = {
     {"showtext_new_outline_funs",    (DL_FUNC) &showtext_new_outline_funs,    0},

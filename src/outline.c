@@ -166,7 +166,7 @@ static void outline_funs_finalizer(SEXP ext_ptr)
     if(funs) free(funs);
 }
 
-SEXP showtext_new_outline_funs()
+SEXP showtext_new_outline_funs(void)
 {
     FT_Outline_Funcs* funs = (FT_Outline_Funcs*) calloc(1, sizeof(FT_Outline_Funcs));
     SEXP ext_ptr;

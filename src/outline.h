@@ -61,7 +61,7 @@ int outline_cubic_to(const FT_Vector* control1, const FT_Vector* control2,
                      const FT_Vector* to, void* user);
 
 /* Functions to be exported to R */
-SEXP showtext_new_outline_funs();
+SEXP showtext_new_outline_funs(void);
 
 
 #endif /* OUTLINE_H_INCLUDED */

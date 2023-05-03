@@ -40,7 +40,7 @@ SEXP get_var_from_pkg_env(const char* var_name, const char* pkg_name)
     return var;
 }
 
-FT_Outline_Funcs* get_ft_outline_funcs()
+FT_Outline_Funcs* get_ft_outline_funcs(void)
 {
     FT_Outline_Funcs* funs;
     SEXP ext_ptr = PROTECT(get_var_from_pkg_env(".outline_funs", "showtext"));
@@ -50,7 +50,7 @@ FT_Outline_Funcs* get_ft_outline_funcs()
     return funs;
 }
 
-int get_num_segments()
+int get_num_segments(void)
 {
     SEXP nseg = PROTECT(get_var_from_pkg_env(".nseg", "showtext"));
     int res = INTEGER(nseg)[0];
