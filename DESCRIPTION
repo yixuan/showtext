@@ -29,4 +29,4 @@ BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
