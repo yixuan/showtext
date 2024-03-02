@@ -1,2 +1,11 @@
-PKG_CPPFLAGS = -I$(R_TOOLS_SOFT)/include/freetype2
-PKG_LIBS = -lfreetype -lharfbuzz -lfreetype -lpng -lz -lbz2
+ifeq (,$(shell pkg-config --version 2>/dev/null))
+  PKG_CPPFLAGS = -I$(R_TOOLS_SOFT)/include/freetype2
+  LIBBROTLI = $(or $(and $(wildcard $(R_TOOLS_SOFT)/lib/libbrotlidec.a),-lbrotlidec -lbrotlicommon),)
+  PKG_LIBS = -lfreetype $(LIBBROTLI) -lharfbuzz -lfreetype -lpng -lz -lbz2
+else
+  PKG_LIBS = $(shell pkg-config --libs freetype2)
+  PKG_CPPFLAGS = $(shell pkg-config --cflags freetype2)
+
+  # work-around for freetype2 pkg-config file in Rtools43
+  PKG_CPPFLAGS += -I$(R_TOOLS_SOFT)/include/freetype2
+endif

@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-7}{
+  \itemize{
+    \item Updated the linking on Windows for upcoming version of Rtools,
+          thanks to Tomas Kalibera.
+  }
+}
+
 \section{Changes in showtext version 0.9-6}{
   \itemize{
     \item Fixed compiler warnings, thanks to Prof. Brian Ripley.

@@ -1,8 +1,8 @@
 Package: showtext
 Type: Package
 Title: Using Fonts More Easily in R Graphs
-Version: 0.9-6
-Date: 2023-05-03
+Version: 0.9-7
+Date: 2024-03-02
 Author: Yixuan Qiu and authors/contributors of the
     included software. See file AUTHORS for details.
 Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
@@ -30,3 +30,4 @@ License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
 VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.2.3
+Encoding: UTF-8
