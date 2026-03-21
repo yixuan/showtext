@@ -48,8 +48,21 @@ typedef struct st_Rcairo_backend {
     void (*sync)(struct st_Rcairo_backend *be);
 } Rcairo_backend;
 
+/* Enum type in the Cairo library */
+typedef enum _cairo_antialias {
+    CAIRO_ANTIALIAS_DEFAULT,
+    /* method */
+    CAIRO_ANTIALIAS_NONE,
+    CAIRO_ANTIALIAS_GRAY,
+    CAIRO_ANTIALIAS_SUBPIXEL,
+    /* hints */
+    CAIRO_ANTIALIAS_FAST,
+    CAIRO_ANTIALIAS_GOOD,
+    CAIRO_ANTIALIAS_BEST
+} cairo_antialias_t;
+
 /*
- * Device specific information, defined in Cairo/src/cairogd.h 
+ * Device specific information, defined in Cairo/src/cairogd.h
  */
 typedef struct {
 #ifdef USE_MAGIC
@@ -65,7 +78,7 @@ typedef struct {
     int fontsize;
     int basefontface;
     int basefontsize;
-    Rcairo_backend *cb; /* contains the backend information */
+    Rcairo_backend *cb;  /* contains the backend information */
     int bg;
     double gamma;
     double dpix, dpiy, asp;
@@ -75,11 +88,25 @@ typedef struct {
     int gd_ftm_char;
     int npages;
     int holdlevel;
+    double lwdscale;
+    cairo_antialias_t antialias;
+    int numPatterns;
+    void **patterns;   /* should be cairo_pattern_t** but we don't need it */
+    int numClipPaths;
+    void **clippaths;  /* should be cairo_path_t** but we don't need it */
+    int appending;
+    int numMasks;
+    void **masks;      /* should be cairo_pattern_t** but we don't need it */
+    int currentMask;
+    int numGroups;
+    void **groups;     /* should be cairo_pattern_t** but we don't need it */
+    void *nullGroup;   /* should be cairo_pattern_t* but we don't need it */
+    int currentGroup;
 } CairoGDDesc;
 
 
 
-/* 
+/*
  * Returns TRUE if the current Cairo device is bitmap-based
  * (e.g. png, screen window, etc.)
  */
