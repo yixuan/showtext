@@ -3,7 +3,10 @@
 #include "outline.h"
 #include "util.h"
 
-/* Get device-specific dev_units_per_point */
+/* Get device-specific dev_units_per_point, 1 point = 1/72 inch
+   For vector graphics, typically 1 dev unit = 1 point
+   For bitmap graphics, 1 dev unit = dpi / 72 point
+   This number is used to calculate metric information of characters */
 static double get_dev_units_per_point(pDevDesc dd)
 {
     pGEDevDesc gdd = desc2GEDesc(dd);
@@ -33,16 +36,18 @@ void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* de
     if(c == 0) c = 77;  /* Letter 'M' */
     if(c < 0)  c = -c;
 
-    /* c is the Unicode of the character */
+    /* c is the Unicode of the character
+       The second argument is the default font family, only used when no
+       font family is set or when the specified family is not found. */
     face = get_ft_face(gc, (c < 1024) ? "sans" : "wqy-microhei");
     err = FT_Load_Char(face, c, FT_LOAD_NO_SCALE);
-    if(err)
+    if (err)
     {
         forward_ft_error(err);
         *ascent = *descent = *width = 0.0;
         return;
     }
-    
+
     font_size = gc->ps * gc->cex;
     pts_per_EM_unit = font_size / face->units_per_EM;
     dev_units_per_EM_unit = pts_per_EM_unit * get_dev_units_per_point(dd);
@@ -69,11 +74,11 @@ double showtext_str_width_utf8(const char* str, const pGEcontext gc, pDevDesc dd
 
     double width = 0.0;
     int i;
-    /* Add up the 'advance' of each character */
+    /* Add up the "advance" of each character */
     for(i = 0; i < len; i++)
     {
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
-        if(err)
+        if (err)
         {
             forward_ft_error(err);
             continue;
@@ -90,16 +95,16 @@ void showtext_text_utf8_raster(double x, double y, const char* str, double rot, 
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
-    if(max_len < 1)
+    if (max_len < 1)
         return;
-    
+
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
     /* raster() rotates around the bottom-left corner,
        and text() rotates around the center indicated by hadj. */
-    int trans_sign = dd->bottom > dd->top ? -1: 1;
+    int trans_sign = (dd->bottom > dd->top) ? -1: 1;
     double trans_x, trans_y;
 
     /* Calculate pixel size */
@@ -114,7 +119,7 @@ void showtext_text_utf8_raster(double x, double y, const char* str, double rot, 
         dd->raster(rd->data, rd->ncol, rd->nrow,
                    x - trans_x, y - trans_sign * trans_y,
                    rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
-    
+
     RasterData_destroy(rd);
     free(unicode);
 }
@@ -123,16 +128,16 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
 {
     /* Convert UTF-8 string to Unicode array */
     int max_len = strlen(str);
-    if(max_len < 1)
+    if (max_len < 1)
         return;
-    
+
     unsigned int *unicode =
         (unsigned int *) calloc(max_len + 1, sizeof(unsigned int));
     int len = utf8_to_ucs4(unicode, str, max_len);
 
     FT_Outline_Funcs* funs = get_ft_outline_funcs();
     FT_Face face = get_ft_face(gc, all_smaller_than_1024(unicode, len) ? "sans" : "wqy-microhei");
-    double fontSize = gc->ps * gc->cex;
+    double font_size = gc->ps * gc->cex;
 
     R_GE_gcontext gc_modify = *gc;
 
@@ -144,7 +149,7 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
     double str_width = showtext_str_width_utf8(str, gc, dd);
     double l = hadj * str_width;
 
-    data.ft_to_dev_ratio = fontSize / face->units_per_EM;
+    data.ft_to_dev_ratio = font_size / face->units_per_EM;
     data.offset_x = 0.0;
     data.num_segments = get_num_segments();
     data.trans.sign = dd->bottom > dd->top ? -1: 1;
@@ -162,17 +167,17 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
     gc_modify.col = R_RGBA(0xFF, 0xFF, 0xFF, 0x00);
     //gc_modify.col = NA_INTEGER;
 
-    for(i = 0; i < len; i++)
+    for (i = 0; i < len; i++)
     {
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
-        if(err)
+        if (err)
         {
             forward_ft_error(err);
             continue;
         }
         outline = face->glyph->outline;
         err = FT_Outline_Decompose(&outline, funs, &data);
-        if(err)
+        if (err)
         {
             forward_ft_error(err);
             Array_destroy(data.outline_x);
@@ -183,9 +188,9 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
             data.points_in_poly = IntArray_new(10);
             continue;
         }
-        if(data.outline_x->len > 0)
+        if (data.outline_x->len > 0)
         {
-            if(dd->path)
+            if (dd->path)
             {
                 dd->path(data.outline_x->data,
                          data.outline_y->data,
@@ -193,21 +198,21 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
                          data.points_in_poly->data,
                          TRUE,
                          &gc_modify, dd);
-            } else if(dd->polygon) {
+            } else if (dd->polygon) {
                 dd->polygon(data.outline_x->len,
                         data.outline_x->data,
                         data.outline_y->data,
                         &gc_modify, dd);
-            } else if(dd->line) {
+            } else if (dd->line) {
                 int p, l;
                 double *x_ptr = data.outline_x->data;
                 double *y_ptr = data.outline_y->data;
                 double x_curr, y_curr, x0, y0;
-                for(p = 0; p < data.num_poly; p++)
+                for (p = 0; p < data.num_poly; p++)
                 {
                     x0 = x_curr = *x_ptr;
                     y0 = y_curr = *y_ptr;
-                    for(l = 0; l < data.points_in_poly->data[p] - 1; l++)
+                    for (l = 0; l < data.points_in_poly->data[p] - 1; l++)
                     {
                         x_ptr++;
                         y_ptr++;
@@ -221,7 +226,7 @@ void showtext_text_utf8_polygon(double x, double y, const char* str, double rot,
                     y_ptr++;
                 }
             } else {
-                Rf_error("device should be capable of path(), polygon() or line()");
+                Rf_error("device should be capable of path(), polygon(), or line()");
             }
         }
         Array_destroy(data.outline_x);
