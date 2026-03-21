@@ -1,11 +1,13 @@
 Package: showtext
 Type: Package
 Title: Using Fonts More Easily in R Graphs
-Version: 0.9-7
-Date: 2024-03-02
-Author: Yixuan Qiu and authors/contributors of the
-    included software. See file AUTHORS for details.
-Maintainer: Yixuan Qiu <yixuan.qiu@cos.name>
+Version: 0.9-8
+Date: 2026-03-21
+Authors@R: c(
+    person("Yixuan", "Qiu", , "yixuan.qiu@cos.name", c("aut", "cre")),
+    person("Dave", "Raggett", , "dsr@w3.org", "ctb",
+           comment = "UTF-8 library. See the AUTHORS file for details")
+    )
 Description: Making it easy to use various types of fonts ('TrueType',
     'OpenType', Type 1, web fonts, etc.) in R graphs, and supporting most output
     formats of R graphics including PNG, PDF and SVG. Text glyphs will be converted
@@ -29,5 +31,5 @@ BugReports: https://github.com/yixuan/showtext/issues
 License: Apache License (>= 2.0)
 Copyright: see file COPYRIGHTS
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Encoding: UTF-8

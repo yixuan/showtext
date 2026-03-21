@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9-8}{
+  \itemize{
+    \item Fixed a segmentation fault in glyph bitmap rendering caused by
+          a behavior change in FreeType 2.14.2.
+    \item Fixed the use of non-API function \code{Rf_findVar()} in R >= 4.5.0.
+  }
+}
+
 \section{Changes in showtext version 0.9-7}{
   \itemize{
     \item Updated the linking on Windows for upcoming version of Rtools,
