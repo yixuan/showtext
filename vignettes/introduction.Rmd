@@ -250,7 +250,7 @@ The idea above can be better explained by the diagram below.
 </div>
 
 A more detailed introduction to the **showtext** package can be found in the
-[R Journal article](https://journal.r-project.org/archive/2015-1/qiu.pdf).
+[R Journal article](https://journal.r-project.org/articles/RJ-2015-008/).
 
 ## Compatibility with RStudio
 
