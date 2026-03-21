@@ -183,7 +183,7 @@ void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double ro
     pen.x = pen.y = 0;
     FT_Set_Transform(face, &trans, &pen);
 
-    for(i = 0; i < nchar; i++)
+    for (i = 0; i < nchar; i++)
     {
         /* Load the glyph outline (NO_BITMAP since we do not need pixels) */
         err = FT_Load_Char(face, str[i], FT_LOAD_NO_BITMAP);

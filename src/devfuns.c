@@ -33,8 +33,8 @@ void showtext_metric_info(int c, const pGEcontext gc, double* ascent, double* de
        or in pixels (usually bitmap graphics). */
     double dev_units_per_EM_unit;
 
-    if(c == 0) c = 77;  /* Letter 'M' */
-    if(c < 0)  c = -c;
+    if (c == 0) c = 77;  /* Letter 'M' */
+    if (c < 0)  c = -c;
 
     /* c is the Unicode of the character
        The second argument is the default font family, only used when no
@@ -75,7 +75,7 @@ double showtext_str_width_utf8(const char* str, const pGEcontext gc, pDevDesc dd
     double width = 0.0;
     int i;
     /* Add up the "advance" of each character */
-    for(i = 0; i < len; i++)
+    for (i = 0; i < len; i++)
     {
         err = FT_Load_Char(face, unicode[i], FT_LOAD_NO_SCALE);
         if (err)
@@ -115,7 +115,7 @@ void showtext_text_utf8_raster(double x, double y, const char* str, double rot, 
         rot * DEG2RAD, hadj, gc, &trans_x, &trans_y);
 
     /* Only plot if we have data, so spaces are excluded. */
-    if((rd->ncol > 0) && (rd->nrow > 0))
+    if ((rd->ncol > 0) && (rd->nrow > 0))
         dd->raster(rd->data, rd->ncol, rd->nrow,
                    x - trans_x, y - trans_sign * trans_y,
                    rd->ncol, -rd->nrow, 0.0, FALSE, gc, dd);
