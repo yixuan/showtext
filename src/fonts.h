@@ -14,6 +14,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
+#include FT_GLYPH_H
 
 typedef struct fontDesc {
     FT_Library library;
@@ -44,7 +45,6 @@ void forward_ft_error(FT_Error err);
 /* Get the bounding box of a string */
 void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double rot,
                      int* xmin, int* xmax, int* ymin, int* ymax);
-
 
 #endif /* FONTS_H_INCLUDED */
 
