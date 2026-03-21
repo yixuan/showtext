@@ -155,57 +155,65 @@ void forward_ft_error(FT_Error err)
 void get_string_bbox(FT_Face face, const unsigned int* str, int nchar, double rot,
                      int* xmin, int* xmax, int* ymin, int* ymax)
 {
+    /* The bounding box of a single character */
     int char_xmin, char_xmax, char_ymin, char_ymax;
+    /* Glyph slot */
     FT_GlyphSlot slot = face->glyph;
+    /* Rotation transformation */
     FT_Matrix trans;
+    /* Position of the pen for the current character, in 1/64 of a pixel */
     FT_Vector pen;
     FT_Error err;
     int i;
-    
+
     *xmin = *xmax = *ymin = *ymax = 0;
-    
+
     /* Set rotation transformation */
     trans.xx = trans.yy = (FT_Fixed)( cos(rot) * 0x10000L);
     trans.xy = (FT_Fixed)(-sin(rot) * 0x10000L);
     trans.yx = -trans.xy;
+
+    /* Only apply the rotation transformation */
     pen.x = pen.y = 0;
+    FT_Set_Transform(face, &trans, &pen);
 
-    for(i = 0; i < nchar; i++)
+    for (i = 0; i < nchar; i++)
     {
-        FT_Set_Transform(face, &trans, &pen);
-
         /* See raster.c for the explanation */
         /* err = FT_Load_Char(face, str[i], FT_LOAD_RENDER); */
         err = FT_Load_Char(face, str[i], FT_LOAD_NO_BITMAP);
-        if(err)  forward_ft_error(err);
+        if (err) forward_ft_error(err);
         err = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
-        if(err)  forward_ft_error(err);
-        
-        char_xmin = slot->bitmap_left;
+        if (err) forward_ft_error(err);
+
+        char_xmin = pen.x / 64 + slot->bitmap_left;
         char_xmax = char_xmin + slot->bitmap.width;
-        char_ymax = slot->bitmap_top;
+        char_ymax = pen.y / 64 + slot->bitmap_top;
         char_ymin = char_ymax - slot->bitmap.rows;
-        if(i == 0)
+        /* Rprintf("c = %d, cxmin = %d, cxmax = %d, cymin = %d, cymax = %d\n",
+            str[i], char_xmin, char_xmax, char_ymin, char_ymax); */
+        if (i == 0)
         {
             *xmin = char_xmin;
             *xmax = char_xmax;
             *ymin = char_ymin;
             *ymax = char_ymax;
         } else {
-            *xmin = char_xmin < *xmin ? char_xmin : *xmin;
-            *xmax = char_xmax > *xmax ? char_xmax : *xmax;
-            *ymin = char_ymin < *ymin ? char_ymin : *ymin;
-            *ymax = char_ymax > *ymax ? char_ymax : *ymax;
+            *xmin = (char_xmin < *xmin) ? char_xmin : *xmin;
+            *xmax = (char_xmax > *xmax) ? char_xmax : *xmax;
+            *ymin = (char_ymin < *ymin) ? char_ymin : *ymin;
+            *ymax = (char_ymax > *ymax) ? char_ymax : *ymax;
         }
         /* Move the pen for the next character */
         pen.x += slot->advance.x;
         pen.y += slot->advance.y;
     }
-    
+
     /* Identity transformation */
     trans.xx = trans.yy = 0x10000L;
     trans.xy = trans.yx = 0;
     pen.x = pen.y = 0;
+
     /* Restore to identity */
     FT_Set_Transform(face, &trans, &pen);
 }
