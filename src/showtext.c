@@ -5,10 +5,10 @@
 static void dev_desc_finalizer(SEXP ext_ptr)
 {
     pDevDesc dd_saved = (pDevDesc) R_ExternalPtrAddr(ext_ptr);
-    if(dd_saved) free(dd_saved);
+    if (dd_saved) free(dd_saved);
 }
 
-/* Add a device to the showtext list by creating an object in the 
+/* Add a device to the showtext list by creating an object in the
    showtext:::.pkg.env$.devs environment. The object name is the ID
    of the device, and the content is a list:
    dev_data: list(use_raster, dev_units_per_point, dd_saved) */
@@ -25,7 +25,11 @@ static Rboolean device_exists(const char* dev_id)
 {
     /* showtext:::.pkg.env$.devs */
     SEXP devs_env = PROTECT(get_var_from_pkg_env(".devs", "showtext"));
+#if R_VERSION < R_Version(4, 5, 0)
     SEXP dev_data = PROTECT(Rf_findVar(Rf_install(dev_id), devs_env));
+#else
+    SEXP dev_data = PROTECT(R_getVarEx(Rf_install(dev_id), devs_env, TRUE, R_UnboundValue));
+#endif
     Rboolean res = (dev_data != R_UnboundValue);
     UNPROTECT(2);
     return res;
@@ -58,7 +62,7 @@ SEXP showtext_begin(SEXP dev_data)
     Rboolean use_raster = Rf_asLogical(VECTOR_ELT(dev_data, DEV_DATA_USE_RASTER));
 
     /* Early return if no device is active. */
-    if(curr_dev == 0)
+    if (curr_dev == 0)
         Rf_error("no active graphics device");
 
     /* Get the current device and generate an ID. */
@@ -69,7 +73,7 @@ SEXP showtext_begin(SEXP dev_data)
     /* Check whether the device already has showtext turned on.
        Every showtext-enabled device has a field (dd->reserved) overwritten by
        the string "showtext". */
-    if(strcmp(dd->reserved, "showtext") == 0)
+    if (strcmp(dd->reserved, "showtext") == 0)
         return R_NilValue;
 
     /* Save the current dd */
@@ -88,7 +92,7 @@ SEXP showtext_begin(SEXP dev_data)
     dd->canHAdj = 2;
     dd->metricInfo = showtext_metric_info;
     dd->hasTextUTF8 = TRUE;
-    if(use_raster)
+    if (use_raster)
     {
         dd->text = showtext_text_utf8_raster;
         dd->textUTF8 = showtext_text_utf8_raster;
@@ -116,13 +120,13 @@ SEXP showtext_end(void)
     pDevDesc dd, dd_saved;
     SEXP ext_ptr, dev_data;
 
-    if(curr_dev == 0)
+    if (curr_dev == 0)
         Rf_error("no active graphics device");
 
     gdd = GEgetDevice(curr_dev);
     dd = gdd->dev;
     get_device_id(gdd, dev_id);
-    if(!device_exists(dev_id) || strcmp(dd->reserved, "showtext") != 0)
+    if (!device_exists(dev_id) || strcmp(dd->reserved, "showtext") != 0)
         Rf_error("current device did not turn on showtext");
 
     dev_data = PROTECT(get_device_data(gdd));

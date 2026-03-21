@@ -2,10 +2,14 @@
 
 SEXP get_var_from_env(const char* var_name, SEXP env)
 {
+#if R_VERSION < R_Version(4, 5, 0)
     SEXP var = PROTECT(Rf_findVar(Rf_install(var_name), env));
-    if(var == R_UnboundValue)
+#else
+    SEXP var = PROTECT(R_getVarEx(Rf_install(var_name), env, TRUE, R_UnboundValue));
+#endif
+    if (var == R_UnboundValue)
         Rf_error("variable '%s' not found", var_name);
-    if(TYPEOF(var) == PROMSXP)
+    if (TYPEOF(var) == PROMSXP)
     {
         var = Rf_eval(var, env);
         /* Unprotect the old var */

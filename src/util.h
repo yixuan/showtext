@@ -13,6 +13,7 @@
 #include <R.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <Rversion.h>
 
 #ifndef R_USE_PROTOTYPES
   #define R_USE_PROTOTYPES 1
